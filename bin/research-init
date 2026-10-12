@@ -42,7 +42,9 @@ tokens, replaced in file contents and in file/directory names:
   __PROJECT_NAME__  __SLUG__  __PKG__  __AUTHOR__  __YEAR__  __DATE__
 
 A template with no tokens in it is simply copied as-is.
-.gitkeep and .DS_Store are never copied.
+.gitkeep marks a directory to create; it and .DS_Store are never copied.
+A template file named <name>.append is appended to an existing <name> instead of
+being skipped, or written as <name> if there is nothing there yet.
 
 environment:
   RESEARCH_TEMPLATE_REPO    same as --repo
@@ -156,13 +158,29 @@ is_text() {
   LC_ALL=C grep -Iq . "$1" 2>/dev/null
 }
 
+substitute() {
+  perl -pe '
+    s/__PROJECT_NAME__/$ENV{T_PROJECT_NAME}/g;
+    s/__SLUG__/$ENV{T_SLUG}/g;
+    s/__PKG__/$ENV{T_PKG}/g;
+    s/__AUTHOR__/$ENV{T_AUTHOR}/g;
+    s/__YEAR__/$ENV{T_YEAR}/g;
+    s/__DATE__/$ENV{T_DATE}/g;
+  ' "$1"
+}
+
+# true when the file exists and does not end in a newline
+needs_newline() {
+  [[ -s "$1" ]] && [[ -n "$(tail -c 1 "$1")" ]]
+}
+
 info "template : $origin"
 info "target   : $target"
 info "name     : $project_name    pkg: $pkg    author: $author"
 [[ $dry_run -eq 1 ]] && info "(dry run -- nothing is written)"
 info ""
 
-n_new=0; n_skip=0; n_over=0; n_dir=0
+n_new=0; n_skip=0; n_over=0; n_dir=0; n_appd=0
 
 # empty directories carry meaning in a skeleton, so recreate those too
 while IFS= read -r dir; do
@@ -193,16 +211,36 @@ while IFS= read -r file; do
 
   rel="${file#"$src"/}"
   dest_rel="$(expand_path "$rel")"
+
+  # <name>.append is merged into an existing <name> rather than skipped, so the
+  # template can add to a file uv already wrote
+  append=0
+  if [[ "$dest_rel" == *.append ]]; then
+    append=1
+    dest_rel="${dest_rel%.append}"
+  fi
   dest="$target/$dest_rel"
 
   if [[ -e "$dest" ]]; then
-    if [[ $force -eq 0 ]]; then
+    if [[ $append -eq 1 ]]; then
+      # re-running must not append the same block twice: the first non-empty
+      # line of the block is its marker
+      marker="$(substitute "$file" | grep -m1 -v '^[[:space:]]*$' || true)"
+      if [[ -n "$marker" ]] && grep -qxF "$marker" "$dest" 2>/dev/null; then
+        info "  same  $dest_rel (already appended)"
+        n_skip=$((n_skip + 1))
+        continue
+      fi
+      info "  appd  $dest_rel"
+      n_appd=$((n_appd + 1))
+    elif [[ $force -eq 0 ]]; then
       info "  skip  $dest_rel (exists)"
       n_skip=$((n_skip + 1))
       continue
+    else
+      info "  over  $dest_rel"
+      n_over=$((n_over + 1))
     fi
-    info "  over  $dest_rel"
-    n_over=$((n_over + 1))
   else
     info "  new   $dest_rel"
     n_new=$((n_new + 1))
@@ -211,15 +249,11 @@ while IFS= read -r file; do
   [[ $dry_run -eq 1 ]] && continue
 
   mkdir -p "$(dirname "$dest")"
-  if is_text "$file"; then
-    perl -pe '
-      s/__PROJECT_NAME__/$ENV{T_PROJECT_NAME}/g;
-      s/__SLUG__/$ENV{T_SLUG}/g;
-      s/__PKG__/$ENV{T_PKG}/g;
-      s/__AUTHOR__/$ENV{T_AUTHOR}/g;
-      s/__YEAR__/$ENV{T_YEAR}/g;
-      s/__DATE__/$ENV{T_DATE}/g;
-    ' "$file" > "$dest"
+  if [[ $append -eq 1 && -e "$dest" ]]; then
+    needs_newline "$dest" && printf '\n' >> "$dest"
+    substitute "$file" >> "$dest"
+  elif is_text "$file"; then
+    substitute "$file" > "$dest"
   else
     cp "$file" "$dest"
   fi
@@ -227,8 +261,8 @@ while IFS= read -r file; do
 done < <(find "$src" -type f | sort)
 
 info ""
-info "done: $n_new new, $n_over overwritten, $n_skip skipped, $n_dir empty dirs"
-if [[ $n_new -eq 0 && $n_over -eq 0 && $n_dir -eq 0 ]]; then
+info "done: $n_new new, $n_appd appended, $n_over overwritten, $n_skip skipped, $n_dir empty dirs"
+if [[ $n_new -eq 0 && $n_over -eq 0 && $n_dir -eq 0 && $n_appd -eq 0 && $n_skip -eq 0 ]]; then
   info "nothing was copied -- is $TEMPLATE_SUBDIR/ empty in the template repo?"
 elif [[ $n_skip -gt 0 && $force -eq 0 ]]; then
   info "re-run with --force to overwrite the skipped files"

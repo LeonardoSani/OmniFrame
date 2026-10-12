@@ -1,0 +1,28 @@
+% __PROJECT_NAME__
+% Zip the CONTENTS of this folder (main.tex at the archive root) and upload to Overleaf.
+\documentclass[11pt]{article}
+
+\input{preamble}
+
+\title{__PROJECT_NAME__}
+\author{__AUTHOR__}
+\date{__DATE__}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+One paragraph. The problem, the method, and what the experiments establish.
+\end{abstract}
+
+\input{sections/introduction}
+\input{sections/related}
+\input{sections/method}
+\input{sections/experiments}
+\input{sections/results}
+\input{sections/conclusion}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+
+\end{document}
