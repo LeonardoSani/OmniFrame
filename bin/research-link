@@ -4,8 +4,8 @@
 #
 # Run it once after cloning the repo on a new machine:
 #
-#     git clone https://github.com/LeonardoSani/ai-research-template.git
-#     ./ai-research-template/bin/research-link
+#     git clone https://github.com/LeonardoSani/OmniFrame.git
+#     ./OmniFrame/bin/research-link
 #
 # Safe to run any number of times. It reports "already consistent" and changes
 # nothing when the links are already correct, so it doubles as a health check:

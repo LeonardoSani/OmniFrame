@@ -14,7 +14,7 @@
 
 set -euo pipefail
 
-TEMPLATE_REPO="${RESEARCH_TEMPLATE_REPO:-https://github.com/LeonardoSani/ai-research-template.git}"
+TEMPLATE_REPO="${RESEARCH_TEMPLATE_REPO:-https://github.com/LeonardoSani/OmniFrame.git}"
 TEMPLATE_REF="${RESEARCH_TEMPLATE_REF:-main}"
 TEMPLATE_SUBDIR="${RESEARCH_TEMPLATE_SUBDIR:-template}"
 
