@@ -1,7 +1,8 @@
 # ai-research-template
 
-The structure every AI research project of mine starts from — LLM wiki, code, and
-LaTeX in one place — plus the two scripts that put it on disk.
+The structure every AI research project of mine starts from — literature, the formal
+idea, implementation, results and the LaTeX paper in one place — plus the scripts that
+put it on disk and keep it fed.
 
 ```
 bin/research-init     copies template/ into a project, substituting tokens
@@ -61,8 +62,8 @@ agent neither runs it nor needs to know it exists.
 
 ## Tokens
 
-Replaced in file contents *and* in file/directory names, so
-`template/src/__PKG__/` becomes `src/myproj/`.
+Replaced in file contents *and* in file/directory names, so a template path containing
+`__PKG__` lands with the real package name in it.
 
 | token | value | source |
 |---|---|---|
