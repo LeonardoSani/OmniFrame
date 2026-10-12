@@ -1,0 +1,245 @@
+#!/usr/bin/env bash
+#
+# research-convert -- turn newly dropped paper PDFs into the markdown the brain reads.
+#
+# Run it from anywhere inside a research project:
+#
+#     cd ~/Projects/MYPROJ
+#     research-convert
+#
+# A paper at "1 Literature/PDFs/<citekey>.pdf" is new when
+# "1 Literature/Papers/<citekey>/" holds no markdown yet. New ones are converted in
+# a single marker process -- the models load once for the whole batch, not once per
+# paper -- and each result gets a .conversion.json recording how it was made.
+#
+# Deterministic and idempotent: already-converted papers are skipped, so running it
+# again is always the safe move. Nothing here talks to an agent.
+#
+# marker downloads its model weights once, on first use, and caches them. Later runs
+# load from that cache.
+
+set -euo pipefail
+
+PDF_DIR="1 Literature/PDFs"
+OUT_DIR="1 Literature/Papers"
+
+die() { printf 'research-convert: %s\n' "$*" >&2; exit 1; }
+info() { printf '%s\n' "$*"; }
+warn() { printf 'research-convert: %s\n' "$*" >&2; }
+
+usage() {
+  cat <<'USAGE'
+usage: research-convert [options] [-- marker args...]
+
+Converts paper PDFs that have no markdown yet, in one batch.
+
+options:
+      --only CITEKEY   convert just this one paper
+  -f, --force          reconvert even when markdown exists (replaces it)
+      --dry-run        say what would be converted, convert nothing
+  -l, --list           show every paper and its conversion state, then exit
+      --use-llm        let marker call an LLM to clean up inline maths and tables.
+                       costs money unless pointed at a local Ollama
+  -C DIR               project root (default: found by walking up from here)
+  -h, --help           this text
+
+Anything after -- is passed straight to marker, e.g.
+  research-convert -- --workers 2
+
+install marker with:
+  uv tool install marker-pdf     # pulls torch, so expect a large download
+
+On Apple Silicon, TORCH_DEVICE=mps is worth trying if conversion feels slow.
+USAGE
+}
+
+only=""
+force=0
+dry_run=0
+list_only=0
+use_llm=0
+root=""
+passthru=()
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --only)      only="${2:-}"; shift 2 ;;
+    -f|--force)  force=1;       shift ;;
+    --dry-run)   dry_run=1;     shift ;;
+    -l|--list)   list_only=1;   shift ;;
+    --use-llm)   use_llm=1;     shift ;;
+    -C)          root="${2:-}"; shift 2 ;;
+    -h|--help)   usage; exit 0 ;;
+    --)          shift; passthru=("$@"); break ;;
+    -*)          die "unknown option: $1 (try --help)" ;;
+    *)           die "unexpected argument: $1 (try --help)" ;;
+  esac
+done
+
+# --- find the project root ---------------------------------------------------
+
+if [[ -z "$root" ]]; then
+  d="$PWD"
+  while [[ "$d" != "/" ]]; do
+    [[ -d "$d/$PDF_DIR" ]] && { root="$d"; break; }
+    d="$(dirname "$d")"
+  done
+fi
+[[ -n "$root" ]] || die "no '$PDF_DIR' here or in any parent -- are you inside a research project?"
+root="$(cd "$root" && pwd -P)"
+
+pdfs="$root/$PDF_DIR"
+papers="$root/$OUT_DIR"
+mkdir -p "$papers"
+
+# a paper counts as converted when its folder holds at least one .md
+has_markdown() {
+  [[ -d "$1" ]] && [[ -n "$(find "$1" -maxdepth 1 -name '*.md' -print -quit 2>/dev/null)" ]]
+}
+
+citekeys_needing_work() {
+  while IFS= read -r pdf; do
+    local citekey; citekey="$(basename "$pdf" .pdf)"
+    [[ -n "$only" && "$citekey" != "$only" ]] && continue
+    if [[ $force -eq 1 ]] || ! has_markdown "$papers/$citekey"; then
+      printf '%s\n' "$citekey"
+    fi
+  done < <(find "$pdfs" -maxdepth 1 -name '*.pdf' | sort)
+}
+
+# --- list mode ---------------------------------------------------------------
+
+if [[ $list_only -eq 1 ]]; then
+  info "project: $root"
+  info ""
+  n=0
+  while IFS= read -r pdf; do
+    n=$((n + 1))
+    citekey="$(basename "$pdf" .pdf)"
+    if has_markdown "$papers/$citekey"; then
+      how="?"
+      [[ -f "$papers/$citekey/.conversion.json" ]] && \
+        how="$(sed -n 's/.*"backend": "\([^"]*\)".*/\1/p' "$papers/$citekey/.conversion.json" | head -n1)"
+      printf '  converted  %-44s via %s\n' "$citekey" "$how"
+    else
+      printf '  NEW        %-44s\n' "$citekey"
+    fi
+  done < <(find "$pdfs" -maxdepth 1 -name '*.pdf' | sort)
+  [[ $n -eq 0 ]] && info "  (no PDFs in $PDF_DIR)"
+  while IFS= read -r dir; do
+    citekey="$(basename "$dir")"
+    [[ "$citekey" == .* ]] && continue
+    [[ -f "$pdfs/$citekey.pdf" ]] || printf '  no pdf     %-44s (markdown without a source)\n' "$citekey"
+  done < <(find "$papers" -mindepth 1 -maxdepth 1 -type d | sort)
+  exit 0
+fi
+
+# --- what needs doing --------------------------------------------------------
+
+# bash 3.2 (what macOS ships) has no mapfile
+todo=()
+while IFS= read -r c; do
+  [[ -n "$c" ]] && todo[${#todo[@]}]="$c"
+done < <(citekeys_needing_work)
+
+if [[ -n "$only" ]] && [[ ! -f "$pdfs/$only.pdf" ]]; then
+  die "no PDF named '$only.pdf' in $PDF_DIR"
+fi
+
+info "project : $root"
+info "backend : marker$([[ $use_llm -eq 1 ]] && echo ' (--use_llm)')"
+info ""
+
+if [[ ${#todo[@]} -eq 0 ]]; then
+  total=$(find "$pdfs" -maxdepth 1 -name '*.pdf' | wc -l | tr -d ' ')
+  if [[ "$total" -eq 0 ]]; then
+    info "no PDFs in $PDF_DIR -- drop some in and run again"
+  else
+    info "nothing new: all $total paper(s) already converted"
+    info "use --force to reconvert, or --list to see them"
+  fi
+  exit 0
+fi
+
+for c in "${todo[@]}"; do info "  conv  $c"; done
+info ""
+
+if [[ $dry_run -eq 1 ]]; then
+  info "dry run -- ${#todo[@]} paper(s) would be converted"
+  exit 0
+fi
+
+command -v marker >/dev/null 2>&1 || die \
+"marker is not installed. install it with:
+
+    uv tool install marker-pdf
+
+(it pulls torch, so expect a large download)"
+
+# --- convert -----------------------------------------------------------------
+
+# marker works on a folder, so stage exactly the PDFs that need doing. symlinks
+# keep it cheap, and it means --only and --force need no special casing.
+stage="$(mktemp -d)"
+cleanup() { rm -rf "$stage"; }
+trap cleanup EXIT
+
+for c in "${todo[@]}"; do
+  ln -s "$pdfs/$c.pdf" "$stage/$c.pdf"
+done
+
+out="$stage/.out"
+mkdir -p "$out"
+
+args=(--output_dir "$out" --output_format markdown)
+[[ $use_llm -eq 1 ]] && args+=(--use_llm)
+[[ ${#passthru[@]} -gt 0 ]] && args+=("${passthru[@]}")
+
+info "running marker on ${#todo[@]} paper(s) -- models load once for the batch"
+info ""
+if ! marker "$stage" "${args[@]}"; then
+  die "marker failed; nothing was written into $OUT_DIR"
+fi
+info ""
+
+# --- normalise the results into place ----------------------------------------
+
+n_done=0; n_fail=0
+
+for c in "${todo[@]}"; do
+  # marker chooses its own nesting, so locate the markdown for this citekey
+  # rather than assuming a layout
+  md="$(find "$out" -path "*$c*" -name '*.md' -not -name '.*' | sort | head -n1)"
+  if [[ -z "$md" ]]; then
+    warn "$c: marker produced no markdown -- left untouched"
+    n_fail=$((n_fail + 1))
+    continue
+  fi
+  payload="$(dirname "$md")"
+  dest="$papers/$c"
+
+  staging="$papers/.$c.incoming.$$"
+  rm -rf "$staging"; mkdir -p "$staging"
+  ( cd "$payload" && find . -maxdepth 1 -mindepth 1 -exec cp -R {} "$staging"/ \; )
+
+  printf '{\n  "citekey": "%s",\n  "backend": "marker",\n  "converted": "%s",\n  "source_pdf": "%s",\n  "source_sha256": "%s",\n  "markdown": "%s",\n  "use_llm": %s\n}\n' \
+    "$c" \
+    "$(date +%Y-%m-%d)" \
+    "$c.pdf" \
+    "$(shasum -a 256 "$pdfs/$c.pdf" | cut -d' ' -f1)" \
+    "$(basename "$md")" \
+    "$([[ $use_llm -eq 1 ]] && echo true || echo false)" \
+    > "$staging/.conversion.json"
+
+  rm -rf "$dest"
+  mv "$staging" "$dest"
+
+  files=$(find "$dest" -type f -not -name '.*' | wc -l | tr -d ' ')
+  info "  ok    $c -> $OUT_DIR/$c/ ($files files)"
+  n_done=$((n_done + 1))
+done
+
+info ""
+info "done: $n_done converted, $n_fail failed"
+[[ $n_fail -gt 0 ]] && exit 1
+exit 0

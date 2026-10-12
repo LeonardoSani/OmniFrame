@@ -4,9 +4,10 @@ The structure every AI research project of mine starts from — LLM wiki, code, 
 LaTeX in one place — plus the two scripts that put it on disk.
 
 ```
-bin/research-init   copies template/ into a project, substituting tokens
-bin/research-link   points ~/.local/bin/research-init at this clone
-template/           the structure itself. edit these as normal files.
+bin/research-init     copies template/ into a project, substituting tokens
+bin/research-convert  converts newly dropped paper PDFs into markdown
+bin/research-link     points ~/.local/bin at the scripts in this clone
+template/             the structure itself. edit these as normal files.
 ```
 
 ## Starting a project
@@ -29,6 +30,34 @@ research-init --dry-run                      # see the plan, write nothing
 research-init --name "MINO Evaluation Suite" # prettier title than the folder name
 research-init --repo ~/Projects/ai-research-template   # test local edits
 ```
+
+## Converting papers
+
+Drop a paper in as `1 Literature/PDFs/<citekey>.pdf`, then from anywhere in the project:
+
+```sh
+research-convert            # converts every PDF with no markdown yet
+research-convert --list     # what is converted, what is new
+research-convert --dry-run  # say what would happen
+```
+
+It writes `1 Literature/Papers/<citekey>/` — markdown plus the images extracted from
+the paper — which is what the brain reads. Already-converted papers are skipped, so
+re-running is always safe.
+
+The backend is [marker](https://github.com/datalab-to/marker), installed separately:
+
+```sh
+uv tool install marker-pdf    # pulls torch, so expect a large download
+```
+
+Marker fetches its model weights once on first use and caches them. Conversion runs as
+a single batch process, so the models load once however many papers are queued.
+`--use-llm` lets marker call an LLM to clean up inline maths and tables; that costs
+money unless it is pointed at a local Ollama.
+
+This command is deliberately outside the brain: no `CLAUDE.md` mentions it, and the
+agent neither runs it nor needs to know it exists.
 
 ## Tokens
 
@@ -54,14 +83,14 @@ git clone https://github.com/LeonardoSani/ai-research-template.git ~/Projects/ai
 ~/Projects/ai-research-template/bin/research-link
 ```
 
-`research-link` creates `~/.local/bin/research-init` as a symlink to
-`bin/research-init` in the clone — so the file on `PATH` and the file in git are
-the same bytes, and editing the script is just editing a tracked file.
+`research-link` symlinks each script in `bin/` into `~/.local/bin` — so the file on
+`PATH` and the file in git are the same bytes, and editing a script is just editing a
+tracked file.
 
 It is idempotent and self-checking: run it any time to confirm the link is
-right, or `research-link --check` to verify without changing anything (exit 1
-if the link is missing, dangling, or pointing at another clone). Add `--force`
-when a real file, not a symlink, is sitting in the way.
+right, or `research-link --check` to verify without changing anything (exit 1 if any
+link is missing, dangling, or pointing at another clone). Add `--force` when a real
+file, not a symlink, is sitting in the way.
 
 ## Two speeds of propagation
 
