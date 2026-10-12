@@ -1,4 +1,4 @@
-# OmniFrame
+<img src="logo.png" alt="OmniFrame" width="420">
 
 Repo template for an AI research project. Literature, formal method, implementation,
 results and the LaTeX paper in one place, plus the agent instructions for working in it.
