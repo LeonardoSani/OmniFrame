@@ -112,7 +112,7 @@ if [[ -L "$link_path" ]]; then
   fi
 
   if [[ $check_only -eq 1 ]]; then
-    info "         run 'research-link --force' to repoint it"
+    info "         run 'research-link' to repoint it"
     exit 1
   fi
   rm "$link_path"
