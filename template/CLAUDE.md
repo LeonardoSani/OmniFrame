@@ -75,7 +75,12 @@ Set `updated` whenever you change a file. `empty` means the skeleton is untouche
 6. **Never set `status: stable`.** Only the researcher promotes a file.
 7. **Never cite a page you have not read.** In a card, cite the source markdown in
    `Papers/<citekey>/`.
-8. When a rule and a request conflict, say which rule and ask. Do not quietly pick.
+8. **Never copy a formula out of `Papers/` markdown.** It is converter output: some
+   equations are clean LaTeX, others are flattened into HTML `<sup>`/`<sub>` where a
+   subscript is indistinguishable from a superscript. Use it to understand a paper, not
+   as the source of notation. If a formula must be reproduced in `2 Idea/` or
+   `5 Paper/`, name the one you need and ask — the PDF is the authority.
+9. When a rule and a request conflict, say which rule and ask. Do not quietly pick.
 
 ## Consistency check
 

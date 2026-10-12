@@ -16,6 +16,24 @@ Source comes in from the researcher; cards and syntheses go out from you.
 If a citekey has a PDF but no `Papers/` folder, the conversion has not happened yet —
 say so and stop. Do not read the PDF in its place and do not invent the content.
 
+### Formulas in that markdown are not reliable
+
+The markdown comes out of an automatic PDF converter, so its maths is uneven. Some
+equations arrive as clean LaTeX; others are flattened into HTML `<sup>`/`<sub>` tags, in
+which a subscript and a superscript become indistinguishable — `<sup>W</sup>2σ(W1x)`
+could be $W_2\sigma(W_1x)$ or something else. Tables and prose are dependable; formulas
+are not, and the same document can contain both kinds.
+
+So: **use the markdown to understand a paper, never as the source of a formula.** Do not
+copy an equation out of it into a card, into `2 Idea/`, or into `5 Paper/`. Reconstructing
+LaTeX from flattened markup means guessing at structure, and a symbol guessed wrong here
+would travel into the notation, the preamble and the published paper.
+
+When a formula genuinely has to be reproduced, say which one you need and ask — the PDF is
+the authority, and the researcher reads it. Describing a paper's method in words, stating
+what it optimises, or naming its assumptions needs no formula at all, and is almost always
+what a card actually wants.
+
 ## What you produce
 
 **`Cards/<citekey>.md`** — one card per paper, **schema-bound**. Its sections are exactly
