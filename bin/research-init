@@ -1,0 +1,235 @@
+#!/usr/bin/env bash
+#
+# research-init -- lay the AI research template over a project.
+#
+# Typical use, straight after creating the project with uv:
+#
+#     mkdir ~/Projects/MYPROJ && cd ~/Projects/MYPROJ
+#     uv init
+#     research-init
+#
+# The template content is cloned from the template repo on every run, so a
+# project always gets the current version. Files that already exist are left
+# alone unless --force is given, which keeps whatever uv wrote intact.
+
+set -euo pipefail
+
+TEMPLATE_REPO="${RESEARCH_TEMPLATE_REPO:-https://github.com/LeonardoSani/ai-research-template.git}"
+TEMPLATE_REF="${RESEARCH_TEMPLATE_REF:-main}"
+TEMPLATE_SUBDIR="${RESEARCH_TEMPLATE_SUBDIR:-template}"
+
+die() { printf 'research-init: %s\n' "$*" >&2; exit 1; }
+info() { printf '%s\n' "$*"; }
+
+usage() {
+  cat <<'USAGE'
+usage: research-init [options] [DIR]
+
+Copies the research template into DIR (default: the current directory),
+substituting the template tokens in file contents and in path names.
+
+options:
+  -n, --name NAME     project display name  (default: the folder's name)
+  -p, --pkg PKG       python package name   (default: from pyproject.toml, else the slug)
+  -a, --author NAME   author                (default: git config user.name)
+      --repo URL      template repo url, or a local path
+      --ref REF       branch/tag/commit to clone              (default: main)
+  -f, --force         overwrite files that already exist
+      --dry-run       print what would happen, write nothing
+  -h, --help          this text
+
+tokens, replaced in file contents and in file/directory names:
+  __PROJECT_NAME__  __SLUG__  __PKG__  __AUTHOR__  __YEAR__  __DATE__
+
+A template with no tokens in it is simply copied as-is.
+.gitkeep and .DS_Store are never copied.
+
+environment:
+  RESEARCH_TEMPLATE_REPO    same as --repo
+  RESEARCH_TEMPLATE_REF     same as --ref
+  RESEARCH_TEMPLATE_SUBDIR  subdirectory of the repo holding the skeleton
+USAGE
+}
+
+slugify() {
+  printf '%s' "$1" \
+    | tr '[:upper:]' '[:lower:]' \
+    | sed -e 's/[^a-z0-9]\{1,\}/-/g' -e 's/^-//' -e 's/-$//'
+}
+
+target=""
+opt_name=""
+opt_pkg=""
+opt_author=""
+force=0
+dry_run=0
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -n|--name)   opt_name="${2:-}";      shift 2 ;;
+    -p|--pkg)    opt_pkg="${2:-}";       shift 2 ;;
+    -a|--author) opt_author="${2:-}";    shift 2 ;;
+    --repo)      TEMPLATE_REPO="${2:-}"; shift 2 ;;
+    --ref)       TEMPLATE_REF="${2:-}";  shift 2 ;;
+    -f|--force)  force=1;                shift ;;
+    --dry-run)   dry_run=1;              shift ;;
+    -h|--help)   usage; exit 0 ;;
+    --)          shift; break ;;
+    -*)          die "unknown option: $1 (try --help)" ;;
+    *)           [[ -n "$target" ]] && die "only one DIR may be given"
+                 target="$1";            shift ;;
+  esac
+done
+
+[[ -n "$target" ]] || target="$PWD"
+mkdir -p "$target"
+target="$(cd "$target" && pwd -P)"
+
+command -v git >/dev/null 2>&1 || die "git is required"
+command -v perl >/dev/null 2>&1 || die "perl is required"
+
+# --- work out the token values ----------------------------------------------
+
+project_name="${opt_name:-$(basename "$target")}"
+slug="$(slugify "$project_name")"
+[[ -n "$slug" ]] || die "could not derive a slug from '$project_name'; pass --name"
+
+if [[ -n "$opt_pkg" ]]; then
+  pkg="$opt_pkg"
+else
+  pkg=""
+  if [[ -f "$target/pyproject.toml" ]]; then
+    pkg="$(sed -n 's/^name[[:space:]]*=[[:space:]]*"\([^"]*\)".*/\1/p' \
+             "$target/pyproject.toml" | head -n1)"
+  fi
+  [[ -n "$pkg" ]] || pkg="$slug"
+fi
+pkg="$(printf '%s' "$pkg" | tr '[:upper:]-' '[:lower:]_')"
+
+if [[ -n "$opt_author" ]]; then
+  author="$opt_author"
+else
+  author="$(git config user.name 2>/dev/null || true)"
+  [[ -n "$author" ]] || author="${USER:-unknown}"
+fi
+
+export T_PROJECT_NAME="$project_name"
+export T_SLUG="$slug"
+export T_PKG="$pkg"
+export T_AUTHOR="$author"
+T_YEAR="$(date +%Y)"; export T_YEAR
+T_DATE="$(date +%Y-%m-%d)"; export T_DATE
+
+# --- fetch the skeleton ------------------------------------------------------
+
+tmp="$(mktemp -d)"
+trap 'rm -rf "$tmp"' EXIT
+
+if [[ -d "$TEMPLATE_REPO" ]]; then
+  src="$TEMPLATE_REPO/$TEMPLATE_SUBDIR"
+  origin="$TEMPLATE_REPO (local)"
+else
+  git clone --quiet --depth 1 --branch "$TEMPLATE_REF" "$TEMPLATE_REPO" "$tmp/repo" \
+    || die "could not clone $TEMPLATE_REPO at ref '$TEMPLATE_REF'"
+  src="$tmp/repo/$TEMPLATE_SUBDIR"
+  origin="$TEMPLATE_REPO@$TEMPLATE_REF"
+fi
+
+[[ -d "$src" ]] || die "template repo has no '$TEMPLATE_SUBDIR/' directory"
+src="$(cd "$src" && pwd -P)"
+
+# --- copy --------------------------------------------------------------------
+
+expand_path() {
+  local p="$1"
+  p="${p//__PROJECT_NAME__/$T_PROJECT_NAME}"
+  p="${p//__SLUG__/$T_SLUG}"
+  p="${p//__PKG__/$T_PKG}"
+  p="${p//__AUTHOR__/$T_AUTHOR}"
+  p="${p//__YEAR__/$T_YEAR}"
+  p="${p//__DATE__/$T_DATE}"
+  printf '%s' "$p"
+}
+
+is_text() {
+  [[ ! -s "$1" ]] && return 0            # empty counts as text
+  LC_ALL=C grep -Iq . "$1" 2>/dev/null
+}
+
+info "template : $origin"
+info "target   : $target"
+info "name     : $project_name    pkg: $pkg    author: $author"
+[[ $dry_run -eq 1 ]] && info "(dry run -- nothing is written)"
+info ""
+
+n_new=0; n_skip=0; n_over=0; n_dir=0
+
+# empty directories carry meaning in a skeleton, so recreate those too
+while IFS= read -r dir; do
+  rel="${dir#"$src"}"; rel="${rel#/}"
+  [[ -z "$rel" ]] && continue
+  dest="$target/$(expand_path "$rel")"
+  [[ -d "$dest" ]] && continue
+  info "  dir   $(expand_path "$rel")/"
+  n_dir=$((n_dir + 1))
+  [[ $dry_run -eq 0 ]] && mkdir -p "$dest"
+done < <(find "$src" -type d -empty | sort)
+
+while IFS= read -r file; do
+  base="$(basename "$file")"
+  [[ "$base" == ".DS_Store" ]] && continue
+
+  # a .gitkeep is not copied, but it does mean "this directory should exist"
+  if [[ "$base" == ".gitkeep" ]]; then
+    rel="$(dirname "${file#"$src"/}")"
+    [[ "$rel" == "." ]] && continue
+    dest="$target/$(expand_path "$rel")"
+    [[ -d "$dest" ]] && continue
+    info "  dir   $(expand_path "$rel")/"
+    n_dir=$((n_dir + 1))
+    [[ $dry_run -eq 0 ]] && mkdir -p "$dest"
+    continue
+  fi
+
+  rel="${file#"$src"/}"
+  dest_rel="$(expand_path "$rel")"
+  dest="$target/$dest_rel"
+
+  if [[ -e "$dest" ]]; then
+    if [[ $force -eq 0 ]]; then
+      info "  skip  $dest_rel (exists)"
+      n_skip=$((n_skip + 1))
+      continue
+    fi
+    info "  over  $dest_rel"
+    n_over=$((n_over + 1))
+  else
+    info "  new   $dest_rel"
+    n_new=$((n_new + 1))
+  fi
+
+  [[ $dry_run -eq 1 ]] && continue
+
+  mkdir -p "$(dirname "$dest")"
+  if is_text "$file"; then
+    perl -pe '
+      s/__PROJECT_NAME__/$ENV{T_PROJECT_NAME}/g;
+      s/__SLUG__/$ENV{T_SLUG}/g;
+      s/__PKG__/$ENV{T_PKG}/g;
+      s/__AUTHOR__/$ENV{T_AUTHOR}/g;
+      s/__YEAR__/$ENV{T_YEAR}/g;
+      s/__DATE__/$ENV{T_DATE}/g;
+    ' "$file" > "$dest"
+  else
+    cp "$file" "$dest"
+  fi
+  [[ -x "$file" ]] && chmod +x "$dest"
+done < <(find "$src" -type f | sort)
+
+info ""
+info "done: $n_new new, $n_over overwritten, $n_skip skipped, $n_dir empty dirs"
+if [[ $n_new -eq 0 && $n_over -eq 0 && $n_dir -eq 0 ]]; then
+  info "nothing was copied -- is $TEMPLATE_SUBDIR/ empty in the template repo?"
+elif [[ $n_skip -gt 0 && $force -eq 0 ]]; then
+  info "re-run with --force to overwrite the skipped files"
+fi

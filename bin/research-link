@@ -1,0 +1,150 @@
+#!/usr/bin/env bash
+#
+# research-link -- make sure ~/.local/bin/research-init points at this clone.
+#
+# Run it once after cloning the repo on a new machine:
+#
+#     git clone https://github.com/LeonardoSani/ai-research-template.git
+#     ./ai-research-template/bin/research-link
+#
+# Safe to run any number of times. It reports "already consistent" and changes
+# nothing when the link is already correct, so it doubles as a health check:
+#
+#     research-link --check     # verify only, non-zero exit if wrong
+
+set -euo pipefail
+
+BIN_DIR="${RESEARCH_BIN_DIR:-$HOME/.local/bin}"
+LINK_NAME="research-init"
+
+die() { printf 'research-link: %s\n' "$*" >&2; exit 1; }
+info() { printf '%s\n' "$*"; }
+
+usage() {
+  cat <<'USAGE'
+usage: research-link [--check] [--force] [--bin-dir DIR]
+
+Ensures DIR/research-init is a symlink to bin/research-init in this clone.
+
+  --check         report only; exit 1 if the link is missing or wrong
+  --force         replace whatever is in the way (wrong link, or a real file)
+  --bin-dir DIR   where to put the link      (default: ~/.local/bin)
+  -h, --help      this text
+
+environment:
+  RESEARCH_BIN_DIR   same as --bin-dir
+USAGE
+}
+
+check_only=0
+force=0
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --check)   check_only=1;      shift ;;
+    --force)   force=1;           shift ;;
+    --bin-dir) BIN_DIR="${2:-}";  shift 2 ;;
+    -h|--help) usage; exit 0 ;;
+    -*)        die "unknown option: $1 (try --help)" ;;
+    *)         die "unexpected argument: $1 (try --help)" ;;
+  esac
+done
+
+# resolve this script's own directory, following a symlink if we were invoked
+# through one, so the link always points at the real file in the clone
+self="${BASH_SOURCE[0]}"
+while [[ -L "$self" ]]; do
+  link_target="$(readlink "$self")"
+  case "$link_target" in
+    /*) self="$link_target" ;;
+    *)  self="$(cd "$(dirname "$self")" && pwd -P)/$link_target" ;;
+  esac
+done
+repo_bin="$(cd "$(dirname "$self")" && pwd -P)"
+source_script="$repo_bin/research-init"
+
+[[ -f "$source_script" ]] || die "cannot find research-init next to this script ($repo_bin)"
+
+link_path="$BIN_DIR/$LINK_NAME"
+
+info "clone  : $source_script"
+info "link   : $link_path"
+
+# make sure the thing we point at is runnable
+if [[ ! -x "$source_script" ]]; then
+  if [[ $check_only -eq 1 ]]; then
+    info "status : WRONG -- $source_script is not executable"
+    exit 1
+  fi
+  chmod +x "$source_script"
+  info "fixed  : made research-init executable"
+fi
+[[ -x "$self" ]] || chmod +x "$self"
+
+report_path_warning() {
+  case ":$PATH:" in
+    *":$BIN_DIR:"*) ;;
+    *) info ""
+       info "note   : $BIN_DIR is not on your PATH."
+       info "         add this to ~/.zshrc:  export PATH=\"$BIN_DIR:\$PATH\"" ;;
+  esac
+}
+
+# --- decide what state we are in ---------------------------------------------
+
+if [[ -L "$link_path" ]]; then
+  current="$(readlink "$link_path")"
+  case "$current" in
+    /*) current_abs="$current" ;;
+    *)  current_abs="$(cd "$BIN_DIR" && pwd -P)/$current" ;;
+  esac
+
+  if [[ "$current_abs" == "$source_script" ]]; then
+    info "status : ok -- already consistent"
+    report_path_warning
+    exit 0
+  fi
+
+  if [[ ! -e "$link_path" ]]; then
+    info "status : WRONG -- dangling symlink to $current"
+  else
+    info "status : WRONG -- symlink points to $current_abs"
+  fi
+
+  if [[ $check_only -eq 1 ]]; then
+    info "         run 'research-link --force' to repoint it"
+    exit 1
+  fi
+  rm "$link_path"
+  ln -s "$source_script" "$link_path"
+  info "fixed  : repointed to this clone"
+  report_path_warning
+  exit 0
+fi
+
+if [[ -e "$link_path" ]]; then
+  info "status : WRONG -- a real file is in the way (not a symlink)"
+  if [[ $check_only -eq 1 ]]; then
+    info "         run 'research-link --force' to replace it"
+    exit 1
+  fi
+  [[ $force -eq 1 ]] || die "refusing to delete $link_path; re-run with --force"
+  backup="$link_path.bak.$(date +%Y%m%d%H%M%S)"
+  mv "$link_path" "$backup"
+  ln -s "$source_script" "$link_path"
+  info "fixed  : moved the old file to $backup and linked"
+  report_path_warning
+  exit 0
+fi
+
+# nothing there at all
+if [[ $check_only -eq 1 ]]; then
+  info "status : WRONG -- no link yet"
+  info "         run 'research-link' to create it"
+  exit 1
+fi
+
+mkdir -p "$BIN_DIR"
+ln -s "$source_script" "$link_path"
+info "status : linked"
+report_path_warning
