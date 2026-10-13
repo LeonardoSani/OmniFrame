@@ -8,6 +8,20 @@ researcher's thinking. Your job is to fill, connect and check it — not to auth
 defines the shape of its files and what counts as done. Do not skip it because a file
 looks obvious.
 
+## Start and end of a session
+
+**First action of a session: read `0-Context.md`.** It is the briefing — where the work
+stands, why the plan looks the way it does, what is next. Everything else in the brain
+holds state; that file holds intent, and nothing else records it.
+
+**Before the session ends: rewrite it.** Not append — rewrite, so it describes the
+present. Update `Now` with what changed, `Why the plan looks like this` if a decision
+was taken, `Next` with the moves that are actually next, and `Open` with what is still
+undecided. Draft it from what happened in the session and let the researcher correct it.
+
+Git holds the history, so never turn that file into a log. If nothing changed, say so
+and leave it.
+
 ## The map
 
 **This table is the authoritative map.** `0-Master.md` is the researcher's entry point and
@@ -15,7 +29,8 @@ may lag behind a rename; if the two disagree, trust this and report the discrepa
 
 | Path | Holds |
 | ---- | ----- |
-| `0-Master.md` | the master MOC: the human's way in |
+| `0-Context.md` | the briefing: where the work stands, why, what is next. read first |
+| `0-Master.md` | the master MOC: the question, and the human's way in |
 | `1_Literature/card&outputs_def.md` | the researcher's brief: card sections, commissioned outputs |
 | `1_Literature/PDFs/<citekey>.pdf` | papers as published. read-only, gitignored |
 | `1_Literature/Papers/<citekey>/` | converted markdown + extracted images. read-only |

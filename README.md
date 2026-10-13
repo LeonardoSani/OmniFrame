@@ -81,7 +81,8 @@ research-convert --force --only <citekey> --use-llm
 ## Structure
 
 ```
-0-Master.md                  master MOC, links every area
+0-Context.md                 the briefing: where we are, why, what is next
+0-Master.md                  master MOC: the question, and links to every area
 CLAUDE.md                    agent contract: map, keys, ownership, hard rules
 
 1_Literature/                papers in, cards out
@@ -94,7 +95,7 @@ CLAUDE.md                    agent contract: map, keys, ownership, hard rules
 └── 1-Literature.md          area MOC
 
 2_Idea/                      the formal layer. general, no implementation choices
-├── Setup_and_Method.md        problem · notation · method · hypotheses
+├── Setup_and_Method.md      problem · notation · method · hypotheses
 └── Experiments.md           per E-id: what it establishes, what would refute it
 
 3_Implementation/            the concrete choices. nothing here is a claim

@@ -7,7 +7,14 @@ updated: __DATE__
 
 __AUTHOR__ · started __DATE__
 
-One line on what this project is trying to establish. Replace this.
+## The question
+
+Two or three lines: what is being asked, and why it is not already answered. Written
+for someone with no context — including you, a month from now. This changes rarely;
+if it changes often, the project has not settled.
+
+**→ [Where we are](0-Context.md)** — the live briefing: current state, why the plan
+looks like this, what is next. Read it before anything else; rewrite it when you stop.
 
 ## Literature
 
