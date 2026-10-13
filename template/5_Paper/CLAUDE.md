@@ -16,6 +16,16 @@ created, merged, dropped and reordered while writing, and sharing an id scheme a
 two areas would only create a second thing to keep in sync. The link between a figure and
 its spec is its name and its caption, not a number.
 
+## Underscores
+
+Brain paths contain underscores (`2_Idea/Setup_and_Method.md`) and LaTeX treats `_` as a
+subscript marker: unescaped in text mode it fails to compile with *Missing $ inserted*.
+Write `\texttt{2\_Idea/Setup\_and\_Method.md}` whenever you name a path in prose. Comments
+after `%` are exempt, and so is anything already inside maths mode.
+
+The same applies to `\title{}` if the project folder's own name has an underscore — check
+it compiles before trusting it.
+
 ## Citations
 
 `refs.bib` keys are the project citekeys, identical to `1_Literature/`. A `\cite` whose
@@ -23,7 +33,7 @@ key has no card is a citation of something nobody read — do not add it.
 
 ## Notation
 
-`preamble.tex` holds macros mirroring `## Notation` in `2_Idea/Setup & Method.md`. Change
+`preamble.tex` holds macros mirroring `## Notation` in `2_Idea/Setup_and_Method.md`. Change
 a symbol there and change the macro here. Never introduce a notation in the paper that
 the method section of the brain does not define.
 

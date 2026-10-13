@@ -39,7 +39,7 @@ If you find a concrete choice in here, say so — it leaked from the wrong area.
 
 ## Shapes
 
-**`Setup & Method.md`** — suggested headings: Problem · Notation · Method · Hypotheses ·
+**`Setup_and_Method.md`** — suggested headings: Problem · Notation · Method · Hypotheses ·
 Anticipated experiments. They are a prompt, not a schema: rename them, add to them, drop
 one that does not fit the project.
 

@@ -34,6 +34,6 @@ Figures here are **not** numbered to match the paper. The paper names and labels
 figures (see `5_Paper/CLAUDE.md`), because figures get merged, dropped and reordered
 during writing, and a shared id scheme would be a second thing to keep in sync.
 
-**`Code Design.md`** — where the code lives and how it is split. The template ships no
+**`Code_Design.md`** — where the code lives and how it is split. The template ships no
 code folder on purpose: that is this file's decision. Until it is written, do not scatter
 modules. Whatever `uv init` created is the starting point, not a constraint.

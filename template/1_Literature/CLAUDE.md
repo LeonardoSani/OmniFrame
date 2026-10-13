@@ -60,6 +60,6 @@ satisfy it, ask. Changing it yourself removes the one place where they set the t
 
 ## The direction of the area
 
-The literature's job is to state the gap. `2_Idea/Setup & Method.md` is that gap,
+The literature's job is to state the gap. `2_Idea/Setup_and_Method.md` is that gap,
 formalised. An output that does not eventually sharpen the problem or position the
 method is decoration.

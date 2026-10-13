@@ -24,7 +24,7 @@ is recorded as having gone wrong.
 the evidence says, which runs support it, and what remains unresolved. Cite run records
 by filename.
 
-**`Scenario Tree.md`** — one mermaid DAG, the dependency structure between experiments,
+**`Scenario_Tree.md`** — one mermaid DAG, the dependency structure between experiments,
 plus a `## Runnable now` list. See the file's own notes for the three edge kinds.
 
 ## Updating the DAG

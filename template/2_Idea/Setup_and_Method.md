@@ -35,4 +35,4 @@ Each falsifiable, each numbered, each naming the experiments that test it.
 ## Anticipated experiments
 
 Three or four lines, no more. What has to be shown for the method to stand. Detail lives
-in [Experiments](<Experiments.md>).
+in [Experiments](Experiments.md).

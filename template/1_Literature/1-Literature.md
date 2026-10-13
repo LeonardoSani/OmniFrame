@@ -7,7 +7,7 @@ updated: __DATE__
 
 Paths below are relative to `1_Literature/`.
 
-- [Cards & outputs definition](<card&outputs_def.md>) — what a card covers, and which syntheses are commissioned
+- [Cards & outputs definition](card&outputs_def.md) — what a card covers, and which syntheses are commissioned
 
 ## Outputs
 
@@ -29,5 +29,5 @@ One per paper, at `Cards/<citekey>.md`. The same sections in every card, set by
 
 ## Downstream
 
-The literature states the gap; [Setup & Method](<../2_Idea/Setup & Method.md>) is that
+The literature states the gap; [Setup & Method](../2_Idea/Setup_and_Method.md) is that
 gap, formalised.

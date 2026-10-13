@@ -6,7 +6,7 @@ updated: __DATE__
 # Experiments
 
 What each experiment establishes about the idea — not how it is run. Configuration lives
-in `3_Implementation/Specs.md`; dependency structure lives in `4_Results/Scenario Tree.md`.
+in `3_Implementation/Specs.md`; dependency structure lives in `4_Results/Scenario_Tree.md`.
 
 E-ids are assigned here once and never reused or renumbered.
 

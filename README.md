@@ -77,18 +77,18 @@ CLAUDE.md                    agent contract: map, keys, ownership, hard rules
 └── 1-Literature.md          area MOC
 
 2_Idea/                      the formal layer. general, no implementation choices
-├── Setup & Method.md        problem · notation · method · hypotheses
+├── Setup_and_Method.md        problem · notation · method · hypotheses
 └── Experiments.md           per E-id: what it establishes, what would refute it
 
 3_Implementation/            the concrete choices. nothing here is a claim
 ├── Specs.md                 per E-id: architecture, hyperparams, data, seeds, compute
 ├── Figures.md               what each figure must show — plots, diagrams, panels
-├── Code Design.md           repo structure + modules. decides where code goes
+├── Code_Design.md           repo structure + modules. decides where code goes
 └── 3-Implementation.md      area MOC
 
 4_Results/
 ├── Results.md               the analysis
-├── Scenario Tree.md         mermaid DAG: experiment dependencies, and what is runnable
+├── Scenario_Tree.md         mermaid DAG: experiment dependencies, and what is runnable
 ├── Runs/<E-id>-<date>.md    one record per run. the only source of a metric
 └── 4-Results.md             area MOC
 
@@ -102,8 +102,7 @@ CLAUDE.md                    agent contract: map, keys, ownership, hard rules
 
 Every area also has its own `CLAUDE.md`, read before writing in it.
 
-Numbering is the dependency order. Code is not scaffolded — `3_Implementation/Code
-Design.md` decides its layout.
+Numbering is the dependency order. Code is not scaffolded — `3_Implementation/Code_Design.md` decides its layout.
 
 Two keys keep it greppable:
 

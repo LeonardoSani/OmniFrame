@@ -22,13 +22,13 @@ may lag behind a rename; if the two disagree, trust this and report the discrepa
 | `1_Literature/Cards/<citekey>.md` | your card per paper |
 | `1_Literature/Literature_Outputs/` | your syntheses |
 | `1_Literature/Human_encoding/` | the researcher's scans. never touch |
-| `2_Idea/Setup & Method.md` | problem, notation, method, hypotheses |
+| `2_Idea/Setup_and_Method.md` | problem, notation, method, hypotheses |
 | `2_Idea/Experiments.md` | where an E-id is defined, once |
 | `3_Implementation/Specs.md` | per E-id: architecture, hyperparams, data, seeds, compute |
 | `3_Implementation/Figures.md` | what each figure must show |
-| `3_Implementation/Code Design.md` | repo structure and modules — decides where code goes |
+| `3_Implementation/Code_Design.md` | repo structure and modules — decides where code goes |
 | `4_Results/Results.md` | the analysis, by hypothesis |
-| `4_Results/Scenario Tree.md` | the experiment DAG, and what is runnable now |
+| `4_Results/Scenario_Tree.md` | the experiment DAG, and what is runnable now |
 | `4_Results/Runs/<E-id>-<date>.md` | one record per run. the only source of a metric |
 | `5_Paper/main.tex` | the paper. `5_Paper/` is self-contained for Overleaf |
 | `5_Paper/refs.bib` | `@citekey` entries matching the library |
@@ -37,7 +37,7 @@ Each area also has its own `CLAUDE.md`: `1_Literature/CLAUDE.md`, `2_Idea/CLAUDE
 `3_Implementation/CLAUDE.md`, `4_Results/CLAUDE.md`, `5_Paper/CLAUDE.md`.
 
 Code lives in this repo too, but its layout is decided in
-`3_Implementation/Code Design.md` — not here, and not by you unprompted.
+`3_Implementation/Code_Design.md` — not here, and not by you unprompted.
 
 ## The two keys
 
@@ -49,7 +49,7 @@ Never rename, never abbreviate, never invent a variant.
   `1_Literature/Cards/<citekey>.md`, and the `@<citekey>` entry in `5_Paper/refs.bib`.
 - **`E-id`** — `E01`, `E02`, … Numbers an experiment once, in `2_Idea/Experiments.md`,
   and is then reused in `3_Implementation/Specs.md`, `4_Results/Runs/`,
-  `4_Results/Results.md` and the DAG in `4_Results/Scenario Tree.md`.
+  `4_Results/Results.md` and the DAG in `4_Results/Scenario_Tree.md`.
 
 ## Frontmatter
 
@@ -74,7 +74,7 @@ Set `updated` whenever you change a file. `empty` means the skeleton is untouche
 | `1_Literature/card&outputs_def.md` | the researcher. it governs your cards and commissions your outputs |
 | `1_Literature/Cards/`, `1_Literature/Literature_Outputs/` | you |
 | `2_Idea/` | the researcher. you write here only when asked |
-| `3_Implementation/`, `4_Results/Results.md`, `4_Results/Scenario Tree.md`, `5_Paper/` | both |
+| `3_Implementation/`, `4_Results/Results.md`, `4_Results/Scenario_Tree.md`, `5_Paper/` | both |
 | `4_Results/Runs/` | you, from real runs only |
 | any `status: stable` | the researcher, only |
 
@@ -111,7 +111,7 @@ nothing silently:
 - every output commissioned in its `## Outputs` exists, and nothing in
   `1_Literature/Literature_Outputs/` is uncommissioned
 - every E-id in `3_Implementation/Specs.md`, `4_Results/Runs/` and the DAG in
-  `4_Results/Scenario Tree.md` exists in `2_Idea/Experiments.md`
+  `4_Results/Scenario_Tree.md` exists in `2_Idea/Experiments.md`
 - every experiment is a node in the DAG and every node is an experiment; no cycles; every
   labelled edge carries a condition
 - `## Runnable now` agrees with the DAG and the run records
