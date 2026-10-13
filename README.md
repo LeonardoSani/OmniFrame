@@ -83,6 +83,7 @@ research-convert --force --only <citekey> --use-llm
 ```
 0-Master.md                  master MOC: the question, and links to every area
 CLAUDE.md                    agent contract: map, keys, ownership, hard rules
+.claude/commands/wrap.md     /wrap — close out a session
 
 1_Literature/                papers in, cards out
 ├── card&outputs_def.md      YOU define: what a card covers, which outputs you want
@@ -109,8 +110,6 @@ CLAUDE.md                    agent contract: map, keys, ownership, hard rules
 ├── Scenario_Tree.md         mermaid DAG: experiment dependencies, and what is runnable
 ├── Runs/<E-id>-<date>.md    one record per run. the only source of a metric
 └── 4-Results_and_Tracking.md  area MOC
-
-.claude/commands/wrap.md     /wrap — close out a session: rewrite the briefing, check the brain
 
 5_Paper/                     zip the contents, upload to Overleaf
 ├── main.tex
