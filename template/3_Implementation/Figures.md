@@ -12,7 +12,7 @@ its own figures independently.
 ### A data plot
 
 - **Shows** — the one thing a reader should conclude at a glance
-- **Source** — which runs in `4_Results/Runs/`
+- **Source** — which runs in `4_Results_and_Tracking/Runs/`
 - **Encoding** — x, y, series, error representation
 - **Where it goes** — which section of the paper, or "exploratory, not for the paper"
 

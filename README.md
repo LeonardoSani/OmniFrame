@@ -81,7 +81,6 @@ research-convert --force --only <citekey> --use-llm
 ## Structure
 
 ```
-0-Context.md                 the briefing: where we are, why, what is next
 0-Master.md                  master MOC: the question, and links to every area
 CLAUDE.md                    agent contract: map, keys, ownership, hard rules
 
@@ -104,11 +103,12 @@ CLAUDE.md                    agent contract: map, keys, ownership, hard rules
 ├── Code_Design.md           repo structure + modules. decides where code goes
 └── 3-Implementation.md      area MOC
 
-4_Results/
+4_Results_and_Tracking/      results, and where the work stands
+├── Where_we_are.md          the briefing: read first each session, rewritten at the end
 ├── Results.md               the analysis
 ├── Scenario_Tree.md         mermaid DAG: experiment dependencies, and what is runnable
 ├── Runs/<E-id>-<date>.md    one record per run. the only source of a metric
-└── 4-Results.md             area MOC
+└── 4-Results_and_Tracking.md  area MOC
 
 5_Paper/                     zip the contents, upload to Overleaf
 ├── main.tex

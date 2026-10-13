@@ -13,7 +13,7 @@ Two or three lines: what is being asked, and why it is not already answered. Wri
 for someone with no context — including you, a month from now. This changes rarely;
 if it changes often, the project has not settled.
 
-**→ [Where we are](0-Context.md)** — the live briefing: current state, why the plan
+**→ [Where we are](4_Results_and_Tracking/Where_we_are.md)** — the live briefing: current state, why the plan
 looks like this, what is next. Read it before anything else; rewrite it when you stop.
 
 ## Literature
@@ -32,9 +32,9 @@ looks like this, what is next. Read it before anything else; rewrite it when you
 
 ## Results
 
-- [Results area](4_Results/4-Results.md) — runs, analysis, and the experiment DAG
-- [Scenario tree](4_Results/Scenario_Tree.md) — experiment dependencies, and what is runnable now
-- [The analysis](4_Results/Results.md) — what the experiments showed
+- [Results area](4_Results_and_Tracking/4-Results_and_Tracking.md) — runs, analysis, and the experiment DAG
+- [Scenario tree](4_Results_and_Tracking/Scenario_Tree.md) — experiment dependencies, and what is runnable now
+- [The analysis](4_Results_and_Tracking/Results.md) — what the experiments showed
 
 ## Paper
 

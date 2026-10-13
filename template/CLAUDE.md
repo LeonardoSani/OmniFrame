@@ -10,7 +10,7 @@ looks obvious.
 
 ## Start and end of a session
 
-**First action of a session: read `0-Context.md`.** It is the briefing — where the work
+**First action of a session: read `4_Results_and_Tracking/Where_we_are.md`.** It is the briefing — where the work
 stands, why the plan looks the way it does, what is next. Everything else in the brain
 holds state; that file holds intent, and nothing else records it.
 
@@ -29,7 +29,7 @@ may lag behind a rename; if the two disagree, trust this and report the discrepa
 
 | Path | Holds |
 | ---- | ----- |
-| `0-Context.md` | the briefing: where the work stands, why, what is next. read first |
+| `4_Results_and_Tracking/Where_we_are.md` | the briefing: where the work stands, why, what is next. read first |
 | `0-Master.md` | the master MOC: the question, and the human's way in |
 | `1_Literature/card&outputs_def.md` | the researcher's brief: card sections, commissioned outputs |
 | `1_Literature/PDFs/<citekey>.pdf` | papers as published. read-only, gitignored |
@@ -42,14 +42,14 @@ may lag behind a rename; if the two disagree, trust this and report the discrepa
 | `3_Implementation/Specs.md` | per E-id: architecture, hyperparams, data, seeds, compute |
 | `3_Implementation/Figures.md` | what each figure must show |
 | `3_Implementation/Code_Design.md` | repo structure and modules — decides where code goes |
-| `4_Results/Results.md` | the analysis, by hypothesis |
-| `4_Results/Scenario_Tree.md` | the experiment DAG, and what is runnable now |
-| `4_Results/Runs/<E-id>-<date>.md` | one record per run. the only source of a metric |
+| `4_Results_and_Tracking/Results.md` | the analysis, by hypothesis |
+| `4_Results_and_Tracking/Scenario_Tree.md` | the experiment DAG, and what is runnable now |
+| `4_Results_and_Tracking/Runs/<E-id>-<date>.md` | one record per run. the only source of a metric |
 | `5_Paper/main.tex` | the paper. `5_Paper/` is self-contained for Overleaf |
 | `5_Paper/refs.bib` | `@citekey` entries matching the library |
 
 Each area also has its own `CLAUDE.md`: `1_Literature/CLAUDE.md`, `2_Idea/CLAUDE.md`,
-`3_Implementation/CLAUDE.md`, `4_Results/CLAUDE.md`, `5_Paper/CLAUDE.md`.
+`3_Implementation/CLAUDE.md`, `4_Results_and_Tracking/CLAUDE.md`, `5_Paper/CLAUDE.md`.
 
 Code lives in this repo too, but its layout is decided in
 `3_Implementation/Code_Design.md` — not here, and not by you unprompted.
@@ -63,8 +63,8 @@ Never rename, never abbreviate, never invent a variant.
   `1_Literature/PDFs/<citekey>.pdf`, `1_Literature/Papers/<citekey>/`,
   `1_Literature/Cards/<citekey>.md`, and the `@<citekey>` entry in `5_Paper/refs.bib`.
 - **`E-id`** — `E01`, `E02`, … Numbers an experiment once, in `2_Idea/Experiments.md`,
-  and is then reused in `3_Implementation/Specs.md`, `4_Results/Runs/`,
-  `4_Results/Results.md` and the DAG in `4_Results/Scenario_Tree.md`.
+  and is then reused in `3_Implementation/Specs.md`, `4_Results_and_Tracking/Runs/`,
+  `4_Results_and_Tracking/Results.md` and the DAG in `4_Results_and_Tracking/Scenario_Tree.md`.
 
 ## Frontmatter
 
@@ -89,13 +89,13 @@ Set `updated` whenever you change a file. `empty` means the skeleton is untouche
 | `1_Literature/card&outputs_def.md` | the researcher. it governs your cards and commissions your outputs |
 | `1_Literature/Cards/`, `1_Literature/Literature_Outputs/` | you |
 | `2_Idea/` | the researcher. you write here only when asked |
-| `3_Implementation/`, `4_Results/Results.md`, `4_Results/Scenario_Tree.md`, `5_Paper/` | both |
-| `4_Results/Runs/` | you, from real runs only |
+| `3_Implementation/`, `4_Results_and_Tracking/Results.md`, `4_Results_and_Tracking/Scenario_Tree.md`, `5_Paper/` | both |
+| `4_Results_and_Tracking/Runs/` | you, from real runs only |
 | any `status: stable` | the researcher, only |
 
 ## Hard rules
 
-1. **Never invent a number.** Every metric traces to a file in `4_Results/Runs/`. If
+1. **Never invent a number.** Every metric traces to a file in `4_Results_and_Tracking/Runs/`. If
    there is no run record, the number does not exist — say so.
 2. **Never touch `1_Literature/Human_encoding/`.** Those are the researcher's own handwritten notes,
    often spanning several papers. List them if asked. Never rename, embed, cite, index,
@@ -125,8 +125,8 @@ nothing silently:
 - every card's sections match `## Cards` in `1_Literature/card&outputs_def.md`, in order
 - every output commissioned in its `## Outputs` exists, and nothing in
   `1_Literature/Literature_Outputs/` is uncommissioned
-- every E-id in `3_Implementation/Specs.md`, `4_Results/Runs/` and the DAG in
-  `4_Results/Scenario_Tree.md` exists in `2_Idea/Experiments.md`
+- every E-id in `3_Implementation/Specs.md`, `4_Results_and_Tracking/Runs/` and the DAG in
+  `4_Results_and_Tracking/Scenario_Tree.md` exists in `2_Idea/Experiments.md`
 - every experiment is a node in the DAG and every node is an experiment; no cycles; every
   labelled edge carries a condition
 - `## Runnable now` agrees with the DAG and the run records

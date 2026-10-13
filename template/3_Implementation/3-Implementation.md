@@ -15,5 +15,5 @@ The concrete choices. Nothing here is a claim.
 
 - E-ids are defined in [Experiments](../2_Idea/Experiments.md) and reused here.
   An E-id in `Specs.md` that is not there is an error.
-- Runs recorded from these specs go to `../4_Results/Runs/`.
+- Runs recorded from these specs go to `../4_Results_and_Tracking/Runs/`.
 - Figures produced to these specs are written to `../5_Paper/figures/`.
