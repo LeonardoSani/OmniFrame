@@ -7,12 +7,7 @@ updated: __DATE__
 
 ## Now
 
-*What is established, what is still open, what is running.*
-
-## Why the plan looks like this
-
-*Why the DAG branches where it does, why a threshold is that number, why something
-was dropped.*
+*What is established, what is running. Cite, do not restate.*
 
 ## Next
 

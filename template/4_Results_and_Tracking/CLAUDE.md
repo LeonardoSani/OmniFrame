@@ -14,37 +14,34 @@ finding. Record it as one.
 
 ## `Where_we_are.md` — the briefing
 
-Read it as the **first action of a session**; rewrite it **before the session ends**.
+Read it as the **first action of a session**. `/wrap` rewrites it at the end of one.
 
-Every other file in the brain holds state — what exists, what ran, what the numbers
-were. This one holds **intent**, and nothing else records it: why the plan looks the way
-it does, and what you were about to do when you stopped. That is what a two-week gap
-destroys and what no amount of reading the files reconstructs.
+It exists to orient, and nothing more. It is read before anything else every session, so
+its length is a cost paid every time: **keep it under twenty lines.** Past that it has
+stopped being a briefing.
 
-Four sections, each short enough to take in at a glance:
+Three sections:
 
-- **Now** — what is established, what is still open, what is running. Claims cite their
-  evidence: a run record, a card, a section. Before there is a result, say so plainly
-  rather than describing what you expect to find.
-- **Why the plan looks like this** — the *why* behind the schematics. Why
-  `Scenario_Tree.md` branches where it does, why a threshold is the number it is, why an
-  experiment is sequenced after another rather than beside it, why one was dropped.
-  Without this the DAG is a diagram nobody can argue with. The test for a line belonging
-  here: it would be *wrong* in `2_Idea/`, because it is a decision, not a claim — "0.3,
-  because the pilot at 0.2 was indistinguishable from noise."
-- **Next** — the one to three moves that would actually happen if work resumed now. Not
-  a backlog.
+- **Now** — what is established, what is running. Cite rather than restate: write
+  "E01 ran, 0.794 (`Runs/E01-2026-10-11.md`)", not the table. The reader follows the link
+  only if they need the detail.
+- **Next** — the one to three moves that would actually happen if work resumed now. Not a
+  backlog. If something is blocked, name what blocks it.
 - **Open** — what is undecided, and what would decide it. A question with no route to an
   answer belongs here too; say that it has none.
 
-**Rewrite it, never append.** Git holds the history, so a log here would only be a second
-chronology to maintain. It describes the present only.
+**Rewrite it, never append.** Git holds the history; this file describes only the present.
 
-Draft it from what actually happened in the session and let the researcher correct it. If
-nothing changed, say so and leave it alone.
+**Do not put reasoning here.** Every kind of "why" already has a home, and duplicating it
+means two copies that drift:
 
-Do not restate the method here. If a line would sit comfortably in `2_Idea/`, it belongs
-there instead.
+- why an experiment is worth doing → `2_Idea/Experiments.md`, under *Why worth doing*
+- why a concrete choice was made → `3_Implementation/Specs.md`, under *Notes*
+- what an experiment showed → `Results.md`
+
+`Results.md` and this file are not the same thing. The analysis is the standing record of
+what each experiment showed against what was expected, organised by hypothesis, and it
+grows. The briefing is the present moment, and it stays short.
 
 ## Shapes
 

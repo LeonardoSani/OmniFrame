@@ -13,8 +13,8 @@ Two or three lines: what is being asked, and why it is not already answered. Wri
 for someone with no context — including you, a month from now. This changes rarely;
 if it changes often, the project has not settled.
 
-**→ [Where we are](4_Results_and_Tracking/Where_we_are.md)** — the live briefing: current state, why the plan
-looks like this, what is next. Read it before anything else; rewrite it when you stop.
+**→ [Where we are](4_Results_and_Tracking/Where_we_are.md)** — the briefing: where things
+stand, what is next, what is open. Read it before anything else; `/wrap` rewrites it.
 
 ## Literature
 
