@@ -1,4 +1,4 @@
-# 1 Literature
+# 1_Literature
 
 Source comes in from the researcher; cards and syntheses go out from you.
 
@@ -8,7 +8,7 @@ Source comes in from the researcher; cards and syntheses go out from you.
 - `Papers/<citekey>/` — the same paper converted to markdown, together with the images
   extracted from it. Find the markdown by glob (`*.md`); the converter chose its name,
   so do not expect a fixed one. **Read-only.**
-- `Human encoding/` — the researcher's own handwritten notes, scanned. They often span
+- `Human_encoding/` — the researcher's own handwritten notes, scanned. They often span
   several papers, follow no naming convention, and are not keyed to anything. You may
   list them so a human can find one. Nothing else: never rename, embed, cite, index, or
   infer a claim from a filename.
@@ -25,7 +25,7 @@ could be $W_2\sigma(W_1x)$ or something else. Tables and prose are dependable; f
 are not, and the same document can contain both kinds.
 
 So: **use the markdown to understand a paper, never as the source of a formula.** Do not
-copy an equation out of it into a card, into `2 Idea/`, or into `5 Paper/`. Reconstructing
+copy an equation out of it into a card, into `2_Idea/`, or into `5_Paper/`. Reconstructing
 LaTeX from flattened markup means guessing at structure, and a symbol guessed wrong here
 would travel into the notation, the preamble and the published paper.
 
@@ -48,7 +48,7 @@ A card is short. One screen. If a section has nothing in it for this paper, writ
 Every claim in a card is traceable to the converted markdown. Quote or point at the
 section you took it from. A number the paper did not state does not belong in the card.
 
-**`Literature Outputs/<name>.md`** — the syntheses, **goal-bound**. Write only what
+**`Literature_Outputs/<name>.md`** — the syntheses, **goal-bound**. Write only what
 `## Outputs` in `card&outputs_def.md` commissions. The brief says what the document must
 achieve; its shape, length and headings are yours to choose. If you think another output
 is worth writing, propose it to the researcher — do not just add a file.
@@ -60,6 +60,6 @@ satisfy it, ask. Changing it yourself removes the one place where they set the t
 
 ## The direction of the area
 
-The literature's job is to state the gap. `2 Idea/Setup & Method.md` is that gap,
+The literature's job is to state the gap. `2_Idea/Setup & Method.md` is that gap,
 formalised. An output that does not eventually sharpen the problem or position the
 method is decoration.

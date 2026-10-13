@@ -32,7 +32,7 @@ starter set is a guess, not a recommendation.
 One line per commissioned document: what it must achieve. Delete the examples.
 
 - *example* — **The gap**: what the field cannot currently do, argued from the cards,
-  ending in the one sentence `2 Idea/Setup & Method.md` has to formalise.
+  ending in the one sentence `2_Idea/Setup & Method.md` has to formalise.
 - *example* — **Rival approaches**: the families of method that attack this problem, how
   they differ in assumption rather than in architecture, and where ours would sit.
 

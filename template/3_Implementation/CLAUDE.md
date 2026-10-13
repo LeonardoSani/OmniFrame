@@ -1,12 +1,12 @@
-# 3 Implementation
+# 3_Implementation
 
 The bridge from the formal idea to something runnable. **Nothing here is a claim.**
 
 Every file in this area answers "which one, at what size, written where" for something
-`2 Idea/` stated abstractly. The boundary, in both directions:
+`2_Idea/` stated abstractly. The boundary, in both directions:
 
 > If it could have been chosen differently without changing the idea, it is a spec and
-> belongs here. If it changes what is being claimed, it belongs in `2 Idea/`.
+> belongs here. If it changes what is being claimed, it belongs in `2_Idea/`.
 
 A new claim appearing in this area is a sign it was made in the wrong place. Say so
 rather than leaving it here.
@@ -14,10 +14,10 @@ rather than leaving it here.
 ## Shapes
 
 **`Specs.md`** — one block per E-id, mirroring the experiments in
-`2 Idea/Experiments.md`. Architecture, hyperparameters, data and splits, seeds, compute.
+`2_Idea/Experiments.md`. Architecture, hyperparameters, data and splits, seeds, compute.
 Every value is a decision someone can disagree with; record *what* was chosen, and when
 the reason is not obvious, one line on why. An E-id here that does not exist in
-`2 Idea/Experiments.md` is an error.
+`2_Idea/Experiments.md` is an error.
 
 **`Figures.md`** — what each figure must *show*. Not all figures are plots:
 
@@ -31,7 +31,7 @@ the reason is not obvious, one line on why. An E-id here that does not exist in
 When producing an actual data plot, load the `dataviz` skill before writing chart code.
 
 Figures here are **not** numbered to match the paper. The paper names and labels its own
-figures (see `5 Paper/CLAUDE.md`), because figures get merged, dropped and reordered
+figures (see `5_Paper/CLAUDE.md`), because figures get merged, dropped and reordered
 during writing, and a shared id scheme would be a second thing to keep in sync.
 
 **`Code Design.md`** — where the code lives and how it is split. The template ships no

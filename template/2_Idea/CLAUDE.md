@@ -1,4 +1,4 @@
-# 2 Idea
+# 2_Idea
 
 The formal layer: the problem, the notation, the method, the hypotheses, and what each
 experiment establishes. Two files, written and rewritten together.
@@ -28,7 +28,7 @@ Clean means a reader can find a definition in five seconds. Not that the file is
 ## The boundary that keeps this area general
 
 > If it could have been chosen differently without changing the idea, it is a spec, not
-> the idea — it belongs in `3 Implementation/Specs.md`.
+> the idea — it belongs in `3_Implementation/Specs.md`.
 
 So nothing here names a layer count, a width, a hidden dimension, a learning rate, an
 optimiser, a batch size, a dataset-and-split, hardware, a library, or a seed. This area

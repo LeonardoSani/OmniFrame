@@ -21,7 +21,7 @@ Both edge kinds mean "comes second", but only a labelled edge can make an experi
 never happen. Conflating them either serialises work that could have run in parallel, or
 runs an experiment whose premise was already refuted.
 
-Node ids are the E-ids from `2 Idea/Experiments.md`, verbatim — so one grep finds an
+Node ids are the E-ids from `2_Idea/Experiments.md`, verbatim — so one grep finds an
 experiment's dependencies and its dependents together.
 
 ```mermaid

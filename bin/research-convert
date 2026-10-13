@@ -7,8 +7,8 @@
 #     cd ~/Projects/MYPROJ
 #     research-convert
 #
-# A paper at "1 Literature/PDFs/<citekey>.pdf" is new when
-# "1 Literature/Papers/<citekey>/" holds no markdown yet. New ones are converted in
+# A paper at "1_Literature/PDFs/<citekey>.pdf" is new when
+# "1_Literature/Papers/<citekey>/" holds no markdown yet. New ones are converted in
 # a single marker process -- the models load once for the whole batch, not once per
 # paper -- and each result gets a .conversion.json recording how it was made.
 #
@@ -20,8 +20,8 @@
 
 set -euo pipefail
 
-PDF_DIR="1 Literature/PDFs"
-OUT_DIR="1 Literature/Papers"
+PDF_DIR="1_Literature/PDFs"
+OUT_DIR="1_Literature/Papers"
 
 die() { printf 'research-convert: %s\n' "$*" >&2; exit 1; }
 info() { printf '%s\n' "$*"; }

@@ -12,7 +12,7 @@ One paragraph, then the formal statement.
 
 ## Notation
 
-The single source of truth for symbols in this project. `5 Paper/preamble.tex` mirrors
+The single source of truth for symbols in this project. `5_Paper/preamble.tex` mirrors
 this list as macros, so a symbol changed here is changed there.
 
 | Symbol | Type | Meaning |

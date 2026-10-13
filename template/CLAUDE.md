@@ -16,28 +16,28 @@ may lag behind a rename; if the two disagree, trust this and report the discrepa
 | Path | Holds |
 | ---- | ----- |
 | `0-Master.md` | the master MOC: the human's way in |
-| `1 Literature/card&outputs_def.md` | the researcher's brief: card sections, commissioned outputs |
-| `1 Literature/PDFs/<citekey>.pdf` | papers as published. read-only, gitignored |
-| `1 Literature/Papers/<citekey>/` | converted markdown + extracted images. read-only |
-| `1 Literature/Cards/<citekey>.md` | your card per paper |
-| `1 Literature/Literature Outputs/` | your syntheses |
-| `1 Literature/Human encoding/` | the researcher's scans. never touch |
-| `2 Idea/Setup & Method.md` | problem, notation, method, hypotheses |
-| `2 Idea/Experiments.md` | where an E-id is defined, once |
-| `3 Implementation/Specs.md` | per E-id: architecture, hyperparams, data, seeds, compute |
-| `3 Implementation/Figures.md` | what each figure must show |
-| `3 Implementation/Code Design.md` | repo structure and modules — decides where code goes |
-| `4 Results/Results.md` | the analysis, by hypothesis |
-| `4 Results/Scenario Tree.md` | the experiment DAG, and what is runnable now |
-| `4 Results/Runs/<E-id>-<date>.md` | one record per run. the only source of a metric |
-| `5 Paper/main.tex` | the paper. `5 Paper/` is self-contained for Overleaf |
-| `5 Paper/refs.bib` | `@citekey` entries matching the library |
+| `1_Literature/card&outputs_def.md` | the researcher's brief: card sections, commissioned outputs |
+| `1_Literature/PDFs/<citekey>.pdf` | papers as published. read-only, gitignored |
+| `1_Literature/Papers/<citekey>/` | converted markdown + extracted images. read-only |
+| `1_Literature/Cards/<citekey>.md` | your card per paper |
+| `1_Literature/Literature_Outputs/` | your syntheses |
+| `1_Literature/Human_encoding/` | the researcher's scans. never touch |
+| `2_Idea/Setup & Method.md` | problem, notation, method, hypotheses |
+| `2_Idea/Experiments.md` | where an E-id is defined, once |
+| `3_Implementation/Specs.md` | per E-id: architecture, hyperparams, data, seeds, compute |
+| `3_Implementation/Figures.md` | what each figure must show |
+| `3_Implementation/Code Design.md` | repo structure and modules — decides where code goes |
+| `4_Results/Results.md` | the analysis, by hypothesis |
+| `4_Results/Scenario Tree.md` | the experiment DAG, and what is runnable now |
+| `4_Results/Runs/<E-id>-<date>.md` | one record per run. the only source of a metric |
+| `5_Paper/main.tex` | the paper. `5_Paper/` is self-contained for Overleaf |
+| `5_Paper/refs.bib` | `@citekey` entries matching the library |
 
-Each area also has its own `CLAUDE.md`: `1 Literature/CLAUDE.md`, `2 Idea/CLAUDE.md`,
-`3 Implementation/CLAUDE.md`, `4 Results/CLAUDE.md`, `5 Paper/CLAUDE.md`.
+Each area also has its own `CLAUDE.md`: `1_Literature/CLAUDE.md`, `2_Idea/CLAUDE.md`,
+`3_Implementation/CLAUDE.md`, `4_Results/CLAUDE.md`, `5_Paper/CLAUDE.md`.
 
 Code lives in this repo too, but its layout is decided in
-`3 Implementation/Code Design.md` — not here, and not by you unprompted.
+`3_Implementation/Code Design.md` — not here, and not by you unprompted.
 
 ## The two keys
 
@@ -45,11 +45,11 @@ Everything is found by grep because one identifier is reused verbatim across are
 Never rename, never abbreviate, never invent a variant.
 
 - **`citekey`** — `author2024keyword`, lowercase. The same stem names
-  `1 Literature/PDFs/<citekey>.pdf`, `1 Literature/Papers/<citekey>/`,
-  `1 Literature/Cards/<citekey>.md`, and the `@<citekey>` entry in `5 Paper/refs.bib`.
-- **`E-id`** — `E01`, `E02`, … Numbers an experiment once, in `2 Idea/Experiments.md`,
-  and is then reused in `3 Implementation/Specs.md`, `4 Results/Runs/`,
-  `4 Results/Results.md` and the DAG in `4 Results/Scenario Tree.md`.
+  `1_Literature/PDFs/<citekey>.pdf`, `1_Literature/Papers/<citekey>/`,
+  `1_Literature/Cards/<citekey>.md`, and the `@<citekey>` entry in `5_Paper/refs.bib`.
+- **`E-id`** — `E01`, `E02`, … Numbers an experiment once, in `2_Idea/Experiments.md`,
+  and is then reused in `3_Implementation/Specs.md`, `4_Results/Runs/`,
+  `4_Results/Results.md` and the DAG in `4_Results/Scenario Tree.md`.
 
 ## Frontmatter
 
@@ -69,34 +69,34 @@ Set `updated` whenever you change a file. `empty` means the skeleton is untouche
 
 | Path | Written by |
 | ---- | ---------- |
-| `1 Literature/PDFs/`, `1 Literature/Papers/` | the researcher — uploaded source. you read it, never touch it |
-| `1 Literature/Human encoding/` | the researcher. you may list it and nothing else |
-| `1 Literature/card&outputs_def.md` | the researcher. it governs your cards and commissions your outputs |
-| `1 Literature/Cards/`, `1 Literature/Literature Outputs/` | you |
-| `2 Idea/` | the researcher. you write here only when asked |
-| `3 Implementation/`, `4 Results/Results.md`, `4 Results/Scenario Tree.md`, `5 Paper/` | both |
-| `4 Results/Runs/` | you, from real runs only |
+| `1_Literature/PDFs/`, `1_Literature/Papers/` | the researcher — uploaded source. you read it, never touch it |
+| `1_Literature/Human_encoding/` | the researcher. you may list it and nothing else |
+| `1_Literature/card&outputs_def.md` | the researcher. it governs your cards and commissions your outputs |
+| `1_Literature/Cards/`, `1_Literature/Literature_Outputs/` | you |
+| `2_Idea/` | the researcher. you write here only when asked |
+| `3_Implementation/`, `4_Results/Results.md`, `4_Results/Scenario Tree.md`, `5_Paper/` | both |
+| `4_Results/Runs/` | you, from real runs only |
 | any `status: stable` | the researcher, only |
 
 ## Hard rules
 
-1. **Never invent a number.** Every metric traces to a file in `4 Results/Runs/`. If
+1. **Never invent a number.** Every metric traces to a file in `4_Results/Runs/`. If
    there is no run record, the number does not exist — say so.
-2. **Never touch `1 Literature/Human encoding/`.** Those are the researcher's own handwritten notes,
+2. **Never touch `1_Literature/Human_encoding/`.** Those are the researcher's own handwritten notes,
    often spanning several papers. List them if asked. Never rename, embed, cite, index,
    or treat a filename as evidence for a claim.
-3. **Never modify `1 Literature/PDFs/` or `1 Literature/Papers/`.** Uploaded source material is read-only.
-4. **No choices in `2 Idea/`, no claims in `3 Implementation/`.** The test: if it could
+3. **Never modify `1_Literature/PDFs/` or `1_Literature/Papers/`.** Uploaded source material is read-only.
+4. **No choices in `2_Idea/`, no claims in `3_Implementation/`.** The test: if it could
    have been chosen differently without changing the idea, it is a spec.
-5. **Never write in `2 Idea/` unasked.** Those are the researcher's claims, not yours.
+5. **Never write in `2_Idea/` unasked.** Those are the researcher's claims, not yours.
 6. **Never set `status: stable`.** Only the researcher promotes a file.
 7. **Never cite a page you have not read.** In a card, cite the source markdown in
-   `1 Literature/Papers/<citekey>/`.
-8. **Never copy a formula out of `1 Literature/Papers/` markdown.** It is converter output: some
+   `1_Literature/Papers/<citekey>/`.
+8. **Never copy a formula out of `1_Literature/Papers/` markdown.** It is converter output: some
    equations are clean LaTeX, others are flattened into HTML `<sup>`/`<sub>` where a
    subscript is indistinguishable from a superscript. Use it to understand a paper, not
-   as the source of notation. If a formula must be reproduced in `2 Idea/` or
-   `5 Paper/`, name the one you need and ask — the PDF is the authority.
+   as the source of notation. If a formula must be reproduced in `2_Idea/` or
+   `5_Paper/`, name the one you need and ask — the PDF is the authority.
 9. When a rule and a request conflict, say which rule and ask. Do not quietly pick.
 
 ## Consistency check
@@ -104,14 +104,14 @@ Set `updated` whenever you change a file. `empty` means the skeleton is untouche
 When asked to check the brain, verify the following and **report** what is wrong — fix
 nothing silently:
 
-- every `1 Literature/Papers/<citekey>/` has a `1 Literature/Cards/<citekey>.md`, and
+- every `1_Literature/Papers/<citekey>/` has a `1_Literature/Cards/<citekey>.md`, and
   every card has source material
-- every `@citekey` in `5 Paper/refs.bib` exists in the library, and vice versa
-- every card's sections match `## Cards` in `1 Literature/card&outputs_def.md`, in order
+- every `@citekey` in `5_Paper/refs.bib` exists in the library, and vice versa
+- every card's sections match `## Cards` in `1_Literature/card&outputs_def.md`, in order
 - every output commissioned in its `## Outputs` exists, and nothing in
-  `1 Literature/Literature Outputs/` is uncommissioned
-- every E-id in `3 Implementation/Specs.md`, `4 Results/Runs/` and the DAG in
-  `4 Results/Scenario Tree.md` exists in `2 Idea/Experiments.md`
+  `1_Literature/Literature_Outputs/` is uncommissioned
+- every E-id in `3_Implementation/Specs.md`, `4_Results/Runs/` and the DAG in
+  `4_Results/Scenario Tree.md` exists in `2_Idea/Experiments.md`
 - every experiment is a node in the DAG and every node is an experiment; no cycles; every
   labelled edge carries a condition
 - `## Runnable now` agrees with the DAG and the run records

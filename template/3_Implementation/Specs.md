@@ -5,7 +5,7 @@ updated: __DATE__
 
 # Specs
 
-One block per experiment, keyed by the E-ids in `2 Idea/Experiments.md`. These are
+One block per experiment, keyed by the E-ids in `2_Idea/Experiments.md`. These are
 choices, not claims: anything here could have been decided differently without changing
 the idea.
 

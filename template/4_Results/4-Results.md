@@ -11,6 +11,6 @@ updated: __DATE__
 
 ## Upstream
 
-- E-ids come from [Experiments](<../2 Idea/Experiments.md>); their configuration is in
-  [Specs](<../3 Implementation/Specs.md>).
-- Hypotheses being tested are in [Setup & Method](<../2 Idea/Setup & Method.md>).
+- E-ids come from [Experiments](<../2_Idea/Experiments.md>); their configuration is in
+  [Specs](<../3_Implementation/Specs.md>).
+- Hypotheses being tested are in [Setup & Method](<../2_Idea/Setup & Method.md>).

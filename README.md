@@ -46,14 +46,14 @@ Existing files are skipped, so uv's `pyproject.toml` survives. `.gitignore` is a
 
 ## Convert papers
 
-Drop a PDF as `1 Literature/PDFs/<citekey>.pdf`, then from anywhere in the project:
+Drop a PDF as `1_Literature/PDFs/<citekey>.pdf`, then from anywhere in the project:
 
 ```sh
 research-convert           # convert every PDF that has no markdown
 research-convert --list    # state of the library
 ```
 
-Writes `1 Literature/Papers/<citekey>/` — markdown plus extracted images. Converted
+Writes `1_Literature/Papers/<citekey>/` — markdown plus extracted images. Converted
 papers are skipped, so re-running is safe. One marker process per batch, so the models
 load once. Also `--force`, `--only <citekey>`, `--use-llm` (costs money unless pointed
 at a local Ollama).
@@ -67,42 +67,42 @@ reading a paper, never the source of a formula. The PDF is the authority.
 0-Master.md                  master MOC, links every area
 CLAUDE.md                    agent contract: map, keys, ownership, hard rules
 
-1 Literature/                papers in, cards out
+1_Literature/                papers in, cards out
 ├── card&outputs_def.md      YOU define: what a card covers, which outputs you want
 ├── PDFs/<citekey>.pdf       you upload. gitignored
 ├── Papers/<citekey>/        converted markdown + extracted images
 ├── Cards/<citekey>.md       agent writes, to the sections you defined
-├── Literature Outputs/      agent writes, only what you commissioned
-├── Human encoding/          your scans. agent never touches them
+├── Literature_Outputs/      agent writes, only what you commissioned
+├── Human_encoding/          your scans. agent never touches them
 └── 1-Literature.md          area MOC
 
-2 Idea/                      the formal layer. general, no implementation choices
+2_Idea/                      the formal layer. general, no implementation choices
 ├── Setup & Method.md        problem · notation · method · hypotheses
 └── Experiments.md           per E-id: what it establishes, what would refute it
 
-3 Implementation/            the concrete choices. nothing here is a claim
+3_Implementation/            the concrete choices. nothing here is a claim
 ├── Specs.md                 per E-id: architecture, hyperparams, data, seeds, compute
 ├── Figures.md               what each figure must show — plots, diagrams, panels
 ├── Code Design.md           repo structure + modules. decides where code goes
 └── 3-Implementation.md      area MOC
 
-4 Results/
+4_Results/
 ├── Results.md               the analysis
 ├── Scenario Tree.md         mermaid DAG: experiment dependencies, and what is runnable
 ├── Runs/<E-id>-<date>.md    one record per run. the only source of a metric
 └── 4-Results.md             area MOC
 
-5 Paper/                     zip the contents, upload to Overleaf
+5_Paper/                     zip the contents, upload to Overleaf
 ├── main.tex
 ├── preamble.tex             macros mirroring the notation section
 ├── sections/*.tex
-├── refs.bib                 @citekeys identical to 1 Literature/
+├── refs.bib                 @citekeys identical to 1_Literature/
 └── figures/                 the paper names and labels these itself
 ```
 
 Every area also has its own `CLAUDE.md`, read before writing in it.
 
-Numbering is the dependency order. Code is not scaffolded — `3 Implementation/Code
+Numbering is the dependency order. Code is not scaffolded — `3_Implementation/Code
 Design.md` decides its layout.
 
 Two keys keep it greppable:

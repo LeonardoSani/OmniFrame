@@ -25,4 +25,4 @@ How an experiment is launched, and how an E-id reaches the code that runs it.
 ## Artifacts
 
 Where checkpoints, logs and raw outputs are written, and which of them are gitignored.
-Figures for the paper are written to `5 Paper/figures/`.
+Figures for the paper are written to `5_Paper/figures/`.
