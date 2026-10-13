@@ -23,9 +23,17 @@ without changing anything.
 For paper conversion, once:
 
 ```sh
-uv tool install marker-pdf     # large: pulls torch
-brew install llama.cpp         # marker's backend on Apple Silicon
+uv tool install marker-pdf     # the converter. large: pulls torch
 ```
+
+marker reads PDFs with its own vision model, which needs a local inference backend:
+
+| hardware | backend | install |
+| --- | --- | --- |
+| Apple Silicon, or CPU | llama.cpp | `brew install llama.cpp` |
+| NVIDIA GPU | vLLM | Docker + NVIDIA Container Toolkit |
+
+Both are local and free. Weights download once on first use and are cached.
 
 ## New project
 
@@ -53,13 +61,22 @@ research-convert           # convert every PDF that has no markdown
 research-convert --list    # state of the library
 ```
 
-Writes `1_Literature/Papers/<citekey>/` — markdown plus extracted images. Converted
-papers are skipped, so re-running is safe. One marker process per batch, so the models
-load once. Also `--force`, `--only <citekey>`, `--use-llm` (costs money unless pointed
-at a local Ollama).
+Writes `1_Literature/Papers/<citekey>/` — markdown plus extracted images. Converted papers
+are skipped, so re-running is safe. One marker process per batch, so the model loads once.
+Also `--force`, `--only <citekey>`, `--dry-run`.
 
-Equations come out unevenly: some LaTeX, some flattened to HTML tags. Fine for an agent
-reading a paper, never the source of a formula. The PDF is the authority.
+Equations come out unevenly: some LaTeX, some flattened to HTML tags. Accepted on purpose —
+the agent reads this markdown, you read the PDF. Both `CLAUDE.md` files tell the agent to
+use it to understand a paper and never as the source of a formula.
+
+`--use-llm` is the escape hatch, off by default. It is a *second* model: an external LLM
+(Gemini, Claude, OpenAI, or a local Ollama) doing a cleanup pass on inline maths and tables,
+unlike the local vision model above that does the conversion itself. Costs money unless
+pointed at Ollama. Worth it per paper, not as a standing setting:
+
+```sh
+research-convert --force --only <citekey> --use-llm
+```
 
 ## Structure
 
