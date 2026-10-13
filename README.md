@@ -64,14 +64,43 @@ reading a paper, never the source of a formula. The PDF is the authority.
 ## Structure
 
 ```
-0-Master.md             master MOC
-1 Literature/           PDFs, Papers (converted), Cards, Outputs, Human encoding
-2 Idea/                 Setup & Method.md, Experiments.md    formal, no choices
-3 Implementation/       Specs, Figures, Code Design          choices, no claims
-4 Results/              Results.md, Scenario Tree.md (DAG), Runs/
-5 Paper/                self-contained LaTeX; zip the contents for Overleaf
-CLAUDE.md               agent contract, plus one per area
+0-Master.md                  master MOC, links every area
+CLAUDE.md                    agent contract: map, keys, ownership, hard rules
+
+1 Literature/                papers in, cards out
+├── card&outputs_def.md      YOU define: what a card covers, which outputs you want
+├── PDFs/<citekey>.pdf       you upload. gitignored
+├── Papers/<citekey>/        converted markdown + extracted images
+├── Cards/<citekey>.md       agent writes, to the sections you defined
+├── Literature Outputs/      agent writes, only what you commissioned
+├── Human encoding/          your scans. agent never touches them
+└── 1-Literature.md          area MOC
+
+2 Idea/                      the formal layer. general, no implementation choices
+├── Setup & Method.md        problem · notation · method · hypotheses
+└── Experiments.md           per E-id: what it establishes, what would refute it
+
+3 Implementation/            the concrete choices. nothing here is a claim
+├── Specs.md                 per E-id: architecture, hyperparams, data, seeds, compute
+├── Figures.md               what each figure must show — plots, diagrams, panels
+├── Code Design.md           repo structure + modules. decides where code goes
+└── 3-Implementation.md      area MOC
+
+4 Results/
+├── Results.md               the analysis
+├── Scenario Tree.md         mermaid DAG: experiment dependencies, and what is runnable
+├── Runs/<E-id>-<date>.md    one record per run. the only source of a metric
+└── 4-Results.md             area MOC
+
+5 Paper/                     zip the contents, upload to Overleaf
+├── main.tex
+├── preamble.tex             macros mirroring the notation section
+├── sections/*.tex
+├── refs.bib                 @citekeys identical to 1 Literature/
+└── figures/                 the paper names and labels these itself
 ```
+
+Every area also has its own `CLAUDE.md`, read before writing in it.
 
 Numbering is the dependency order. Code is not scaffolded — `3 Implementation/Code
 Design.md` decides its layout.
