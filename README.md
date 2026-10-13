@@ -104,11 +104,13 @@ CLAUDE.md                    agent contract: map, keys, ownership, hard rules
 └── 3-Implementation.md      area MOC
 
 4_Results_and_Tracking/      results, and where the work stands
-├── Where_we_are.md          the briefing: read first each session, rewritten at the end
+├── Where_we_are.md          the briefing: read first each session, rewritten by /wrap
 ├── Results.md               the analysis
 ├── Scenario_Tree.md         mermaid DAG: experiment dependencies, and what is runnable
 ├── Runs/<E-id>-<date>.md    one record per run. the only source of a metric
 └── 4-Results_and_Tracking.md  area MOC
+
+.claude/commands/wrap.md     /wrap — close out a session: rewrite the briefing, check the brain
 
 5_Paper/                     zip the contents, upload to Overleaf
 ├── main.tex

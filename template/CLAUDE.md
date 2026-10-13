@@ -14,13 +14,11 @@ looks obvious.
 stands, why the plan looks the way it does, what is next. Everything else in the brain
 holds state; that file holds intent, and nothing else records it.
 
-**Before the session ends: rewrite it.** Not append — rewrite, so it describes the
-present. Update `Now` with what changed, `Why the plan looks like this` if a decision
-was taken, `Next` with the moves that are actually next, and `Open` with what is still
-undecided. Draft it from what happened in the session and let the researcher correct it.
+**At the end of a session the researcher runs `/wrap`**, which rewrites it. If they say
+they are finishing without running it, do the same thing anyway: rewrite the file so it
+describes the present, drafted from what actually happened, for them to correct.
 
-Git holds the history, so never turn that file into a log. If nothing changed, say so
-and leave it.
+Rewrite, never append — git holds the history, so this file must not become a log.
 
 ## The map
 
