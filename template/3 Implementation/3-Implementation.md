@@ -7,6 +7,13 @@ updated: __DATE__
 
 The concrete choices. Nothing here is a claim.
 
-- [[Specs]] — per experiment: architecture, hyperparameters, data, seeds, compute
-- [[Figures]] — what each figure must show
-- [[Code Design]] — repo structure and module design
+- [Specs](<Specs.md>) — per E-id: architecture, hyperparameters, data, seeds, compute
+- [Figures](<Figures.md>) — what each figure must show
+- [Code Design](<Code Design.md>) — repo structure and module design
+
+## Upstream and downstream
+
+- E-ids are defined in [Experiments](<../2 Idea/Experiments.md>) and reused here.
+  An E-id in `Specs.md` that is not there is an error.
+- Runs recorded from these specs go to `../4 Results/Runs/`.
+- Figures produced to these specs are written to `../5 Paper/figures/`.
