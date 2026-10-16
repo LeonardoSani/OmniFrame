@@ -5,29 +5,43 @@ updated: __DATE__
 
 # Literature
 
-Paths below are relative to `1_Literature/`.
+**→ [Paper index](Paper_Index.md)** — every paper in the library, grouped: pdf · md · card.
 
-- [Cards & outputs definition](card&outputs_def.md) — what a card covers, and which syntheses are commissioned
+## Steer
+
+- [Cards & outputs definition](card&outputs_def.md) — what a card covers, which syntheses
+  are commissioned. Yours; `/lit-cards` and `/lit-outputs` help fill it when empty.
+
+## Find
+
+- [Proposed literature](Proposed_literature.md) — papers proposed for the idea, awaiting
+  your **Keep** mark; also those set aside for later, and those declined.
+  `/lit-search ["bias"]` fills it, `research-download` brings the OK ones in.
+
+## Read
+
+- `/lit-convert` — the new PDFs become markdown, linked in the index.
+- `/lit-cards` — one card per paper at `Cards/<citekey>.md`, the same sections in every
+  card; each paper is then filed in its group in the index.
 
 ## Outputs
 
-The syntheses produced from the reading, in `Literature_Outputs/`. Only what
-`card&outputs_def.md` commissions.
+- `Literature_Outputs/` — the syntheses, only what the definition commissions.
+  `/lit-outputs` writes them.
 
-## Cards
+## Your notes
 
-One per paper, at `Cards/<citekey>.md`. The same sections in every card, set by
-`card&outputs_def.md`.
+- [Human encoding](Human_encoding/Human_encoding.md) — your scanned notes, organised by
+  you. Not keyed to papers; the agent never reads them.
 
 ## Source — read-only
 
 - `PDFs/<citekey>.pdf` — papers as published. Gitignored.
-- `Papers/<citekey>/` — converted markdown plus extracted images. Find the markdown by
-  glob; the converter chose its name. Formulas in it are unreliable — see `CLAUDE.md`.
-- `Human_encoding/` — the researcher's handwritten notes. Human-only, no naming
-  convention, not keyed to papers.
+- `Papers/<citekey>/` — converted markdown plus extracted images. Formulas in it are
+  unreliable — see `CLAUDE.md`.
 
-## Downstream
+## Upstream and downstream
 
-The literature states the gap; [Setup & Method](../2_Idea/Setup_and_Method.md) is that
-gap, formalised.
+- The search starts from [High level](../2_Idea/High_level.md) — the idea in plain words.
+- The literature states the gap; [Setup & Method](../2_Idea/Setup_and_Method.md) is that
+  gap, formalised.

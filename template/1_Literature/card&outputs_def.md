@@ -6,7 +6,9 @@ updated: __DATE__
 # Cards & outputs definition
 
 The researcher owns this file. It is the only place that decides what the agent extracts
-from the literature and what it writes. Edit it before asking for cards.
+from the literature and what it writes. Edit it before asking for cards — or let
+`/lit-cards` and `/lit-outputs` help: when it is empty they ask, and write only what you
+confirm.
 
 Two different kinds of instruction, bound differently:
 
@@ -17,23 +19,23 @@ Two different kinds of instruction, bound differently:
 
 ## Cards
 
-The common points to focus on for every paper. Rewrite these for this project — the
+The common points to focus on for every paper. Rewrite these for this project â the
 starter set is a guess, not a recommendation.
 
-- **Problem** — what the paper is trying to solve, in its own terms
-- **Method** — the mechanism, in two or three sentences
-- **Benchmarks used** — datasets, tasks, metrics
-- **Claimed results** — what they report, with the numbers they state
-- **Limitations** — stated by the authors, and visible but unstated
-- **Relevance to us** — why this paper is in this project's library at all
+- **Problem** â what the paper is trying to solve, in its own terms
+- **Method** â the mechanism, in two or three sentences
+- **Benchmarks used** â datasets, tasks, metrics
+- **Claimed results** â what they report, with the numbers they state
+- **Limitations** â stated by the authors, and visible but unstated
+- **Relevance to us** â why this paper is in this project's library at all
 
 ## Outputs
 
 One line per commissioned document: what it must achieve. Delete the examples.
 
-- *example* — **The gap**: what the field cannot currently do, argued from the cards,
+- *example* â **The gap**: what the field cannot currently do, argued from the cards,
   ending in the one sentence `2_Idea/Setup_and_Method.md` has to formalise.
-- *example* — **Rival approaches**: the families of method that attack this problem, how
+- *example* â **Rival approaches**: the families of method that attack this problem, how
   they differ in assumption rather than in architecture, and where ours would sit.
 
 ## Notes to the agent

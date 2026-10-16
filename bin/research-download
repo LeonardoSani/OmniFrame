@@ -1,0 +1,344 @@
+#!/usr/bin/env bash
+#
+# research-download -- bring the papers marked OK in Proposed_literature.md into the library.
+#
+# Run it from anywhere inside a research project, after marking the Keep column:
+#
+#     cd ~/Projects/MYPROJ
+#     research-download
+#
+# For every row marked OK, in the proposals table or in ## Later:
+#   - the PDF goes to 1_Literature/PDFs/<citekey>.pdf   (an existing PDF is never overwritten)
+#   - its BibTeX, fetched from the DOI or arXiv, goes to 5_Paper/refs.bib under the citekey
+#   - the paper gets a row under ## Unsorted in 1_Literature/Paper_Index.md
+# Then the table is reset: done rows leave, LATER rows move to ## Later, NO rows go to
+# ## Declined, blank rows leave. A row that could not be finished stays OK, with the
+# reason in its Why cell -- fix it (often: drop the PDF in by hand) and run again.
+#
+# Deterministic and idempotent: no agent is involved, and a second run changes nothing.
+
+set -euo pipefail
+
+PROPOSED="1_Literature/Proposed_literature.md"
+INDEX="1_Literature/Paper_Index.md"
+PDF_DIR="1_Literature/PDFs"
+BIB="5_Paper/refs.bib"
+
+die() { printf 'research-download: %s\n' "$*" >&2; exit 1; }
+info() { printf '%s\n' "$*"; }
+
+usage() {
+  cat <<'USAGE'
+usage: research-download [options]
+
+Downloads the papers marked OK in 1_Literature/Proposed_literature.md, registers them in
+5_Paper/refs.bib and 1_Literature/Paper_Index.md, then resets the table.
+
+options:
+      --dry-run   say what would happen, download and write nothing
+  -l, --list      show every proposed row and its mark, then exit
+  -C DIR          project root (default: found by walking up from here)
+  -h, --help      this text
+
+marks, in the Keep column (any case):
+  OK      download it                  LATER   move it to ## Later
+  NO      drop it, remember declined   blank   drop it (a later search may propose it again)
+USAGE
+}
+
+dry_run=0
+list_only=0
+root=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --dry-run)  dry_run=1;     shift ;;
+    -l|--list)  list_only=1;   shift ;;
+    -C)         root="${2:-}"; shift 2 ;;
+    -h|--help)  usage; exit 0 ;;
+    -*)         die "unknown option: $1 (try --help)" ;;
+    *)          die "unexpected argument: $1 (try --help)" ;;
+  esac
+done
+
+# --- find the project root ---------------------------------------------------
+
+if [[ -z "$root" ]]; then
+  d="$PWD"
+  while [[ "$d" != "/" ]]; do
+    [[ -f "$d/$PROPOSED" ]] && { root="$d"; break; }
+    d="$(dirname "$d")"
+  done
+fi
+[[ -n "$root" ]] || die "no '$PROPOSED' here or in any parent -- are you inside a research project?"
+root="$(cd "$root" && pwd -P)"
+
+proposed="$root/$PROPOSED"
+index="$root/$INDEX"
+pdfs="$root/$PDF_DIR"
+bib="$root/$BIB"
+
+[[ -f "$index" ]] || die "no $INDEX -- this project predates the paper index; add it from the template"
+
+grep -q '^## Later' "$proposed" || die "$PROPOSED has no '## Later' section -- restore it from the template"
+grep -q '^## Unsorted' "$index"   || die "$INDEX has no '## Unsorted' section -- restore it from the template"
+
+command -v perl >/dev/null 2>&1 || die "perl is required"
+command -v curl >/dev/null 2>&1 || die "curl is required"
+
+# --- read the tables ----------------------------------------------------------
+# One line per row: section, keep, citekey, paper, venue, why, link, pdf -- split by
+# \x1f, not tab, because bash read collapses empty tab-separated fields.
+# section is "main" for the proposals table, "later" for ## Later.
+
+read_rows() {
+  perl -ne '
+    BEGIN { $sec = "main" }
+    if (/^##\s+Later\b/)    { $sec = "later"; next }
+    if (/^##\s+Declined\b/) { $sec = "";      next }
+    next unless $sec && /^\s*\|/;
+    chomp; s/^\s*\|//; s/\|\s*$//;
+    my @c = map { s/^\s+|\s+$//g; s/\x1f/ /g; $_ } split /(?<!\\)\|/, $_, -1;
+    next if @c < 7;
+    next if $c[1] eq "citekey" || $c[0] =~ /^:?-+:?$/;
+    next if $c[1] eq "";
+    print join("\x1f", $sec, @c[0..6]), "\n";
+  ' "$proposed"
+}
+
+mark_of() {
+  printf '%s' "$1" | tr '[:lower:]' '[:upper:]' | tr -d ' *'
+}
+
+if [[ $list_only -eq 1 ]]; then
+  info "project: $root"
+  info ""
+  n=0
+  while IFS=$'\x1f' read -r sec keep ck paper venue why link pdf; do
+    n=$((n + 1))
+    m="$(mark_of "$keep")"; [[ -z "$m" ]] && m="-"
+    printf '  %-6s %-6s %-36s %s\n' "$sec" "$m" "$ck" "$paper"
+  done < <(read_rows)
+  [[ $n -eq 0 ]] && info "  (no proposed papers -- run /lit-search in Claude Code)"
+  exit 0
+fi
+
+# --- helpers ------------------------------------------------------------------
+
+doi_of() {    # a DOI found in the link, if any
+  printf '%s' "$1" | perl -ne 'print $1 if m{(10\.\d{4,9}/[^\s?#]+)}'
+}
+
+arxiv_of() {  # an arXiv id found in the link or the pdf url, if any
+  printf '%s\n%s' "$1" "$2" \
+    | perl -ne 'if (m{arxiv\.org/(?:abs|pdf)/([0-9]{4}\.[0-9]{4,5}|[a-z\-]+(?:\.[A-Z]{2})?/[0-9]{7})}i) { print $1; exit }'
+}
+
+has_bib() {
+  [[ -f "$bib" ]] && grep -Eq "^[[:space:]]*@[A-Za-z]+[[:space:]]*\{[[:space:]]*$1[[:space:]]*," "$bib"
+}
+
+fetch_bib() {  # prints the entry, with its key set to the citekey, or fails
+  local ck="$1" link="$2" pdf="$3" doi arxiv raw=""
+  doi="$(doi_of "$link")"
+  arxiv="$(arxiv_of "$link" "$pdf")"
+  if [[ -n "$doi" ]]; then
+    raw="$(curl -fsSL --max-time 60 -H 'Accept: application/x-bibtex' "https://doi.org/$doi" 2>/dev/null || true)"
+  fi
+  if [[ "$raw" != *@* && -n "$arxiv" ]]; then
+    raw="$(curl -fsSL --max-time 60 "https://arxiv.org/bibtex/$arxiv" 2>/dev/null || true)"
+  fi
+  [[ "$raw" == *@* ]] || return 1
+  printf '%s\n' "$raw" | CK="$ck" perl -0pe 's/^\s+//; s/^(\@\w+\s*\{)\s*[^,]*,/$1$ENV{CK},/; s/\s*$/\n/'
+}
+
+in_index() {
+  grep -Eq "^\|[[:space:]]*$1[[:space:]]*\|" "$index"
+}
+
+# --- process the OK rows ------------------------------------------------------
+
+work="$(mktemp -d)"
+trap 'rm -rf "$work"' EXIT
+results="$work/results"   # citekey <tab> done|flag <tab> reason
+: > "$results"
+
+info "project : $root"
+[[ $dry_run -eq 1 ]] && info "(dry run -- nothing is downloaded or written)"
+info ""
+
+n_ok=0; n_done=0; n_flag=0; n_later=0; n_no=0; n_blank=0; n_odd=0
+
+while IFS=$'\x1f' read -r sec keep ck paper venue why link pdf; do
+  m="$(mark_of "$keep")"
+  case "$m" in
+    LATER) [[ "$sec" == main ]] && { info "  later $ck"; n_later=$((n_later + 1)); }; continue ;;
+    NO)    info "  no    $ck"; n_no=$((n_no + 1)); continue ;;
+    "")    [[ "$sec" == main ]] && n_blank=$((n_blank + 1)); continue ;;
+    OK)    ;;
+    *)     info "  ??    $ck -- mark '$keep' is not OK, LATER or NO: row left alone"
+           n_odd=$((n_odd + 1)); continue ;;
+  esac
+  n_ok=$((n_ok + 1))
+
+  if [[ $dry_run -eq 1 ]]; then
+    if [[ -f "$pdfs/$ck.pdf" ]]; then info "  ok    $ck (PDF already there)"
+    elif [[ -z "$pdf" || "$pdf" == "—" || "$pdf" == "-" ]]; then info "  ok    $ck -- no open PDF: would be flagged"
+    else info "  ok    $ck <- $pdf"; fi
+    continue
+  fi
+
+  # 1. the PDF -- never overwrite one that is already there
+  target="$pdfs/$ck.pdf"
+  if [[ ! -f "$target" ]]; then
+    if [[ -z "$pdf" || "$pdf" == "—" || "$pdf" == "-" ]]; then
+      info "  flag  $ck -- no open PDF"
+      printf '%s\tflag\tno open PDF: drop PDFs/%s.pdf in by hand\n' "$ck" "$ck" >> "$results"
+      n_flag=$((n_flag + 1)); continue
+    fi
+    mkdir -p "$pdfs"
+    tmp="$work/$ck.pdf"
+    if ! curl -fsSL --max-time 180 -o "$tmp" "$pdf" 2>/dev/null; then
+      info "  flag  $ck -- download failed"
+      printf '%s\tflag\tdownload failed: drop PDFs/%s.pdf in by hand\n' "$ck" "$ck" >> "$results"
+      n_flag=$((n_flag + 1)); continue
+    fi
+    if [[ "$(head -c 5 "$tmp")" != "%PDF-" ]]; then
+      info "  flag  $ck -- the PDF link did not return a PDF"
+      printf '%s\tflag\tlink is not a PDF: drop PDFs/%s.pdf in by hand\n' "$ck" "$ck" >> "$results"
+      n_flag=$((n_flag + 1)); continue
+    fi
+    mv "$tmp" "$target"
+    info "  pdf   $ck"
+  else
+    info "  pdf   $ck (already there)"
+  fi
+
+  # 2. the paper index -- the PDF exists, so the paper is in the library
+  if ! in_index "$ck"; then
+    printf '| %s | %s | %s | [pdf](PDFs/%s.pdf) | — | pending |\n' \
+      "$ck" "$paper" "${venue:-—}" "$ck" >> "$work/index_rows"
+  fi
+
+  # 3. BibTeX, from a real source only
+  if ! has_bib "$ck"; then
+    if entry="$(fetch_bib "$ck" "$link" "$pdf")"; then
+      { [[ -s "$bib" ]] && printf '\n'; printf '%s' "$entry"; } >> "$bib"
+      info "  bib   $ck"
+    else
+      info "  flag  $ck -- no BibTeX from DOI or arXiv"
+      printf '%s\tflag\tno BibTeX found: add @%s to 5_Paper/refs.bib by hand\n' "$ck" "$ck" >> "$results"
+      n_flag=$((n_flag + 1)); continue
+    fi
+  fi
+
+  printf '%s\tdone\t\n' "$ck" >> "$results"
+  n_done=$((n_done + 1))
+done < <(read_rows)
+
+if [[ $dry_run -eq 1 ]]; then
+  info ""
+  info "dry run: $n_ok to download, $n_later to Later, $n_no to Declined, $n_blank blank to drop, $n_odd left alone"
+  exit 0
+fi
+
+# --- add the new papers to the index, under ## Unsorted -----------------------
+# every rewrite goes to a temp file first and replaces the original only on success
+
+today="$(date +%Y-%m-%d)"
+
+if [[ -s "$work/index_rows" ]]; then
+  ROWS="$work/index_rows" TODAY="$today" perl -e '
+    open my $fh, "<", $ENV{ROWS} or die "cannot read the new rows\n";
+    my $rows = do { local $/; <$fh> };
+    my @l = <>; my ($start, $end);
+    for my $i (0 .. $#l) {
+      if ($l[$i] =~ /^##\s+Unsorted\b/) { $start = $i; next }
+      next unless defined $start;
+      last if $l[$i] =~ /^##\s/;
+      $end = $i if $l[$i] =~ /^\s*\|/;
+    }
+    die "no table under ## Unsorted\n" unless defined $end;
+    splice @l, $end + 1, 0, $rows;
+    my $out = join "", @l;
+    $out =~ s/^updated:.*$/updated: $ENV{TODAY}/m;
+    $out =~ s/^status: empty$/status: draft/m;
+    print $out;
+  ' "$index" > "$work/index.new" || die "could not update $INDEX -- it was left as it was"
+  mv "$work/index.new" "$index"
+fi
+
+# --- reset the table -----------------------------------------------------------
+
+RESULTS="$results" TODAY="$today" perl -e '
+  my %res;
+  open my $fh, "<", $ENV{RESULTS} or die "cannot read the results\n";
+  while (<$fh>) { chomp; my ($ck, $st, $why) = split /\t/, $_, 3; $res{$ck} = [$st, $why] }
+
+  sub cells { my $r = shift; chomp $r; $r =~ s/^\s*\|//; $r =~ s/\|\s*$//;
+              map { s/^\s+|\s+$//g; $_ } split /(?<!\\)\|/, $r, -1 }
+  sub row   { "| " . join(" | ", @_) . " |\n" }
+  sub mark  { my $m = uc shift; $m =~ s/[\s*]//g; $m }
+  sub flag  { my ($c, $why) = @_; $c->[4] =~ s/\s*— ⚠.*$//; $c->[4] .= " — ⚠ $why" }
+
+  # cut the file into its text and its two tables, which are rebuilt below
+  my (@out, %tbl); my $where = "main";
+  for (<>) {
+    if (/^##\s+Later\b/)    { $where = "later"; }
+    if (/^##\s+Declined\b/) { $where = "";      }
+    if (/^\s*\|/ && $where) {
+      push @out, "\0$where\0" unless $tbl{$where};
+      push @{ $tbl{$where} }, $_;
+      next;
+    }
+    push @out, $_;
+  }
+  die "no proposals table\n"     unless $tbl{main}  && @{ $tbl{main} }  >= 2;
+  die "no table under ## Later\n" unless $tbl{later} && @{ $tbl{later} } >= 2;
+  my ($hdr_m, $sep_m, @rows_m) = @{ $tbl{main} };
+  my ($hdr_l, $sep_l, @rows_l) = @{ $tbl{later} };
+
+  my (@main, @later, @moved, @declined);
+  for my $r (@rows_m) {
+    my @c = cells($r); my $m = mark($c[0]); my $x = $res{$c[1]};
+    if    ($m eq "OK")    { next if $x && $x->[0] eq "done"; flag(\@c, $x->[1]) if $x; push @main, row(@c) }
+    elsif ($m eq "LATER") { $c[0] = ""; push @moved, row(@c) }
+    elsif ($m eq "NO")    { push @declined, "- `$c[1]` — $c[2]\n" }
+    elsif ($m eq "")      { }
+    else                  { push @main, $r }
+  }
+  for my $r (@rows_l) {
+    my @c = cells($r); my $m = mark($c[0]); my $x = $res{$c[1]};
+    if    ($m eq "OK")    { next if $x && $x->[0] eq "done"; flag(\@c, $x->[1]) if $x; push @later, row(@c) }
+    elsif ($m eq "NO")    { push @declined, "- `$c[1]` — $c[2]\n" }
+    elsif ($m eq "LATER") { $c[0] = ""; push @later, row(@c) }
+    else                  { push @later, $r }
+  }
+
+  my $text = join "", map {
+      $_ eq "\0main\0"  ? join("", $hdr_m, $sep_m, @main)
+    : $_ eq "\0later\0" ? join("", $hdr_l, $sep_l, @later, @moved)
+    : $_
+  } @out;
+
+  # ## Declined runs to the end of the file
+  if (@declined) {
+    $text =~ s/\s*\z//;
+    $text .= ($text =~ /^- `[^`]+` — [^\n]*\z/m ? "\n" : "\n\n") . join "", @declined;
+  }
+
+  my $left = @main + @later + @moved || $text =~ /^- `[^`]+` — /m;
+  $text =~ s/^updated:.*$/updated: $ENV{TODAY}/m;
+  $text =~ s/^status: (?:empty|draft)$/"status: " . ($left ? "draft" : "empty")/me;
+  print $text;
+' "$proposed" > "$work/proposed.new" || die "could not reset $PROPOSED -- it was left as it was; the downloads are in place, run again"
+mv "$work/proposed.new" "$proposed"
+
+# --- tell me -------------------------------------------------------------------
+
+info ""
+info "done: $n_done in the library, $n_flag flagged, $n_later to Later, $n_no declined, $n_blank blank dropped"
+[[ $n_odd -gt 0 ]] && info "      $n_odd row(s) with an unknown mark left alone"
+[[ $n_flag -gt 0 ]] && info "flagged rows stay OK with the reason in Why -- fix them and run again"
+[[ $n_done -gt 0 ]] && info "next: research-convert (terminal) or /lit-convert (Claude Code)"
+exit 0

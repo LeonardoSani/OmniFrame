@@ -16,7 +16,7 @@ set -euo pipefail
 
 BIN_DIR="${RESEARCH_BIN_DIR:-$HOME/.local/bin}"
 # every script in bin/ that belongs on PATH
-SCRIPTS="research-init research-convert"
+SCRIPTS="research-init research-convert research-download"
 
 die() { printf 'research-link: %s\n' "$*" >&2; exit 1; }
 info() { printf '%s\n' "$*"; }
@@ -26,7 +26,7 @@ usage() {
 usage: research-link [--check] [--force] [--bin-dir DIR]
 
 Ensures DIR/<script> is a symlink to bin/<script> in this clone, for each of:
-research-init, research-convert.
+research-init, research-convert, research-download.
 
   --check         report only; exit 1 if any link is missing or wrong
   --force         replace whatever is in the way (wrong link, or a real file)

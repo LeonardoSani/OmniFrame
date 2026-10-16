@@ -1,7 +1,9 @@
 # 2_Idea
 
-The formal layer: the problem, the notation, the method, the hypotheses, and what each
-experiment establishes. Two files, written and rewritten together.
+The idea, from plain words to formal: what the project is after, then the problem, the
+notation, the method, the hypotheses, and what each experiment establishes. Three files —
+`High_level.md` comes first; the other two are the formal layer, written and rewritten
+together.
 
 **These are the researcher's claims. Do not write here unless asked.** When you are
 asked, you are editing someone's formalisation — match what is there, do not restructure
@@ -38,6 +40,14 @@ size*. `Experiments.md` says what an experiment establishes; `Specs.md` says how
 If you find a concrete choice in here, say so — it leaked from the wrong area.
 
 ## Shapes
+
+**`High_level.md`** — Topic · The idea · In scope, out of scope · Anchor papers · Keywords.
+The one file here **outside the house style above**: plain words, and intuition is
+allowed. It is the seed `/lit-search` reads to propose papers — a vague keyword list here
+becomes a vague reading list. It is not the question in `0-Master.md`: that is the crisp
+ask in two or three lines; this is the wider ground the literature has to cover. When it
+is empty and the researcher wants help, draft it *with* them: ask, propose, and write only
+what they confirm.
 
 **`Setup_and_Method.md`** — suggested headings: Problem · Notation · Method · Hypotheses ·
 Anticipated experiments. They are a prompt, not a schema: rename them, add to them, drop

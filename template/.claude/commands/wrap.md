@@ -26,11 +26,12 @@ If nothing of substance changed, say so and leave the file as it is.
 
 ## 2. Check the brain holds together
 
-Two checks, with grep — do not read every file:
+Three checks, with grep — do not read every file:
 
 - every `E-id` in `4_Results_and_Tracking/Scenario_Tree.md` exists in
   `2_Idea/Experiments.md`, and every experiment appears as a node in the DAG
 - every `1_Literature/Papers/<citekey>/` has a `1_Literature/Cards/<citekey>.md`
+- every `1_Literature/PDFs/<citekey>.pdf` has a row in `1_Literature/Paper_Index.md`
 
 **Report what is wrong. Fix nothing.** Note anything found in `Open` so it is not lost.
 

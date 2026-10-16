@@ -20,6 +20,26 @@ describes the present, drafted from what actually happened, for them to correct.
 
 Rewrite, never append — git holds the history, so this file must not become a log.
 
+## Commands
+
+| Command | Where | Does |
+| ------- | ----- | ---- |
+| `/lit-search ["bias"]` | Claude Code | proposes papers from `2_Idea/High_level.md` into `1_Literature/Proposed_literature.md` |
+| `research-download` | terminal | the papers marked OK: PDF, BibTeX, a row in the paper index; resets the table |
+| `/lit-convert` | Claude Code | runs `research-convert` (PDF → markdown) and links each result in the index |
+| `/lit-cards [citekeys]` | Claude Code | writes the missing cards and files each paper in its group |
+| `/lit-outputs [name]` | Claude Code | writes the syntheses `1_Literature/card&outputs_def.md` commissions |
+| `/wrap` | Claude Code | closes the session: rewrites the briefing, checks the brain |
+
+## Finding a paper
+
+**Start from `1_Literature/Paper_Index.md`.** It lists every paper in the library once,
+by citekey and title, with three links: the PDF, the converted markdown, the card. Find
+the paper there and follow its link — do not glob `Papers/` for it, and do not guess a
+markdown filename: the converter chose it, and the index records it. If the link is
+still `—`, the `"markdown"` field of `1_Literature/Papers/<citekey>/.conversion.json`
+names the file — fill the link in from it.
+
 ## The map
 
 **This table is the authoritative map.** `0-Master.md` is the researcher's entry point and
@@ -28,13 +48,16 @@ may lag behind a rename; if the two disagree, trust this and report the discrepa
 | Path | Holds |
 | ---- | ----- |
 | `4_Results_and_Tracking/Where_we_are.md` | the briefing: where the work stands, why, what is next. read first |
+| `1_Literature/Paper_Index.md` | **every paper in the library: citekey, title, links to PDF, markdown, card. the way into any paper** |
 | `0-Master.md` | the master MOC: the question, and the human's way in |
 | `1_Literature/card&outputs_def.md` | the researcher's brief: card sections, commissioned outputs |
-| `1_Literature/PDFs/<citekey>.pdf` | papers as published. read-only, gitignored |
+| `1_Literature/Proposed_literature.md` | papers `/lit-search` proposed, awaiting the researcher's Keep mark; Later; Declined |
+| `1_Literature/PDFs/<citekey>.pdf` | papers as published. gitignored. added to, never overwritten |
 | `1_Literature/Papers/<citekey>/` | converted markdown + extracted images. read-only |
 | `1_Literature/Cards/<citekey>.md` | your card per paper |
 | `1_Literature/Literature_Outputs/` | your syntheses |
-| `1_Literature/Human_encoding/` | the researcher's scans. never touch |
+| `1_Literature/Human_encoding/Human_encoding.md` | the researcher's hub for their scanned notes. never read them |
+| `2_Idea/High_level.md` | the idea in plain words: topic, scope, anchor papers, keywords. what `/lit-search` reads |
 | `2_Idea/Setup_and_Method.md` | problem, notation, method, hypotheses |
 | `2_Idea/Experiments.md` | where an E-id is defined, once |
 | `3_Implementation/Specs.md` | per E-id: architecture, hyperparams, data, seeds, compute |
@@ -57,9 +80,11 @@ Code lives in this repo too, but its layout is decided in
 Everything is found by grep because one identifier is reused verbatim across areas.
 Never rename, never abbreviate, never invent a variant.
 
-- **`citekey`** — `author2024keyword`, lowercase. The same stem names
-  `1_Literature/PDFs/<citekey>.pdf`, `1_Literature/Papers/<citekey>/`,
-  `1_Literature/Cards/<citekey>.md`, and the `@<citekey>` entry in `5_Paper/refs.bib`.
+- **`citekey`** — `author2024keyword`, lowercase. Assigned once: when `/lit-search`
+  proposes the paper, or by the researcher naming a PDF they drop in. The same stem then
+  names `1_Literature/PDFs/<citekey>.pdf`, `1_Literature/Papers/<citekey>/`,
+  `1_Literature/Cards/<citekey>.md`, its row in `1_Literature/Paper_Index.md`, and the
+  `@<citekey>` entry in `5_Paper/refs.bib`.
 - **`E-id`** — `E01`, `E02`, … Numbers an experiment once, in `2_Idea/Experiments.md`,
   and is then reused in `3_Implementation/Specs.md`, `4_Results_and_Tracking/Runs/`,
   `4_Results_and_Tracking/Results.md` and the DAG in `4_Results_and_Tracking/Scenario_Tree.md`.
@@ -78,27 +103,48 @@ updated: YYYY-MM-DD
 Set `updated` whenever you change a file. `empty` means the skeleton is untouched;
 `draft` means it has real content. The work queue is `grep -rn "status: empty"`.
 
+## Links
+
+One convention, so a link works for the researcher and for you alike: **standard markdown,
+with a path relative to the file it is written in** — `[card](Cards/<citekey>.md)`, and
+`![](../scan_03.pdf)` to embed. Obsidian, GitHub and VS Code all open these, and you
+resolve them exactly. **Never wikilinks** (`[[...]]`): outside Obsidian they are plain
+text, and you would have to search for their target. `.obsidian/app.json` makes Obsidian
+write links this way too. A `%20` in a link is a space.
+
+Clickable links belong in the files people browse: the MOCs, the paper index, notes. In
+instruction files — every `CLAUDE.md`, every command — a path is written in backticks,
+from the repo root.
+
 ## Who writes what
 
 | Path | Written by |
 | ---- | ---------- |
-| `1_Literature/PDFs/`, `1_Literature/Papers/` | the researcher — uploaded source. you read it, never touch it |
-| `1_Literature/Human_encoding/` | the researcher. you may list it and nothing else |
-| `1_Literature/card&outputs_def.md` | the researcher. it governs your cards and commissions your outputs |
+| `1_Literature/PDFs/` | the researcher, and `research-download` for papers marked OK. added to, never deleted or overwritten without the researcher's permission |
+| `1_Literature/Papers/` | `research-convert`. you read it, never touch it |
+| `1_Literature/Human_encoding/` | the researcher. asked, you may create a note or add embeds for scans they name |
+| `1_Literature/card&outputs_def.md` | the researcher. it governs your cards and commissions your outputs. you help fill it only together with them |
+| `1_Literature/Proposed_literature.md` | you, through `/lit-search` — except **Keep**, which is the researcher's alone |
+| `1_Literature/Paper_Index.md` | you and `research-download`. the grouping criterion is the researcher's choice |
 | `1_Literature/Cards/`, `1_Literature/Literature_Outputs/` | you |
-| `2_Idea/` | the researcher. you write here only when asked |
+| `2_Idea/` | the researcher. you write here only when asked — `High_level.md` included, drafted together |
 | `3_Implementation/`, `4_Results_and_Tracking/Results.md`, `4_Results_and_Tracking/Scenario_Tree.md`, `5_Paper/` | both |
 | `4_Results_and_Tracking/Runs/` | you, from real runs only |
 | any `status: stable` | the researcher, only |
 
 ## Hard rules
 
-1. **Never invent a number.** Every metric traces to a file in `4_Results_and_Tracking/Runs/`. If
-   there is no run record, the number does not exist — say so.
-2. **Never touch `1_Literature/Human_encoding/`.** Those are the researcher's own handwritten notes,
-   often spanning several papers. List them if asked. Never rename, embed, cite, index,
-   or treat a filename as evidence for a claim.
-3. **Never modify `1_Literature/PDFs/` or `1_Literature/Papers/`.** Uploaded source material is read-only.
+1. **Never invent a number, never invent a paper.** Every metric traces to a file in
+   `4_Results_and_Tracking/Runs/`; if there is no run record, the number does not exist —
+   say so. Every paper you propose or cite is one whose page you found and opened; a
+   title remembered but not found does not exist either.
+2. **Never read `1_Literature/Human_encoding/`.** Those are the researcher's own handwritten
+   notes, often spanning several papers. Never read, cite or rename them, or treat a
+   filename as evidence for a claim. Asked, you may create a note `.md` or add embed lines
+   for scans the researcher names — organising, never interpreting.
+3. **Never delete or overwrite in `1_Literature/PDFs/`, never touch `1_Literature/Papers/`.**
+   A PDF arrives through `research-download` or the researcher; removing or replacing one
+   needs the researcher's explicit permission. `Papers/` is converter output, read-only.
 4. **No choices in `2_Idea/`, no claims in `3_Implementation/`.** The test: if it could
    have been chosen differently without changing the idea, it is a spec.
 5. **Never write in `2_Idea/` unasked.** Those are the researcher's claims, not yours.
@@ -117,6 +163,8 @@ Set `updated` whenever you change a file. `empty` means the skeleton is untouche
 When asked to check the brain, verify the following and **report** what is wrong — fix
 nothing silently:
 
+- every `1_Literature/PDFs/<citekey>.pdf` has a row in `1_Literature/Paper_Index.md` and
+  every row has a PDF; every Markdown and Card link in the index resolves
 - every `1_Literature/Papers/<citekey>/` has a `1_Literature/Cards/<citekey>.md`, and
   every card has source material
 - every `@citekey` in `5_Paper/refs.bib` exists in the library, and vice versa

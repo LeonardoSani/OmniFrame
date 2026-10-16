@@ -1,17 +1,51 @@
 # 1_Literature
 
-Source comes in from the researcher; cards and syntheses go out from you.
+Papers come in, cards and syntheses go out.
+
+## Where to start: `Paper_Index.md`
+
+**`1_Literature/Paper_Index.md` is the way into any paper.** One row per paper in the
+library — citekey, title, venue — and three links: **pdf** (the paper as published, for
+the researcher), **md** (the converted markdown, for you), **card**. To read a paper,
+find its row and follow its md link. Do not glob for the markdown: the converter chose
+its name, and the index records it.
+
+The index holds no analysis — it lists and groups. Rows sit under `## <group>` headings by
+the criterion named on its `Grouping:` line, which the researcher chooses; papers not yet
+carded wait under `## Unsorted`. Never change the criterion or regroup filed papers
+without asking.
+
+How a row fills in:
+
+| Column | Filled by | When |
+| ------ | --------- | ---- |
+| citekey, Title, Venue, PDF | `research-download`, or `/lit-convert` / `/lit-cards` for a PDF dropped in by hand | the PDF exists |
+| Markdown | `/lit-convert` (or `/lit-cards`, after a terminal `research-convert`), from `Papers/<citekey>/.conversion.json` | after conversion |
+| Card | `/lit-cards` | the card is written, and the paper moves to its group |
+
+## How papers arrive
+
+`2_Idea/High_level.md` → `/lit-search` proposes papers into `Proposed_literature.md` → the
+researcher marks **Keep** → `research-download` fetches the OK ones → `/lit-convert`.
+
+`Proposed_literature.md` holds three things: the open proposals, `## Later` (papers
+deferred, kept across searches) and `## Declined` (never propose these again). You fill
+every column of a proposal except **Keep** — that one is the researcher's, and you never
+write in it. Every proposed paper is one whose page you opened: title, authors and venue
+confirmed. A paper you remember but cannot find does not go in.
 
 ## What is already here when you arrive
 
-- `PDFs/<citekey>.pdf` — the paper as published. Gitignored. **Read-only.**
+- `PDFs/<citekey>.pdf` — the paper as published. Gitignored. Added to by
+  `research-download` or the researcher; **never deleted or overwritten** without the
+  researcher's explicit permission.
 - `Papers/<citekey>/` — the same paper converted to markdown, together with the images
-  extracted from it. Find the markdown by glob (`*.md`); the converter chose its name,
-  so do not expect a fixed one. **Read-only.**
-- `Human_encoding/` — the researcher's own handwritten notes, scanned. They often span
-  several papers, follow no naming convention, and are not keyed to anything. You may
-  list them so a human can find one. Nothing else: never rename, embed, cite, index, or
-  infer a claim from a filename.
+  extracted from it, and `.conversion.json` recording how. **Read-only.**
+- `Human_encoding/` — the researcher's own handwritten notes, scanned, with their hub
+  `Human_encoding/Human_encoding.md` and note files in `Human_encoding/Notes/` that embed
+  the scans. Notes often span several papers and are not keyed to any. **Never read, cite
+  or draw a claim from them.** Asked, you may create a note `.md` or add embed lines
+  (`![](../scan.pdf)`) for scans the researcher names — organising, never interpreting.
 
 If a citekey has a PDF but no `Papers/` folder, the conversion has not happened yet —
 say so and stop. Do not read the PDF in its place and do not invent the content.
@@ -53,10 +87,14 @@ section you took it from. A number the paper did not state does not belong in th
 achieve; its shape, length and headings are yours to choose. If you think another output
 is worth writing, propose it to the researcher — do not just add a file.
 
-## Never edit `card&outputs_def.md`
+## Never edit `card&outputs_def.md` unasked
 
 It is the researcher's instrument for steering you. If it is ambiguous or you cannot
-satisfy it, ask. Changing it yourself removes the one place where they set the terms.
+satisfy it, ask. Changing it on your own removes the one place where they set the terms.
+
+When it is still empty, `/lit-cards` and `/lit-outputs` help fill it: ask what the
+project needs, offer options, show the draft, and write only what the researcher
+confirmed.
 
 ## The direction of the area
 
