@@ -78,6 +78,13 @@ others run in the terminal, from anywhere inside the project.
 /lit-search "theory only, after 2020, no surveys"    # steered by a bias
 ```
 
+The **bias** is optional: a sentence in your own words that steers this one search — kind
+of paper, period, venue, method family, what to leave out. It narrows `High_level.md`,
+never replaces it, and is not saved anywhere. Foundational work is not assumed known: a
+paper counts as known only if it is already in the library, in `refs.bib`, or among your
+anchor papers. If the bias would cut a foundation — "after 2020" against the 2017 paper the
+field rests on — the agent names it and asks before searching.
+
 Every proposal comes with its venue, why it fits the idea, and its link. Each is a paper
 the agent found and opened, never one recalled from memory. Nothing is downloaded yet. If
 `High_level.md` is empty, the agent offers to write it with you first.

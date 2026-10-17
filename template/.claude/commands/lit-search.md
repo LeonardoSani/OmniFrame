@@ -19,6 +19,13 @@ The bias steers this search only: kind of paper, period, venue, method family, w
 leave out. It tilts or narrows the idea; it does not replace it. If it contradicts
 `High_level.md`, say so and ask which wins.
 
+Never assume the researcher already knows the foundations. A paper is known only if it is
+in the library, in `refs.bib`, or among the anchor papers (step 2) — nothing else, however
+standard it seems. If the bias would leave out foundational work the idea rests on (a
+period that predates it, "no surveys", one method family), name those papers and **ask
+before searching** whether to include them despite the bias. If the bias is empty, or
+cuts nothing foundational, go on without asking.
+
 ## 2. Know what is already there
 
 Collect every citekey and title already known, so nothing is proposed twice:
@@ -35,6 +42,8 @@ and citations of the anchor papers — they are often better leads than keywords
 
 About 10 papers, unless the bias says otherwise. Fewer and right beats more and loose. Mix
 what the project needs: foundational work, the closest prior work, recent work.
+Foundations the researcher chose in step 1 to keep go in even where the bias would
+exclude them; their **Why** says so.
 
 **Every paper is real and checked.** Open its page and confirm title, authors and venue.
 Never propose a paper from memory: one you could not find a page for does not go in the
