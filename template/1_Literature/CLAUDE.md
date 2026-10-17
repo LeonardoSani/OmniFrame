@@ -2,16 +2,11 @@
 
 Papers come in, cards and syntheses go out.
 
-## Where to start: `Paper_Index.md`
+## `Paper_Index.md`
 
-**`1_Literature/Paper_Index.md` is the way into any paper.** One row per paper in the
-library — citekey, title, venue — and three links: **pdf** (the paper as published, for
-the researcher), **md** (the converted markdown, for you), **card**. To read a paper,
-find its row and follow its md link. Do not glob for the markdown: the converter chose
-its name, and the index records it.
-
-The index holds no analysis — it lists and groups. Rows sit under `## <group>` headings by
-the criterion named on its `Grouping:` line, which the researcher chooses; papers not yet
+The way into any paper — see *Finding a paper* in the root `CLAUDE.md`. It holds no
+analysis — it lists and groups. Rows sit under `## <group>` headings by the criterion named
+on its `Grouping:` line, which the researcher chooses (empty until then); papers not yet
 carded wait under `## Unsorted`. Never change the criterion or regroup filed papers
 without asking.
 
@@ -99,10 +94,6 @@ is worth writing, propose it to the researcher — do not just add a file.
 
 It is the researcher's instrument for steering you. If it is ambiguous or you cannot
 satisfy it, ask. Changing it on your own removes the one place where they set the terms.
-
-When it is still empty, `/lit-cards` and `/lit-outputs` help fill it: ask what the
-project needs, offer options, show the draft, and write only what the researcher
-confirmed.
 
 ## The direction of the area
 

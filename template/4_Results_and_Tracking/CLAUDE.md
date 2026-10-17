@@ -14,8 +14,6 @@ finding. Record it as one.
 
 ## `Where_we_are.md` — the briefing
 
-Read it as the **first action of a session**. `/wrap` rewrites it at the end of one.
-
 It exists to orient, and nothing more. It is read before anything else every session, so
 its length is a cost paid every time: **keep it under twenty lines.** Past that it has
 stopped being a briefing.

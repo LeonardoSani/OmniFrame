@@ -23,12 +23,6 @@
 - [Human encoding](Human_encoding/Human_encoding.md) — your scanned notes, organised by
   you. Not keyed to papers; the agent never reads them.
 
-## Source — read-only
-
-- `PDFs/<citekey>.pdf` — papers as published. Gitignored.
-- `Papers/<citekey>/` — converted markdown plus extracted images. Formulas in it are
-  unreliable — see `CLAUDE.md`.
-
 ## Upstream and downstream
 
 - The search starts from [High level](../2_Idea/High_level.md) — the idea in plain words.
