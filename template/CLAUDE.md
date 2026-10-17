@@ -101,17 +101,24 @@ Never rename, never abbreviate, never invent a variant.
 
 ## Frontmatter
 
-Two fields on every markdown file you create or touch:
+Every markdown file in the brain is one of four kinds, and the kind decides its
+frontmatter:
 
-```yaml
----
-status: empty | draft | stable
-updated: YYYY-MM-DD
----
-```
+| Kind | Files | Frontmatter |
+| ---- | ----- | ----------- |
+| document — someone writes it | `2_Idea/*`, `3_Implementation/Specs.md`, `Figures.md`, `Code_Design.md`, `4_Results_and_Tracking/Results.md`, `Scenario_Tree.md`, `Where_we_are.md`, `1_Literature/card&outputs_def.md`, cards, syntheses, the `Human_encoding/` hub and notes | `status` + `updated` |
+| list — rows kept by scripts and commands | `1_Literature/Paper_Index.md`, `1_Literature/Proposed_literature.md` | `updated` |
+| record — one per run | `4_Results_and_Tracking/Runs/*.md` | its own fields, see `4_Results_and_Tracking/CLAUDE.md` |
+| navigation | `0-Master.md` and the area MOCs | none |
 
-Set `updated` whenever you change a file. `empty` means the skeleton is untouched;
-`draft` means it has real content. The work queue is `grep -rn "status: empty"`.
+`status` has two values and one rule, with no exceptions:
+
+- `empty` — the form is untouched. Only the template sets it.
+- `filled` — it has content. Whoever first writes into an `empty` document sets it, in
+  the same edit: you, the researcher, any command. It never goes back.
+
+Set `updated` to today whenever you change a document or a list. The work queue is
+`grep -rn "status: empty"`.
 
 ## Links
 
@@ -140,7 +147,6 @@ from the repo root.
 | `2_Idea/` | the researcher. you write here only when asked — `High_level.md` included, drafted together |
 | `3_Implementation/`, `4_Results_and_Tracking/Results.md`, `4_Results_and_Tracking/Scenario_Tree.md`, `5_Paper/` | both |
 | `4_Results_and_Tracking/Runs/` | you, from real runs only |
-| any `status: stable` | the researcher, only |
 
 ## Hard rules
 
@@ -158,15 +164,14 @@ from the repo root.
 4. **No choices in `2_Idea/`, no claims in `3_Implementation/`.** The test: if it could
    have been chosen differently without changing the idea, it is a spec.
 5. **Never write in `2_Idea/` unasked.** Those are the researcher's claims, not yours.
-6. **Never set `status: stable`.** Only the researcher promotes a file.
-7. **Never cite a page you have not read.** In a card, cite the source markdown in
+6. **Never cite a page you have not read.** In a card, cite the source markdown in
    `1_Literature/Papers/<citekey>/`.
-8. **Never copy a formula out of `1_Literature/Papers/` markdown.** It is converter output: some
+7. **Never copy a formula out of `1_Literature/Papers/` markdown.** It is converter output: some
    equations are clean LaTeX, others are flattened into HTML `<sup>`/`<sub>` where a
    subscript is indistinguishable from a superscript. Use it to understand a paper, not
    as the source of notation. If a formula must be reproduced in `2_Idea/` or
    `5_Paper/`, name the one you need and ask — the PDF is the authority.
-9. When a rule and a request conflict, say which rule and ask. Do not quietly pick.
+8. When a rule and a request conflict, say which rule and ask. Do not quietly pick.
 
 ## Consistency check
 
@@ -186,7 +191,8 @@ nothing silently:
 - every experiment is a node in the DAG and every node is an experiment; no cycles; every
   labelled edge carries a condition
 - `## Runnable now` agrees with the DAG and the run records
-- every `status:` is one of the three legal values
+- every document has a `status:` that is `empty` or `filled`, and no other kind
+  of file has one
 - no unsubstituted template placeholder survives (a bare double-underscored
   uppercase name, as written by the scaffolder)
 

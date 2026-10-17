@@ -1,8 +1,3 @@
----
-status: empty
-updated: __DATE__
----
-
 # Literature
 
 **→ [Paper index](Paper_Index.md)** — every paper in the library, grouped: pdf · md · card.

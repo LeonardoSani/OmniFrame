@@ -1,8 +1,3 @@
----
-status: empty
-updated: __DATE__
----
-
 # Implementation
 
 The concrete choices. Nothing here is a claim.

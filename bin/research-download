@@ -262,7 +262,6 @@ if [[ -s "$work/index_rows" ]]; then
     splice @l, $end + 1, 0, $rows;
     my $out = join "", @l;
     $out =~ s/^updated:.*$/updated: $ENV{TODAY}/m;
-    $out =~ s/^status: empty$/status: draft/m;
     print $out;
   ' "$index" > "$work/index.new" || die "could not update $INDEX -- it was left as it was"
   mv "$work/index.new" "$index"
@@ -329,7 +328,6 @@ RESULTS="$results" TODAY="$today" perl -e '
 
   my $left = @main + @later + @moved || $text =~ /^- `[^`]+` — /m;
   $text =~ s/^updated:.*$/updated: $ENV{TODAY}/m;
-  $text =~ s/^status: (?:empty|draft)$/"status: " . ($left ? "draft" : "empty")/me;
   print $text;
 ' "$proposed" > "$work/proposed.new" || die "could not reset $PROPOSED -- it was left as it was; the downloads are in place, run again"
 mv "$work/proposed.new" "$proposed"

@@ -49,7 +49,7 @@ Move each newly carded paper from `## Unsorted` into a `## <group>` section with
 table. A paper that fits no existing group: ask — a new group, or a better criterion?
 Never regroup papers already filed without asking.
 
-Set `status: draft` and `updated:` to today.
+Set `updated:` to today.
 
 ## 5. Tell me
 

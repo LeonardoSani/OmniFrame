@@ -1,8 +1,3 @@
----
-status: empty
-updated: __DATE__
----
-
 # Results and tracking
 
 - [Where we are](Where_we_are.md) — the briefing. Read it first; `/wrap` rewrites it.
