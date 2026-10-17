@@ -46,17 +46,34 @@ grows. The briefing is the present moment, and it stays short.
 ## Shapes
 
 **`Runs/<E-id>-<YYYY-MM-DD>.md`** — one record per run, append-only. Frontmatter carries
-`expid`, `date`, `seed`, `commit` and `status`; the body carries a metrics table and the
-paths to artifacts. Two runs of the same experiment on the same day get a `-b` suffix
+`expid`, `date`, `seed` and `commit` — no `status`: a record is written once,
+complete, and whether it matched expectation is judged in `Results.md`. The body carries a
+metrics table and the paths to artifacts. Two runs of the same experiment on the same day get a `-b` suffix
 rather than overwriting. A record is never edited to look better; a run that went wrong
 is recorded as having gone wrong.
 
-**`Results.md`** — the analysis. Organised by hypothesis, not by run: for each one, what
-the evidence says, which runs support it, and what remains unresolved. Cite run records
-by filename.
+**`Results.md`** — the analysis. Organised by hypothesis, not by run: one `## H<n> — <claim>`
+block each, with **Evidence** (which runs, and what they show — cite run records by
+filename), **Verdict** (supported · refuted · inconclusive) and **Open** (what is
+unresolved, and what would resolve it). `## Cross-cutting observations` holds what the
+experiments showed that no hypothesis predicted.
 
-**`Scenario_Tree.md`** — one mermaid DAG, the dependency structure between experiments,
-plus a `## Runnable now` list. See the file's own notes for the three edge kinds.
+**`Scenario_Tree.md`** — one mermaid DAG (`flowchart LR`) of the dependencies between
+experiments, then `## Runnable now` and `## Blocked`. Node ids are the E-ids, verbatim, so
+one grep finds an experiment's dependencies and dependents. Three relations, drawn
+differently — the distinction is the point of the file:
+
+- **parallel** — a node with no incoming edge. Several roots run at the same time.
+- **unconditional** — a plain edge, `E02 --> E03`: E03 needs E02 *finished*, whatever
+  the outcome (a checkpoint, an artifact).
+- **outcome-conditional** — a labelled edge carrying the condition,
+  `E02 -->|"metric ≥ threshold"| E04`. Diverging labelled edges are a branch point: only
+  one side will happen.
+
+Only a labelled edge can make an experiment never happen. Conflating the two either
+serialises work that could run in parallel, or runs an experiment whose premise was
+already refuted. `## Runnable now` lists each experiment whose dependencies are
+satisfied; `## Blocked` lists the rest, each with what it waits on.
 
 ## Updating the DAG
 

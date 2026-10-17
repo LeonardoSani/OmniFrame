@@ -5,10 +5,6 @@ updated: __DATE__
 
 # Specs
 
-One block per experiment, keyed by the E-ids in `2_Idea/Experiments.md`. These are
-choices, not claims: anything here could have been decided differently without changing
-the idea.
-
 ### E01
 
 | | |
@@ -20,4 +16,4 @@ the idea.
 | **Compute** | |
 | **Metrics** | |
 
-**Notes** — any choice whose reason is not self-evident, in one line each.
+**Notes** — 

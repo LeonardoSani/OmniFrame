@@ -26,26 +26,34 @@ How a row fills in:
 ## How papers arrive
 
 `2_Idea/High_level.md` → `/lit-search` proposes papers into `Proposed_literature.md` → the
-researcher marks **Keep** → `research-download` fetches the OK ones → `/lit-convert`.
+researcher marks **Keep** → `/lit-download` (`research-download`) fetches the OK ones → `/lit-convert`.
 
 `Proposed_literature.md` holds three things: the open proposals, `## Later` (papers
-deferred, kept across searches) and `## Declined` (never propose these again). You fill
+deferred, kept across searches) and `## Declined` (never propose these again; one
+``- `citekey` — title`` line each, and deleting a line lets the paper back in). You fill
 every column of a proposal except **Keep** — that one is the researcher's, and you never
-write in it. Every proposed paper is one whose page you opened: title, authors and venue
+write in it. What `research-download` does with each mark:
+
+| Keep | |
+| ---- | - |
+| `OK` | downloaded: PDF, BibTeX, a row in the index |
+| `LATER` | moved to `## Later` |
+| `NO` | its citekey goes to `## Declined` |
+| blank | dropped; a later search may propose it again |
+
+Every proposed paper is one whose page you opened: title, authors and venue
 confirmed. A paper you remember but cannot find does not go in.
 
 ## What is already here when you arrive
 
 - `PDFs/<citekey>.pdf` — the paper as published. Gitignored. Added to by
-  `research-download` or the researcher; **never deleted or overwritten** without the
-  researcher's explicit permission.
+  `research-download` or the researcher (hard rule 3).
 - `Papers/<citekey>/` — the same paper converted to markdown, together with the images
-  extracted from it, and `.conversion.json` recording how. **Read-only.**
-- `Human_encoding/` — the researcher's own handwritten notes, scanned, with their hub
-  `Human_encoding/Human_encoding.md` and note files in `Human_encoding/Notes/` that embed
-  the scans. Notes often span several papers and are not keyed to any. **Never read, cite
-  or draw a claim from them.** Asked, you may create a note `.md` or add embed lines
-  (`![](../scan.pdf)`) for scans the researcher names — organising, never interpreting.
+  extracted from it, and `.conversion.json` recording how. Read-only.
+- `Human_encoding/` — the researcher's own handwritten notes, scanned (hard rule 2). Scans
+  sit in the folder; `Human_encoding/Human_encoding.md` is their hub, organised as the
+  researcher likes, linking note files in `Human_encoding/Notes/<name>.md` that embed the
+  scans as `![](../scan.pdf)`. Notes often span several papers and are not keyed to any.
 
 If a citekey has a PDF but no `Papers/` folder, the conversion has not happened yet —
 say so and stop. Do not read the PDF in its place and do not invent the content.

@@ -39,7 +39,7 @@ to the markdown, no formula copied out of it.
 
 In `1_Literature/Paper_Index.md`, set each new card's **Card** link: `[card](Cards/<citekey>.md)`.
 
-Then group. If the `Grouping:` line still says *not chosen yet*, propose three or four
+Then group. If the `Grouping:` line is still empty, propose three or four
 criteria that fit this library — by approach family, by role toward our idea, by problem
 setting, chronologically, or another the cards suggest — each with a preview of the groups
 it would produce. Ask the researcher to pick, and write their choice on the `Grouping:`

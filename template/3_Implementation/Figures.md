@@ -5,25 +5,21 @@ updated: __DATE__
 
 # Figures
 
-What each figure must show. Plots, schematics and qualitative panels are different
-objects with different specs. Numbering here is local to this file — the paper labels
-its own figures independently.
+### <name> · plot
 
-### A data plot
+- **Shows** — 
+- **Source** — 
+- **Encoding** — 
+- **Where it goes** — 
 
-- **Shows** — the one thing a reader should conclude at a glance
-- **Source** — which runs in `4_Results_and_Tracking/Runs/`
-- **Encoding** — x, y, series, error representation
-- **Where it goes** — which section of the paper, or "exploratory, not for the paper"
+### <name> · schematic
 
-### A schematic
+- **Shows** — 
+- **Leaves out** — 
+- **Where it goes** — 
 
-- **Shows** — the mechanism it has to make clear
-- **Leaves out** — what is deliberately not drawn
-- **Where it goes** —
+### <name> · panel
 
-### A qualitative panel
-
-- **Shows** —
-- **Selection rule** — how examples are chosen, and whether failures are included
-- **Where it goes** —
+- **Shows** — 
+- **Selection rule** — 
+- **Where it goes** — 

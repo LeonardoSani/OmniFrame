@@ -13,20 +13,24 @@ rather than leaving it here.
 
 ## Shapes
 
-**`Specs.md`** — one block per E-id, mirroring the experiments in
-`2_Idea/Experiments.md`. Architecture, hyperparameters, data and splits, seeds, compute.
+**`Specs.md`** — one `### <E-id>` block per experiment in `2_Idea/Experiments.md`: a
+table of Model, Hyperparameters, Data / splits, Seeds, Compute, Metrics, then **Notes**.
 Every value is a decision someone can disagree with; record *what* was chosen, and when
 the reason is not obvious, one line on why. An E-id here that does not exist in
 `2_Idea/Experiments.md` is an error.
 
-**`Figures.md`** — what each figure must *show*. Not all figures are plots:
+**`Figures.md`** — what each figure must *show*, one `### <name> · <kind>` block each.
+Not all figures are plots, and each kind has its own fields:
 
-- a **plot** also carries a data-encoding spec: source runs, x, y, series, and what the
-  reader should be able to conclude at a glance
-- a **schematic** carries a description of the mechanism it has to make clear, and what
-  it may safely leave out
-- a **qualitative panel** carries the selection rule for its examples — including whether
-  failure cases are shown, which is a claim about honesty, not taste
+- **plot** — **Shows** (what the reader concludes at a glance), **Source** (which runs in
+  `4_Results_and_Tracking/Runs/`), **Encoding** (x, y, series, error representation)
+- **schematic** — **Shows** (the mechanism it makes clear), **Leaves out** (what is
+  deliberately not drawn)
+- **panel** (qualitative) — **Shows**, **Selection rule** (how examples are chosen,
+  including whether failures are shown — a claim about honesty, not taste)
+
+Every kind ends with **Where it goes**: a paper section, or "exploratory, not for the
+paper".
 
 When producing an actual data plot, load the `dataviz` skill before writing chart code.
 
@@ -34,6 +38,9 @@ Figures here are **not** numbered to match the paper. The paper names and labels
 figures (see `5_Paper/CLAUDE.md`), because figures get merged, dropped and reordered
 during writing, and a shared id scheme would be a second thing to keep in sync.
 
-**`Code_Design.md`** — where the code lives and how it is split. The template ships no
-code folder on purpose: that is this file's decision. Until it is written, do not scatter
+**`Code_Design.md`** — where the code lives and how it is split: **Repo structure**,
+**Modules** (module · responsibility), **Entry points** (how an E-id reaches the code that
+runs it), **Artifacts** (where checkpoints and logs go, which are gitignored; paper
+figures go to `5_Paper/figures/`). The template ships no code folder on purpose: that is
+this file's decision. Until it is written, do not scatter
 modules. Whatever `uv init` created is the starting point, not a constraint.

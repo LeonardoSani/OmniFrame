@@ -41,19 +41,36 @@ If you find a concrete choice in here, say so — it leaked from the wrong area.
 
 ## Shapes
 
-**`High_level.md`** — Topic · The idea · In scope, out of scope · Anchor papers · Keywords.
-The one file here **outside the house style above**: plain words, and intuition is
-allowed. It is the seed `/lit-search` reads to propose papers — a vague keyword list here
-becomes a vague reading list. It is not the question in `0-Master.md`: that is the crisp
-ask in two or three lines; this is the wider ground the literature has to cover. When it
-is empty and the researcher wants help, draft it *with* them: ask, propose, and write only
-what they confirm.
+**`High_level.md`** — the one file here **outside the house style above**: plain words,
+and intuition is allowed.
+
+- **Topic** — one line: the field, and the problem inside it.
+- **The idea** — a paragraph: what the researcher suspects, wants to try, or wants to
+  understand.
+- **In scope, out of scope** — what the literature should cover, and what looks close but
+  is not this project.
+- **Anchor papers** — papers already known to be central. Optional; their references and
+  citations are often the best leads.
+- **Keywords** — the field's terms for this, synonyms included.
+
+It is the seed `/lit-search` reads to propose papers — a vague keyword list here
+becomes a vague reading list. When it is empty and the researcher wants
+help, draft it *with* them: ask, propose, and write only what they confirm.
 
 **`Setup_and_Method.md`** — suggested headings: Problem · Notation · Method · Hypotheses ·
 Anticipated experiments. They are a prompt, not a schema: rename them, add to them, drop
 one that does not fit the project.
 
-**`Experiments.md`** — one `### E01 — <name>` block per experiment. The E-id is assigned
-here, once, and is the key every other area uses. Never renumber an existing experiment:
-its id is already in `Specs.md`, in `Runs/` filenames and in the DAG. Append a new id
-instead, and if an experiment is abandoned, mark it rather than removing the block.
+- **Problem** — the gap, formally: what is given, what is wanted, what makes it hard.
+- **Notation** — the single source of truth for symbols. `5_Paper/preamble.tex` mirrors it.
+- **Method** — the objective, its constraints, the mapping, its assumptions.
+- **Hypotheses** — each falsifiable, numbered `H1`, `H2`…, naming the E-ids that test it.
+- **Anticipated experiments** — three or four lines; the detail lives in `Experiments.md`.
+
+**`Experiments.md`** — one `### E01 — <name>` block per experiment: **Establishes** (which
+hypothesis, and how), **Why worth doing**, **Design** (what varies, what is held fixed),
+**Expected outcome**, **Would refute** (if nothing could, it is not an experiment). The
+E-id is assigned here, once, and is the key every other area uses. Never renumber an
+existing experiment: its id is already in `Specs.md`, in `Runs/` filenames and in the
+DAG. Append a new id instead, and if an experiment is abandoned, mark it rather than
+removing the block.
