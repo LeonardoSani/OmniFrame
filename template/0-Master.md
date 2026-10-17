@@ -1,17 +1,6 @@
----
-status: empty
-updated: __DATE__
----
-
 # __PROJECT_NAME__
 
 __AUTHOR__ · started __DATE__
-
-## The question
-
-Two or three lines: what is being asked, and why it is not already answered. Written
-for someone with no context — including you, a month from now. This changes rarely;
-if it changes often, the project has not settled.
 
 **→ [Where we are](4_Results_and_Tracking/Where_we_are.md)** — the briefing: where things
 stand, what is next, what is open. Read it before anything else; `/wrap` rewrites it.

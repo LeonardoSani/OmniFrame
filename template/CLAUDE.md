@@ -57,9 +57,9 @@ may lag behind a rename; if the two disagree, trust this and report the discrepa
 
 | Path | Holds |
 | ---- | ----- |
-| `4_Results_and_Tracking/Where_we_are.md` | the briefing: where the work stands, why, what is next. read first |
+| `4_Results_and_Tracking/Where_we_are.md` | the briefing: now, next, open. read first |
 | `1_Literature/Paper_Index.md` | **every paper in the library: citekey, title, links to PDF, markdown, card. the way into any paper** |
-| `0-Master.md` | the master MOC: the question, and the human's way in |
+| `0-Master.md` | the master MOC: the human's way in |
 | `1_Literature/card&outputs_def.md` | the researcher's brief: card sections, commissioned outputs |
 | `1_Literature/Proposed_literature.md` | papers `/lit-search` proposed, awaiting the researcher's Keep mark; Later; Declined |
 | `1_Literature/PDFs/<citekey>.pdf` | papers as published. gitignored. added to, never overwritten |
