@@ -19,11 +19,12 @@ all have to be redone.
 ## 2. Which papers
 
 First, any PDF in `1_Literature/PDFs/` with no row in `1_Literature/Paper_Index.md` — one
-dropped in by hand and converted from the terminal — gets a row under `## Unsorted`, as
-`/lit-convert` would add it.
+dropped in by hand and converted from the terminal — gets a row under `## Unsorted`, the
+same row `research-download` writes:
+`| <citekey> | <title> | <venue> | [pdf](PDFs/<citekey>.pdf) | — | pending |`.
 
-Then: every citekey asked for, or by default every paper in the index whose Card is
-`pending`. A paper whose **Markdown** is `—` may have been converted from the
+Then: every citekey asked for, or by default every paper in the index whose Card is not
+yet a `[card](…)` link. A paper whose **Markdown** is `—` may have been converted from the
 terminal, which does not touch the index: if `1_Literature/Papers/<citekey>/.conversion.json`
 exists, fill the link from its `"markdown"` field and go on. If it does not, the paper
 is not converted: list it, say "run `/lit-convert`", and skip it.

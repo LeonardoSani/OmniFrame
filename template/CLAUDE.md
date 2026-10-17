@@ -35,7 +35,7 @@ Rewrite, never append — git holds the history, so this file must not become a 
 | Command | Where | Does |
 | ------- | ----- | ---- |
 | `/lit-search ["bias"]` | Claude Code | proposes papers from `2_Idea/High_level.md` into `1_Literature/Proposed_literature.md` |
-| `research-download` | terminal | the papers marked OK: PDF, BibTeX, a row in the paper index; resets the table |
+| `/lit-download` | Claude Code | runs `research-download`: the papers marked OK get PDF, BibTeX, a row in the paper index; resets the table. also runs from the terminal |
 | `/lit-convert` | Claude Code | runs `research-convert` (PDF → markdown) and links each result in the index |
 | `/lit-cards [citekeys]` | Claude Code | writes the missing cards and files each paper in its group |
 | `/lit-outputs [name]` | Claude Code | writes the syntheses `1_Literature/card&outputs_def.md` commissions |

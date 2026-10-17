@@ -18,8 +18,9 @@ prints and stop. Do not try to read the PDFs in its place.
 In `1_Literature/Paper_Index.md`:
 
 - every PDF in `1_Literature/PDFs/` with no row gets one under `## Unsorted` — a paper the
-  researcher dropped in by hand. Take the title from the converted markdown; leave Venue
-  `—` if the paper does not state it.
+  researcher dropped in by hand — the same row `research-download` writes:
+  `| <citekey> | <title> | <venue> | [pdf](PDFs/<citekey>.pdf) | — | pending |`.
+  Take the title from the converted markdown; Venue is `—` if the paper does not state it.
 - every converted paper gets its **Markdown** link:
   `[md](Papers/<citekey>/<file>)`, where `<file>` is the `"markdown"` field of
   `1_Literature/Papers/<citekey>/.conversion.json`.

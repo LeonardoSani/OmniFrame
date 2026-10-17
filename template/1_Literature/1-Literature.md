@@ -11,13 +11,7 @@
 
 - [Proposed literature](Proposed_literature.md) — papers proposed for the idea, awaiting
   your **Keep** mark; also those set aside for later, and those declined.
-  `/lit-search ["bias"]` fills it, `research-download` brings the OK ones in.
-
-## Read
-
-- `/lit-convert` — the new PDFs become markdown, linked in the index.
-- `/lit-cards` — one card per paper at `Cards/<citekey>.md`, the same sections in every
-  card; each paper is then filed in its group in the index.
+  `/lit-search ["bias"]` fills it, `/lit-download` brings the OK ones in.
 
 ## Outputs
 

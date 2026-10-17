@@ -68,9 +68,9 @@ existing row, never fill **Keep**.
   `research-download` takes the BibTeX from it.
 - **PDF** — the direct open-access PDF URL, or `—` if there is none.
 
-Escape a `|` inside a title as `\|`. Set `status: draft` and `updated:` to today.
+Escape a `|` inside a title as `\|`. Set `updated:` to today.
 
 ## 5. Tell me
 
 How many papers were added, the queries run, how the bias shaped the result, and anything
-nearly included and why it was not. End with: mark **Keep**, then run `research-download`.
+nearly included and why it was not. End with: mark **Keep**, then run `/lit-download` (or `research-download` in the terminal).
