@@ -19,23 +19,23 @@ Two different kinds of instruction, bound differently:
 
 ## Cards
 
-The common points to focus on for every paper. Rewrite these for this project â the
+The common points to focus on for every paper. Rewrite these for this project — the
 starter set is a guess, not a recommendation.
 
-- **Problem** â what the paper is trying to solve, in its own terms
-- **Method** â the mechanism, in two or three sentences
-- **Benchmarks used** â datasets, tasks, metrics
-- **Claimed results** â what they report, with the numbers they state
-- **Limitations** â stated by the authors, and visible but unstated
-- **Relevance to us** â why this paper is in this project's library at all
+- **Problem** — what the paper is trying to solve, in its own terms
+- **Method** — the mechanism, in two or three sentences
+- **Benchmarks used** — datasets, tasks, metrics
+- **Claimed results** — what they report, with the numbers they state
+- **Limitations** — stated by the authors, and visible but unstated
+- **Relevance to us** — why this paper is in this project's library at all
 
 ## Outputs
 
 One line per commissioned document: what it must achieve. Delete the examples.
 
-- *example* â **The gap**: what the field cannot currently do, argued from the cards,
+- *example* — **The gap**: what the field cannot currently do, argued from the cards,
   ending in the one sentence `2_Idea/Setup_and_Method.md` has to formalise.
-- *example* â **Rival approaches**: the families of method that attack this problem, how
+- *example* — **Rival approaches**: the families of method that attack this problem, how
   they differ in assumption rather than in architecture, and where ours would sit.
 
 ## Notes to the agent
