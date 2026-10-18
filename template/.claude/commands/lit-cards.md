@@ -18,16 +18,10 @@ all have to be redone.
 
 ## 2. Which papers
 
-First, any PDF in `1_Literature/PDFs/` with no row in `1_Literature/Paper_Index.md` — one
-dropped in by hand and converted from the terminal — gets a row under `## Unsorted`, the
-same row `omniframe download` writes:
-`| <citekey> | <title> | <venue> |  |  |  | [pdf](PDFs/<citekey>.pdf) | — | pending |`.
-
-Then: every citekey asked for, or by default every paper in the index whose Card is not
-yet a `[card](…)` link. A paper whose **Markdown** is `—` may have been converted from the
-terminal, which does not touch the index: if `1_Literature/Papers/<citekey>/.conversion.json`
-exists, fill the link from its `"markdown"` field and go on. If it does not, the paper
-is not converted: list it, say "run `/lit-convert`", and skip it.
+Every citekey asked for, or by default every paper in the index whose Card is not yet a
+`[card](…)` link. A paper whose **Markdown** is still `—` is not converted: list it, say
+"run `/lit-convert`", and skip it. So is a PDF in `1_Literature/PDFs/` with no index row:
+it was added by hand, and `/lit-convert` brings it in.
 
 ## 3. Write the cards
 

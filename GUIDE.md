@@ -154,13 +154,15 @@ omniframe convert               # every PDF without markdown yet
 omniframe convert --list        # state of the library
 ```
 
-This writes `1_Literature/Papers/<citekey>/`, the markdown plus extracted images. Papers
-already converted are skipped, so running it again is safe. Other flags: `--only <citekey>`,
-`--force`, `--dry-run`. In Claude Code, `/lit-convert` does the same and links each result
-in the index.
+This writes `1_Literature/Papers/<citekey>/`, the markdown plus extracted images, and puts
+the markdown link into the paper's row in the index. Papers already converted are skipped,
+so running it again is safe. Other flags: `--only <citekey>`, `--force`, `--dry-run`. In
+Claude Code, `/lit-convert` runs the same script.
 
-**Already have a PDF?** Save it as `1_Literature/PDFs/<citekey>.pdf` (citekey format:
-`author2024keyword`) and convert it. No search needed.
+**Already have a PDF?** Save it into `1_Literature/PDFs/` under any name and run
+`/lit-convert`. It identifies the paper, asks whether it may rename the file to its
+citekey (`author2024keyword`), then puts it through download — for the BibTeX and the
+index row — and conversion. Afterwards it is like any other paper. No search needed.
 
 **Formulas.** The converter outputs some equations as clean LaTeX and flattens others into
 HTML. This is by design: the agent uses the markdown to understand a paper and never
@@ -337,7 +339,7 @@ git add . && git commit -m "Release v1.1" && git push
 | `omniframe update` | terminal | brings OmniFrame and the project up to date |
 | `/lit-search ["bias"]` | Claude Code | proposes papers from `High_level.md` |
 | `/lit-download` / `omniframe download` | Claude Code / terminal | fetches the `OK` papers: PDF, BibTeX, index row |
-| `omniframe convert` / `/lit-convert` | terminal / Claude Code | PDF → markdown |
+| `omniframe convert` / `/lit-convert` | terminal / Claude Code | PDF → markdown, linked in the index. `/lit-convert` also brings in PDFs you added by hand |
 | `/lit-cards [citekeys]` | Claude Code | writes missing cards, groups the index |
 | `/lit-outputs [name]` | Claude Code | writes the syntheses in the brief |
 | `/wrap` | Claude Code | rewrites the briefing, checks the brain |

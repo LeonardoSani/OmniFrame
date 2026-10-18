@@ -25,7 +25,8 @@ Four checks, with grep — do not read every file:
 - every `E-id` in `4_Results_and_Tracking/Scenario_Tree.md` exists in
   `2_Idea/Experiments.md`, and every experiment appears as a node in the DAG
 - every `1_Literature/Papers/<citekey>/` has a `1_Literature/Cards/<citekey>.md`
-- every `1_Literature/PDFs/<citekey>.pdf` has a row in `1_Literature/Paper_Index.md`
+- every `1_Literature/PDFs/<citekey>.pdf` has a row in `1_Literature/Paper_Index.md` —
+  one without was added by hand: suggest `/lit-convert`
 - every document still `status: empty` has nothing under its headings — the researcher
   may have filled one by hand
 

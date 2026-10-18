@@ -14,20 +14,40 @@ How a row fills in:
 
 | Column | Filled by | When |
 | ------ | --------- | ---- |
-| citekey, Title, Venue, arXiv, Code, Site, PDF | `omniframe download`, copied from the proposal; `/lit-convert` / `/lit-cards` for a PDF dropped in by hand, links blank | the PDF exists |
-| Markdown | `/lit-convert` (or `/lit-cards`, after a terminal `omniframe convert`), from `Papers/<citekey>/.conversion.json` | after conversion |
+| citekey, Title, Venue, arXiv, Code, Site, PDF | `omniframe download`, from the proposal | the PDF exists; the row goes under `## Unsorted` |
+| Markdown | `omniframe convert`, from `Papers/<citekey>/.conversion.json` | after conversion |
 | Card | `/lit-cards` | the card is written, and the paper moves to its group |
+
+`## Unsorted` holds exactly the papers downloaded but not yet carded: `omniframe download`
+puts every new paper there, and `/lit-cards` moves it to its group. Nothing else writes
+there.
 
 ## How papers arrive
 
-`2_Idea/High_level.md` → `/lit-search` proposes papers into `Proposed_literature.md` → the
-researcher marks **Decision** → `/lit-download` (`omniframe download`) fetches the OK ones → `/lit-convert`.
+One pipeline, one command per step:
+
+1. **`/lit-search`** proposes papers from `2_Idea/High_level.md` into
+   `Proposed_literature.md`; the researcher marks **Decision**.
+2. **`/lit-download`** runs `omniframe download`: each `OK` paper gets its PDF, its BibTeX,
+   and a row under `## Unsorted`.
+3. **`/lit-convert`** runs `omniframe convert`: PDFs become markdown, and the index gets
+   the Markdown links.
+4. **`/lit-cards`** writes the cards and files each paper in its group; then
+   **`/lit-outputs`**.
+
+**A PDF the researcher added by hand** — saved straight into `PDFs/`, with no proposal — is
+brought into the same pipeline by `/lit-convert`, before it converts: it is identified,
+looked up, renamed to its citekey with the researcher's permission, given a proposal row
+marked `OK`, and downloaded — which finds the PDF already there and adds the BibTeX and the
+index row. From then on it is a paper like any other. Nothing else in this area handles
+unregistered PDFs.
 
 `Proposed_literature.md` holds three things: the open proposals, `## Later` (papers
 deferred, kept across searches) and `## Declined` (never propose these again; one
 ``- `citekey` — title`` line each, and deleting a line lets the paper back in). You fill
 every column of a proposal except **Decision** — that one is the researcher's, and you never
-write in it. The column rules are in `/lit-search`. What `omniframe download` does with each mark:
+write in it, except `OK` on the row `/lit-convert` writes for a PDF the researcher added:
+adding it was their decision. The column rules are in `/lit-search`. What `omniframe download` does with each mark:
 
 | Decision | |
 | ---- | - |

@@ -41,7 +41,7 @@ Rewrite, never append — git holds the history, so this file must not become a 
 | ------- | ----- | ---- |
 | `/lit-search ["bias"]` | Claude Code | proposes papers from `2_Idea/High_level.md` into `1_Literature/Proposed_literature.md` |
 | `/lit-download` | Claude Code | runs `omniframe download`: the papers marked OK get PDF, BibTeX, a row in the paper index; resets the table. also runs from the terminal |
-| `/lit-convert` | Claude Code | runs `omniframe convert` (PDF → markdown) and links each result in the index |
+| `/lit-convert` | Claude Code | runs `omniframe convert` (PDF → markdown, links in the index); first brings in any PDF the researcher added by hand |
 | `/lit-cards [citekeys]` | Claude Code | writes the missing cards and files each paper in its group |
 | `/lit-outputs [name]` | Claude Code | writes the syntheses `1_Literature/card&outputs_def.md` commissions |
 | `/wrap` | Claude Code | closes the session: rewrites the briefing, checks the brain |
@@ -53,8 +53,7 @@ by citekey and title, with its web links (arXiv, code, site) and three files: th
 the converted markdown, the card. Find
 the paper there and follow its link — do not glob `Papers/` for it, and do not guess a
 markdown filename: the converter chose it, and the index records it. If the link is
-still `—`, the `"markdown"` field of `1_Literature/Papers/<citekey>/.conversion.json`
-names the file — fill the link in from it.
+still `—`, the paper is not converted yet: say so, and offer `/lit-convert`.
 
 ## The map
 
@@ -142,12 +141,12 @@ from the repo root.
 
 | Path | Written by |
 | ---- | ---------- |
-| `1_Literature/PDFs/` | the researcher, and `omniframe download` for papers marked OK. added to, never deleted or overwritten without the researcher's permission |
+| `1_Literature/PDFs/` | the researcher, and `omniframe download` for papers marked OK. added to, never deleted or overwritten without the researcher's permission. `/lit-convert` may rename a PDF the researcher added to its citekey, when they allow it |
 | `1_Literature/Papers/` | `omniframe convert`. you read it, never touch it |
 | `1_Literature/Human_encoding/` | the researcher. asked, you may create a note or add embeds for scans they name |
 | `1_Literature/card&outputs_def.md` | the researcher. it governs your cards and the index grouping, and commissions your outputs. you help fill it only together with them |
-| `1_Literature/Proposed_literature.md` | you, through `/lit-search` — except **Decision**, which is the researcher's alone |
-| `1_Literature/Paper_Index.md` | you and `omniframe download`, grouped by `## Grouping` in `1_Literature/card&outputs_def.md` |
+| `1_Literature/Proposed_literature.md` | you, through `/lit-search` and `/lit-convert` — except **Decision**, which is the researcher's alone: only `/lit-convert` writes `OK`, for a PDF the researcher added |
+| `1_Literature/Paper_Index.md` | `omniframe download` (rows, under `## Unsorted`) and `omniframe convert` (Markdown links); you, for the Card links and the grouping, by `## Grouping` in `1_Literature/card&outputs_def.md` |
 | `1_Literature/Cards/`, `1_Literature/Literature_Outputs/` | you |
 | `2_Idea/` | the researcher. you write here only when asked — `High_level.md` included, drafted together |
 | `3_Implementation/`, `__CODE_DIR__/`, `4_Results_and_Tracking/Results.md`, `4_Results_and_Tracking/Scenario_Tree.md`, `5_Paper/` | both |
@@ -164,8 +163,8 @@ from the repo root.
    filename as evidence for a claim. Asked, you may create a note `.md` or add embed lines
    for scans the researcher names — organising, never interpreting.
 3. **Never delete or overwrite in `1_Literature/PDFs/`, never touch `1_Literature/Papers/`.**
-   A PDF arrives through `omniframe download` or the researcher; removing or replacing one
-   needs the researcher's explicit permission. `Papers/` is converter output, read-only.
+   A PDF arrives through `omniframe download` or the researcher; removing, replacing or
+   renaming one needs the researcher's explicit permission. `Papers/` is converter output, read-only.
 4. **No choices in `2_Idea/`, no claims in `3_Implementation/`.** The test: if it could
    have been chosen differently without changing the idea, it is a spec.
 5. **Never write in `2_Idea/` unasked.** Those are the researcher's claims, not yours.

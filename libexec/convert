@@ -12,6 +12,9 @@
 # a single marker process -- the models load once for the whole batch, not once per
 # paper -- and each result gets a .conversion.json recording how it was made.
 #
+# Then every row of 1_Literature/Paper_Index.md whose Markdown cell is still empty gets
+# its [md] link, taken from .conversion.json.
+#
 # Deterministic and idempotent: already-converted papers are skipped, so running it
 # again is always the safe move. Nothing here talks to an agent.
 #
@@ -22,6 +25,7 @@ set -euo pipefail
 
 PDF_DIR="1_Literature/PDFs"
 OUT_DIR="1_Literature/Papers"
+INDEX="1_Literature/Paper_Index.md"
 
 die() { printf 'omniframe convert: %s\n' "$*" >&2; exit 1; }
 info() { printf '%s\n' "$*"; }
@@ -97,6 +101,50 @@ has_markdown() {
   [[ -d "$1" ]] && [[ -n "$(find "$1" -maxdepth 1 -name '*.md' -print -quit 2>/dev/null)" ]]
 }
 
+# fill the Markdown cell of every index row whose paper is converted, and name the
+# PDFs that have no row at all: added by hand, /lit-convert brings them in
+link_index() {
+  local index="$root/$INDEX" new rc=0
+  [[ -f "$index" ]] || return 0
+  new="$(mktemp)"
+  PAPERS="$papers" TODAY="$(date +%Y-%m-%d)" perl -e '
+    my $n = 0; my @l = <>;
+    for my $line (@l) {
+      next unless $line =~ /^\s*\|/;
+      my $r = $line; chomp $r; $r =~ s/^\s*\|//; $r =~ s/\|\s*$//;
+      my @c = map { s/^\s+|\s+$//g; $_ } split /(?<!\\)\|/, $r, -1;
+      next if @c < 9 || $c[0] eq "citekey" || $c[0] =~ /^:?-+:?$/;
+      next unless $c[7] eq "—" || $c[7] eq "";
+      my $j = "$ENV{PAPERS}/$c[0]/.conversion.json";
+      open my $fh, "<", $j or next;
+      my $t = do { local $/; <$fh> };
+      next unless $t =~ /"markdown"\s*:\s*"([^"]+)"/;
+      (my $f = $1) =~ s/ /%20/g;
+      $c[7] = "[md](Papers/$c[0]/$f)";
+      $line = "| " . join(" | ", @c) . " |\n";
+      $n++;
+    }
+    exit 3 unless $n;
+    my $o = join "", @l;
+    $o =~ s/^updated:.*$/updated: $ENV{TODAY}/m;
+    print $o;
+    print STDERR "  index $n markdown link(s) filled in\n";
+  ' "$index" > "$new" || rc=$?
+  if [[ $rc -eq 0 ]]; then mv "$new" "$index"
+  else rm -f "$new"; [[ $rc -eq 3 ]] || warn "could not update $INDEX -- it was left as it was"; fi
+
+  local pdf c missing=""
+  while IFS= read -r pdf; do
+    c="$(basename "$pdf" .pdf)"
+    grep -Eq "^\|[[:space:]]*$c[[:space:]]*\|" "$index" || missing="$missing $c"
+  done < <(find "$pdfs" -maxdepth 1 -name '*.pdf' | sort)
+  if [[ -n "$missing" ]]; then
+    info "  not in the index:$missing"
+    info "  (added by hand -- /lit-convert in Claude Code files them)"
+  fi
+  return 0
+}
+
 citekeys_needing_work() {
   while IFS= read -r pdf; do
     local citekey; citekey="$(basename "$pdf" .pdf)"
@@ -157,6 +205,7 @@ if [[ ${#todo[@]} -eq 0 ]]; then
   else
     info "nothing new: all $total paper(s) already converted"
     info "use --force to reconvert, or --list to see them"
+    [[ $dry_run -eq 1 ]] || link_index
   fi
   exit 0
 fi
@@ -253,6 +302,8 @@ for c in "${todo[@]}"; do
   n_done=$((n_done + 1))
 done
 
+info ""
+link_index
 info ""
 info "done: $n_done converted, $n_fail failed"
 [[ $n_fail -gt 0 ]] && exit 1
