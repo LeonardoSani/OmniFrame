@@ -8,7 +8,7 @@ stand, what is next, what is open. Read it before anything else; `/wrap` rewrite
 ## Literature
 
 - [Literature area](1_Literature/1-Literature.md) — papers, cards, and what the reading produced
-- [Paper index](1_Literature/Paper_Index.md) — every paper in the library: pdf, markdown, card
+- [Paper index](1_Literature/Paper_Index.md) — every paper in the library: arXiv, code, site, pdf, markdown, card
 - [Proposed literature](1_Literature/Proposed_literature.md) — papers proposed for the idea, awaiting your mark
 - [Cards & outputs definition](1_Literature/card&outputs_def.md) — what a card must cover, and which syntheses are wanted
 

@@ -19,8 +19,8 @@ doesn't make things up.
   vision model. It is free and runs offline.
 - **Cards and syntheses on your terms.** You decide what every paper card covers and which
   summary documents you want. `/lit-cards` and `/lit-outputs` write exactly that.
-- **One library index.** Every paper appears once, with links to its PDF (for you), its
-  markdown (for the agent) and its card.
+- **One library index.** Every paper appears once, with its arXiv, code and project
+  page, and links to its PDF (for you), its markdown (for the agent) and its card.
 - **Idea kept apart from implementation.** Claims live in `2_Idea/` and concrete choices in
   `3_Implementation/`, so the method stays general and the specs stay honest.
 - **Experiments as a dependency graph.** Each experiment has an id. A mermaid DAG shows what
@@ -48,8 +48,8 @@ CLAUDE.md                    the agent's contract: map, keys, ownership, hard ru
 .claude/commands/            /lit-search /lit-download /lit-convert /lit-cards /lit-outputs /wrap
 
 1_Literature/                papers in, cards out
-├── Paper_Index.md           every paper once: pdf · md · card
-├── Proposed_literature.md   proposals awaiting your Keep mark
+├── Paper_Index.md           every paper once: arXiv · code · site · pdf · md · card
+├── Proposed_literature.md   proposals awaiting your Decision
 ├── card&outputs_def.md      YOU define what a card covers and which syntheses you want
 ├── PDFs/  Papers/  Cards/  Literature_Outputs/
 └── Human_encoding/          your scanned handwritten notes. the agent never reads them

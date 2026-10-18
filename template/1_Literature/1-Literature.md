@@ -1,6 +1,6 @@
 # Literature
 
-**→ [Paper index](Paper_Index.md)** — every paper in the library, grouped: pdf · md · card.
+**→ [Paper index](Paper_Index.md)** — every paper in the library, grouped: arXiv · code · site · pdf · md · card.
 
 ## Steer
 
@@ -10,7 +10,7 @@
 ## Find
 
 - [Proposed literature](Proposed_literature.md) — papers proposed for the idea, awaiting
-  your **Keep** mark; also those set aside for later, and those declined.
+  your **Decision**; also those set aside for later, and those declined.
   `/lit-search ["bias"]` fills it, `/lit-download` brings the OK ones in.
 
 ## Outputs

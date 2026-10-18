@@ -101,16 +101,23 @@ draft it with you. It asks questions and writes only what you confirm.
 ```
 
 The agent adds about ten proposals to `1_Literature/Proposed_literature.md`, each with its
-venue, why it fits and a link. Each paper is one the agent found and opened online, never
+venue, why it fits and its links. Each paper is one the agent found and opened online, never
 one recalled from memory.
+
+| Link | holds |
+| ---- | ----- |
+| **arXiv** | the arXiv page, or the paper's own page if it is not on arXiv. Always there |
+| **Code** | the official GitHub repo. Blank if none |
+| **Site** | the official project page. Blank if none |
 
 The optional **bias** steers this one search. It narrows `High_level.md` and is not saved.
 If it would exclude a foundational paper (for example, "after 2020" would drop the 2017
 paper the field rests on), the agent names that paper and asks you before searching.
 
-**Choose** by filling the **Keep** column. Only you write in it.
+**Choose** by filling the **Decision** column. Only you write in it; a legend above the
+table repeats the marks.
 
-| Keep | at download |
+| Decision | at download |
 | ---- | ----------- |
 | `OK` | downloaded into the library |
 | `LATER` | moved to `## Later`, kept across searches. Mark it `OK` there at any time |
@@ -134,11 +141,12 @@ omniframe download --list       # every proposal and its mark
 
 For each `OK` paper, the download:
 
-- saves the PDF as `1_Literature/PDFs/<citekey>.pdf`, never overwriting an existing one
+- finds the open PDF from the arXiv link (arXiv, OpenReview, or Semantic Scholar by DOI)
+  and saves it as `1_Literature/PDFs/<citekey>.pdf`, never overwriting an existing one
 - adds its BibTeX to `5_Paper/refs.bib`, taken from the DOI or arXiv
-- adds a row to `1_Literature/Paper_Index.md`
+- adds a row to `1_Literature/Paper_Index.md`, with the paper's links
 
-If no open-access PDF exists, the paper stays `OK` with the reason in its row. Save the
+If no open PDF is found, the paper stays `OK` with the reason in its row. Save the
 PDF yourself under that name and run the command again.
 
 ```sh
@@ -187,8 +195,9 @@ If the brief is still untouched, both commands first fill it with you. The first
 problem setting…) and files each paper under its group.
 
 A card fits on one screen, and every claim in it points to the paper's markdown.
-`1_Literature/Paper_Index.md` is the library: each row links to the **pdf** (for you), the
-**md** (for the agent) and the **card**.
+`1_Literature/Paper_Index.md` is the library: each row links to the paper's **arXiv**,
+**code** and **site** (when they exist), the **pdf** (for you), the **md** (for the agent)
+and the **card**.
 
 **Handwritten notes.** Put scans in `1_Literature/Human_encoding/`. Organise them from
 `Human_encoding.md`, with one note per topic in `Notes/` that embeds the scans:
@@ -347,7 +356,7 @@ paper or an experiment.
 | path | written by |
 | --- | --- |
 | `2_Idea/` | you. The agent writes there only when asked |
-| `card&outputs_def.md`, the Keep column, `Human_encoding/` | you |
+| `card&outputs_def.md`, the Decision column, `Human_encoding/` | you |
 | `Cards/`, `Literature_Outputs/`, `Runs/` (real runs only) | the agent |
 | `3_Implementation/`, `MYPROJ/`, `Results.md`, `Scenario_Tree.md`, `5_Paper/` | both |
 | `PDFs/` | you and `omniframe download`. Never overwritten |

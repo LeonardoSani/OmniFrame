@@ -2,15 +2,17 @@
 #
 # omniframe download -- bring the papers marked OK in Proposed_literature.md into the library.
 #
-# Run it from anywhere inside a research project, after marking the Keep column:
+# Run it from anywhere inside a research project, after marking the Decision column:
 #
 #     cd ~/Projects/MYPROJ_Brain
 #     omniframe download
 #
 # For every row marked OK, in the proposals table or in ## Later:
-#   - the PDF goes to 1_Literature/PDFs/<citekey>.pdf   (an existing PDF is never overwritten)
+#   - the open PDF, found from the arXiv cell (arXiv, OpenReview, or Semantic Scholar by
+#     DOI), goes to 1_Literature/PDFs/<citekey>.pdf   (an existing PDF is never overwritten)
 #   - its BibTeX, fetched from the DOI or arXiv, goes to 5_Paper/refs.bib under the citekey
-#   - the paper gets a row under ## Unsorted in 1_Literature/Paper_Index.md
+#   - the paper gets a row under ## Unsorted in 1_Literature/Paper_Index.md, with its
+#     arXiv, Code and Site links
 # Then the table is reset: done rows leave, LATER rows move to ## Later, NO rows go to
 # ## Declined, blank rows leave. A row that could not be finished stays OK, with the
 # reason in its Why cell -- fix it (often: drop the PDF in by hand) and run again.
@@ -40,7 +42,7 @@ options:
   -C DIR          project root (default: found by walking up from here)
   -h, --help      this text
 
-marks, in the Keep column (any case):
+marks, in the Decision column (any case):
   OK      download it                  LATER   move it to ## Later
   NO      drop it, remember declined   blank   drop it (a later search may propose it again)
 USAGE
@@ -87,7 +89,7 @@ command -v perl >/dev/null 2>&1 || die "perl is required"
 command -v curl >/dev/null 2>&1 || die "curl is required"
 
 # --- read the tables ----------------------------------------------------------
-# One line per row: section, keep, citekey, paper, venue, why, link, pdf -- split by
+# One line per row: section, decision, citekey, paper, venue, why, arxiv, code, site -- split by
 # \x1f, not tab, because bash read collapses empty tab-separated fields.
 # section is "main" for the proposals table, "later" for ## Later.
 
@@ -99,12 +101,17 @@ read_rows() {
     next unless $sec && /^\s*\|/;
     chomp; s/^\s*\|//; s/\|\s*$//;
     my @c = map { s/^\s+|\s+$//g; s/\x1f/ /g; $_ } split /(?<!\\)\|/, $_, -1;
-    next if @c < 7;
     next if $c[1] eq "citekey" || $c[0] =~ /^:?-+:?$/;
     next if $c[1] eq "";
-    print join("\x1f", $sec, @c[0..6]), "\n";
+    if (@c != 8) { print STDERR "old\n"; exit 3 }
+    print join("\x1f", $sec, @c[0..7]), "\n";
   ' "$proposed"
 }
+
+# an old table (Keep ... Link | PDF) would be misread column by column: refuse it
+read_rows >/dev/null 2>&1 || die "$PROPOSED has the old table format -- the header must be
+  | Decision | citekey | Paper | Venue | Why | arXiv | Code | Site |
+  re-run /lit-search, or fix the columns by hand"
 
 mark_of() {
   printf '%s' "$1" | tr '[:lower:]' '[:upper:]' | tr -d ' *'
@@ -114,7 +121,7 @@ if [[ $list_only -eq 1 ]]; then
   info "project: $root"
   info ""
   n=0
-  while IFS=$'\x1f' read -r sec keep ck paper venue why link pdf; do
+  while IFS=$'\x1f' read -r sec keep ck paper venue why arxiv code site; do
     n=$((n + 1))
     m="$(mark_of "$keep")"; [[ -z "$m" ]] && m="-"
     printf '  %-6s %-6s %-36s %s\n' "$sec" "$m" "$ck" "$paper"
@@ -125,12 +132,16 @@ fi
 
 # --- helpers ------------------------------------------------------------------
 
+url_of() {    # the URL in a cell: [text](url) or a bare url
+  printf '%s' "$1" | perl -ne 'if (/\]\((\S+?)\)/) { print $1 } elsif (m{(https?://\S+)}) { print $1 }'
+}
+
 doi_of() {    # a DOI found in the link, if any
   printf '%s' "$1" | perl -ne 'print $1 if m{(10\.\d{4,9}/[^\s?#]+)}'
 }
 
-arxiv_of() {  # an arXiv id found in the link or the pdf url, if any
-  printf '%s\n%s' "$1" "$2" \
+arxiv_of() {  # an arXiv id found in the link, if any
+  printf '%s' "$1" \
     | perl -ne 'if (m{arxiv\.org/(?:abs|pdf)/([0-9]{4}\.[0-9]{4,5}|[a-z\-]+(?:\.[A-Z]{2})?/[0-9]{7})}i) { print $1; exit }'
 }
 
@@ -138,10 +149,24 @@ has_bib() {
   [[ -f "$bib" ]] && grep -Eq "^[[:space:]]*@[A-Za-z]+[[:space:]]*\{[[:space:]]*$1[[:space:]]*," "$bib"
 }
 
-fetch_bib() {  # prints the entry, with its key set to the citekey, or fails
-  local ck="$1" link="$2" pdf="$3" doi arxiv raw=""
+pdf_of() {  # candidate open PDF urls for a paper page, best first, one per line
+  local link="$1" id doi s2
+  id="$(arxiv_of "$link")"
+  [[ -n "$id" ]] && { printf 'https://arxiv.org/pdf/%s' "$id"; return 0; }
+  id="$(printf '%s' "$link" | perl -ne 'print $1 if m{openreview\.net/(?:forum|pdf)\?id=([^&\s#]+)}')"
+  [[ -n "$id" ]] && { printf 'https://openreview.net/pdf?id=%s' "$id"; return 0; }
   doi="$(doi_of "$link")"
-  arxiv="$(arxiv_of "$link" "$pdf")"
+  [[ -n "$doi" ]] || return 1
+  s2="$(curl -fsSL --max-time 60 "https://api.semanticscholar.org/graph/v1/paper/DOI:$doi?fields=openAccessPdf,externalIds" 2>/dev/null)" || return 1
+  printf '%s' "$s2" | perl -0777 -ne '
+    print "$1\n"                          if /"openAccessPdf"\s*:\s*\{[^}]*"url"\s*:\s*"([^"]+)"/;
+    print "https://arxiv.org/pdf/$1\n"    if /"ArXiv"\s*:\s*"([^"]+)"/;'
+}
+
+fetch_bib() {  # prints the entry, with its key set to the citekey, or fails
+  local ck="$1" link="$2" doi arxiv raw=""
+  doi="$(doi_of "$link")"
+  arxiv="$(arxiv_of "$link")"
   if [[ -n "$doi" ]]; then
     raw="$(curl -fsSL --max-time 60 -H 'Accept: application/x-bibtex' "https://doi.org/$doi" 2>/dev/null || true)"
   fi
@@ -169,7 +194,7 @@ info ""
 
 n_ok=0; n_done=0; n_flag=0; n_later=0; n_no=0; n_blank=0; n_odd=0
 
-while IFS=$'\x1f' read -r sec keep ck paper venue why link pdf; do
+while IFS=$'\x1f' read -r sec keep ck paper venue why arxiv code site; do
   m="$(mark_of "$keep")"
   case "$m" in
     LATER) [[ "$sec" == main ]] && { info "  later $ck"; n_later=$((n_later + 1)); }; continue ;;
@@ -180,34 +205,31 @@ while IFS=$'\x1f' read -r sec keep ck paper venue why link pdf; do
            n_odd=$((n_odd + 1)); continue ;;
   esac
   n_ok=$((n_ok + 1))
+  link="$(url_of "$arxiv")"
 
   if [[ $dry_run -eq 1 ]]; then
     if [[ -f "$pdfs/$ck.pdf" ]]; then info "  ok    $ck (PDF already there)"
-    elif [[ -z "$pdf" || "$pdf" == "—" || "$pdf" == "-" ]]; then info "  ok    $ck -- no open PDF: would be flagged"
-    else info "  ok    $ck <- $pdf"; fi
+    elif [[ -z "$link" ]]; then info "  ok    $ck -- no arXiv link: would be flagged"
+    else info "  ok    $ck -- would find the PDF from $link"; fi
     continue
   fi
 
   # 1. the PDF -- never overwrite one that is already there
   target="$pdfs/$ck.pdf"
   if [[ ! -f "$target" ]]; then
-    if [[ -z "$pdf" || "$pdf" == "—" || "$pdf" == "-" ]]; then
-      info "  flag  $ck -- no open PDF"
-      printf '%s\tflag\tno open PDF: drop PDFs/%s.pdf in by hand\n' "$ck" "$ck" >> "$results"
+    # try each candidate until one returns a real PDF
+    tmp="$work/$ck.pdf"; got=0
+    while IFS= read -r pdf; do
+      [[ -n "$pdf" ]] || continue
+      curl -fsSL --max-time 180 -o "$tmp" "$pdf" 2>/dev/null \
+        && [[ "$(head -c 5 "$tmp")" == "%PDF-" ]] && { got=1; break; }
+    done < <(pdf_of "$link" || true)
+    if [[ $got -eq 0 ]]; then
+      info "  flag  $ck -- no open PDF found"
+      printf '%s\tflag\tno open PDF found: drop PDFs/%s.pdf in by hand\n' "$ck" "$ck" >> "$results"
       n_flag=$((n_flag + 1)); continue
     fi
     mkdir -p "$pdfs"
-    tmp="$work/$ck.pdf"
-    if ! curl -fsSL --max-time 180 -o "$tmp" "$pdf" 2>/dev/null; then
-      info "  flag  $ck -- download failed"
-      printf '%s\tflag\tdownload failed: drop PDFs/%s.pdf in by hand\n' "$ck" "$ck" >> "$results"
-      n_flag=$((n_flag + 1)); continue
-    fi
-    if [[ "$(head -c 5 "$tmp")" != "%PDF-" ]]; then
-      info "  flag  $ck -- the PDF link did not return a PDF"
-      printf '%s\tflag\tlink is not a PDF: drop PDFs/%s.pdf in by hand\n' "$ck" "$ck" >> "$results"
-      n_flag=$((n_flag + 1)); continue
-    fi
     mv "$tmp" "$target"
     info "  pdf   $ck"
   else
@@ -216,13 +238,13 @@ while IFS=$'\x1f' read -r sec keep ck paper venue why link pdf; do
 
   # 2. the paper index -- the PDF exists, so the paper is in the library
   if ! in_index "$ck"; then
-    printf '| %s | %s | %s | [pdf](PDFs/%s.pdf) | — | pending |\n' \
-      "$ck" "$paper" "${venue:-—}" "$ck" >> "$work/index_rows"
+    printf '| %s | %s | %s | %s | %s | %s | [pdf](PDFs/%s.pdf) | — | pending |\n' \
+      "$ck" "$paper" "${venue:-—}" "$arxiv" "$code" "$site" "$ck" >> "$work/index_rows"
   fi
 
   # 3. BibTeX, from a real source only
   if ! has_bib "$ck"; then
-    if entry="$(fetch_bib "$ck" "$link" "$pdf")"; then
+    if entry="$(fetch_bib "$ck" "$link")"; then
       { [[ -s "$bib" ]] && printf '\n'; printf '%s' "$entry"; } >> "$bib"
       info "  bib   $ck"
     else

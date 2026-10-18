@@ -8,5 +8,5 @@ Grouping:
 
 ## Unsorted
 
-| citekey | Title | Venue | PDF | Markdown | Card |
-| ------- | ----- | ----- | --- | -------- | ---- |
+| citekey | Title | Venue | arXiv | Code | Site | PDF | Markdown | Card |
+| ------- | ----- | ----- | ----- | ---- | ---- | --- | -------- | ---- |

@@ -47,15 +47,15 @@ exclude them; their **Why** says so.
 
 **Every paper is real and checked.** Open its page and confirm title, authors and venue.
 Never propose a paper from memory: one you could not find a page for does not go in the
-table. Then look for an open PDF — arXiv, OpenReview, or `openAccessPdf` from Semantic
-Scholar — and confirm the URL points at the PDF itself.
+table. Then look for its official code (GitHub) and project page — linked from the paper,
+its arXiv page or its authors — and open them.
 
 ## 4. Write the rows
 
 Append them to the first table in `1_Literature/Proposed_literature.md`. Never touch an
-existing row, never fill **Keep**.
+existing row, never fill **Decision**.
 
-- **Keep** — blank. Always.
+- **Decision** — blank. Always.
 - **citekey** — `author2024keyword`, lowercase: first author's surname, year, one
   distinctive word of the title. Unique against everything collected in step 2.
 - **Paper** — the title, exactly.
@@ -63,14 +63,18 @@ existing row, never fill **Keep**.
   if a preprint was later published, the venue.
 - **Why** — one or two sentences: what in `High_level.md` this paper bears on, and its
   role — the foundation, a baseline, a rival approach, the benchmark. Not the abstract.
-- **Link** — the paper's identity, as a URL: `https://doi.org/<doi>` when it has a DOI,
-  else `https://arxiv.org/abs/<id>`, else its OpenReview or publisher page.
-  `omniframe download` takes the BibTeX from it.
-- **PDF** — the direct open-access PDF URL, or `—` if there is none.
+- **arXiv** — `[arXiv](https://arxiv.org/abs/<id>)` when the paper is on arXiv; else its
+  page, as `[arXiv](…)`: `https://doi.org/<doi>`, its OpenReview forum, or the publisher
+  page. Always filled. `omniframe download` finds the PDF and the BibTeX from it.
+- **Code** — `[code](…)`, the official GitHub repository. Blank if there is none.
+- **Site** — `[site](…)`, the official project page. Blank if there is none.
+
+Code and Site are official only: linked from the paper, its arXiv page or its authors.
+Never a third-party reimplementation.
 
 Escape a `|` inside a title as `\|`. Set `updated:` to today.
 
 ## 5. Tell me
 
 How many papers were added, the queries run, how the bias shaped the result, and anything
-nearly included and why it was not. End with: mark **Keep**, then run `/lit-download` (or `omniframe download` in the terminal).
+nearly included and why it was not. End with: mark **Decision**, then run `/lit-download` (or `omniframe download` in the terminal).

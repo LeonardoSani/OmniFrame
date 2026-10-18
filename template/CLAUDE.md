@@ -49,7 +49,8 @@ Rewrite, never append — git holds the history, so this file must not become a 
 ## Finding a paper
 
 **Start from `1_Literature/Paper_Index.md`.** It lists every paper in the library once,
-by citekey and title, with three links: the PDF, the converted markdown, the card. Find
+by citekey and title, with its web links (arXiv, code, site) and three files: the PDF,
+the converted markdown, the card. Find
 the paper there and follow its link — do not glob `Papers/` for it, and do not guess a
 markdown filename: the converter chose it, and the index records it. If the link is
 still `—`, the `"markdown"` field of `1_Literature/Papers/<citekey>/.conversion.json`
@@ -63,11 +64,11 @@ may lag behind a rename; if the two disagree, trust this and report the discrepa
 | Path | Holds |
 | ---- | ----- |
 | `4_Results_and_Tracking/Where_we_are.md` | the briefing: now, next, open. read first |
-| `1_Literature/Paper_Index.md` | **every paper in the library: citekey, title, links to PDF, markdown, card. the way into any paper** |
+| `1_Literature/Paper_Index.md` | **every paper in the library: citekey, title, arXiv · code · site, links to PDF, markdown, card. the way into any paper** |
 | `0-Master.md` | the master MOC: the human's way in |
 | `.omniframe` | what the template installed, for `omniframe update`. written by `omniframe init`/`update`. never edit |
 | `1_Literature/card&outputs_def.md` | the researcher's brief: card sections, commissioned outputs |
-| `1_Literature/Proposed_literature.md` | papers `/lit-search` proposed, awaiting the researcher's Keep mark; Later; Declined |
+| `1_Literature/Proposed_literature.md` | papers `/lit-search` proposed, awaiting the researcher's Decision; Later; Declined |
 | `1_Literature/PDFs/<citekey>.pdf` | papers as published. gitignored. added to, never overwritten |
 | `1_Literature/Papers/<citekey>/` | converted markdown + extracted images. read-only |
 | `1_Literature/Cards/<citekey>.md` | your card per paper |
@@ -145,7 +146,7 @@ from the repo root.
 | `1_Literature/Papers/` | `omniframe convert`. you read it, never touch it |
 | `1_Literature/Human_encoding/` | the researcher. asked, you may create a note or add embeds for scans they name |
 | `1_Literature/card&outputs_def.md` | the researcher. it governs your cards and commissions your outputs. you help fill it only together with them |
-| `1_Literature/Proposed_literature.md` | you, through `/lit-search` — except **Keep**, which is the researcher's alone |
+| `1_Literature/Proposed_literature.md` | you, through `/lit-search` — except **Decision**, which is the researcher's alone |
 | `1_Literature/Paper_Index.md` | you and `omniframe download`. the grouping criterion is the researcher's choice |
 | `1_Literature/Cards/`, `1_Literature/Literature_Outputs/` | you |
 | `2_Idea/` | the researcher. you write here only when asked — `High_level.md` included, drafted together |

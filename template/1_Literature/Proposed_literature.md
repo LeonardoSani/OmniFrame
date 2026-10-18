@@ -4,12 +4,14 @@ updated: __DATE__
 
 # Proposed literature
 
-| Keep | citekey | Paper | Venue | Why | Link | PDF |
-| ---- | ------- | ----- | ----- | --- | ---- | --- |
+**Decision** — `OK`: download · `LATER`: set aside in ## Later · `NO`: never propose again · blank: dropped at the next download
+
+| Decision | citekey | Paper | Venue | Why | arXiv | Code | Site |
+| -------- | ------- | ----- | ----- | --- | ----- | ---- | ---- |
 
 ## Later
 
-| Keep | citekey | Paper | Venue | Why | Link | PDF |
-| ---- | ------- | ----- | ----- | --- | ---- | --- |
+| Decision | citekey | Paper | Venue | Why | arXiv | Code | Site |
+| -------- | ------- | ----- | ----- | --- | ----- | ---- | ---- |
 
 ## Declined

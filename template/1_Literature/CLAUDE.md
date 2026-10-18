@@ -14,22 +14,22 @@ How a row fills in:
 
 | Column | Filled by | When |
 | ------ | --------- | ---- |
-| citekey, Title, Venue, PDF | `omniframe download`, or `/lit-convert` / `/lit-cards` for a PDF dropped in by hand | the PDF exists |
+| citekey, Title, Venue, arXiv, Code, Site, PDF | `omniframe download`, copied from the proposal; `/lit-convert` / `/lit-cards` for a PDF dropped in by hand, links blank | the PDF exists |
 | Markdown | `/lit-convert` (or `/lit-cards`, after a terminal `omniframe convert`), from `Papers/<citekey>/.conversion.json` | after conversion |
 | Card | `/lit-cards` | the card is written, and the paper moves to its group |
 
 ## How papers arrive
 
 `2_Idea/High_level.md` → `/lit-search` proposes papers into `Proposed_literature.md` → the
-researcher marks **Keep** → `/lit-download` (`omniframe download`) fetches the OK ones → `/lit-convert`.
+researcher marks **Decision** → `/lit-download` (`omniframe download`) fetches the OK ones → `/lit-convert`.
 
 `Proposed_literature.md` holds three things: the open proposals, `## Later` (papers
 deferred, kept across searches) and `## Declined` (never propose these again; one
 ``- `citekey` — title`` line each, and deleting a line lets the paper back in). You fill
-every column of a proposal except **Keep** — that one is the researcher's, and you never
-write in it. What `omniframe download` does with each mark:
+every column of a proposal except **Decision** — that one is the researcher's, and you never
+write in it. The column rules are in `/lit-search`. What `omniframe download` does with each mark:
 
-| Keep | |
+| Decision | |
 | ---- | - |
 | `OK` | downloaded: PDF, BibTeX, a row in the index |
 | `LATER` | moved to `## Later` |
