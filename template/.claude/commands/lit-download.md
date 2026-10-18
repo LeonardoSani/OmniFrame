@@ -13,7 +13,7 @@ change a mark.
 
 ## 2. Download
 
-Run `research-download` from the project root. It fetches each `OK` paper's PDF and
+Run `omniframe download` from the project root. It fetches each `OK` paper's PDF and
 BibTeX, adds its row to `1_Literature/Paper_Index.md`, then resets the table: `LATER` rows
 to `## Later`, `NO` rows to `## Declined`. It writes every file itself — do not edit them
 around it.

@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 #
-# research-convert -- turn newly dropped paper PDFs into the markdown the brain reads.
+# omniframe convert -- turn newly dropped paper PDFs into the markdown the brain reads.
 #
 # Run it from anywhere inside a research project:
 #
 #     cd ~/Projects/MYPROJ_Brain
-#     research-convert
+#     omniframe convert
 #
 # A paper at "1_Literature/PDFs/<citekey>.pdf" is new when
 # "1_Literature/Papers/<citekey>/" holds no markdown yet. New ones are converted in
@@ -23,13 +23,13 @@ set -euo pipefail
 PDF_DIR="1_Literature/PDFs"
 OUT_DIR="1_Literature/Papers"
 
-die() { printf 'research-convert: %s\n' "$*" >&2; exit 1; }
+die() { printf 'omniframe convert: %s\n' "$*" >&2; exit 1; }
 info() { printf '%s\n' "$*"; }
-warn() { printf 'research-convert: %s\n' "$*" >&2; }
+warn() { printf 'omniframe convert: %s\n' "$*" >&2; }
 
 usage() {
   cat <<'USAGE'
-usage: research-convert [options] [-- marker args...]
+usage: omniframe convert [options] [-- marker args...]
 
 Converts paper PDFs that have no markdown yet, in one batch.
 
@@ -44,7 +44,7 @@ options:
   -h, --help           this text
 
 Anything after -- is passed straight to marker, e.g.
-  research-convert -- --workers 2
+  omniframe convert -- --workers 2
 
 install marker with:
   uv tool install marker-pdf     # pulls torch, so expect a large download

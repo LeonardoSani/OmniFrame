@@ -20,7 +20,7 @@ all have to be redone.
 
 First, any PDF in `1_Literature/PDFs/` with no row in `1_Literature/Paper_Index.md` — one
 dropped in by hand and converted from the terminal — gets a row under `## Unsorted`, the
-same row `research-download` writes:
+same row `omniframe download` writes:
 `| <citekey> | <title> | <venue> | [pdf](PDFs/<citekey>.pdf) | — | pending |`.
 
 Then: every citekey asked for, or by default every paper in the index whose Card is not

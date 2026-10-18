@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 #
-# research-download -- bring the papers marked OK in Proposed_literature.md into the library.
+# omniframe download -- bring the papers marked OK in Proposed_literature.md into the library.
 #
 # Run it from anywhere inside a research project, after marking the Keep column:
 #
 #     cd ~/Projects/MYPROJ_Brain
-#     research-download
+#     omniframe download
 #
 # For every row marked OK, in the proposals table or in ## Later:
 #   - the PDF goes to 1_Literature/PDFs/<citekey>.pdf   (an existing PDF is never overwritten)
@@ -24,12 +24,12 @@ INDEX="1_Literature/Paper_Index.md"
 PDF_DIR="1_Literature/PDFs"
 BIB="5_Paper/refs.bib"
 
-die() { printf 'research-download: %s\n' "$*" >&2; exit 1; }
+die() { printf 'omniframe download: %s\n' "$*" >&2; exit 1; }
 info() { printf '%s\n' "$*"; }
 
 usage() {
   cat <<'USAGE'
-usage: research-download [options]
+usage: omniframe download [options]
 
 Downloads the papers marked OK in 1_Literature/Proposed_literature.md, registers them in
 5_Paper/refs.bib and 1_Literature/Paper_Index.md, then resets the table.
@@ -338,5 +338,5 @@ info ""
 info "done: $n_done in the library, $n_flag flagged, $n_later to Later, $n_no declined, $n_blank blank dropped"
 [[ $n_odd -gt 0 ]] && info "      $n_odd row(s) with an unknown mark left alone"
 [[ $n_flag -gt 0 ]] && info "flagged rows stay OK with the reason in Why -- fix them and run again"
-[[ $n_done -gt 0 ]] && info "next: research-convert (terminal) or /lit-convert (Claude Code)"
+[[ $n_done -gt 0 ]] && info "next: omniframe convert (terminal) or /lit-convert (Claude Code)"
 exit 0

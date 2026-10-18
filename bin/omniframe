@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+#
+# omniframe -- the one command on PATH. `omniframe <sub-command> [args]` runs
+# libexec/<sub-command> from this clone, so a sub-command added to libexec/
+# works after `git pull`, with no re-linking.
+
+set -euo pipefail
+
+die() { printf 'omniframe: %s\n' "$*" >&2; exit 1; }
+
+# resolve this script's own path through the symlink on PATH, so libexec/ is
+# found next to the real file in the clone
+self="${BASH_SOURCE[0]}"
+while [[ -L "$self" ]]; do
+  link_target="$(readlink "$self")"
+  case "$link_target" in
+    /*) self="$link_target" ;;
+    *)  self="$(cd "$(dirname "$self")" && pwd -P)/$link_target" ;;
+  esac
+done
+libexec="$(cd "$(dirname "$self")/../libexec" && pwd -P)"
+
+sub_commands() {
+  local f
+  for f in "$libexec"/*; do
+    [[ -f "$f" && -x "$f" && "$f" != *.sh ]] && basename "$f"
+  done
+}
+
+usage() {
+  printf 'usage: omniframe <command> [args]    (omniframe <command> --help for its options)\n\n'
+  printf 'commands:\n'
+  sub_commands | sed 's/^/  /'
+}
+
+sub="${1:-help}"
+case "$sub" in
+  help|-h|--help) usage; exit 0 ;;
+esac
+shift
+
+[[ "$sub" != *.sh && "$sub" != */* && -x "$libexec/$sub" ]] \
+  || die "unknown command '$sub'. commands: $(sub_commands | tr '\n' ' ')"
+
+export OMNIFRAME_CLONE="${libexec%/libexec}"
+exec "$libexec/$sub" "$@"

@@ -15,7 +15,7 @@ doesn't make things up.
 - **Papers from an idea.** Describe the idea in plain words. `/lit-search` proposes papers
   the agent actually found and opened, you mark which to keep, and `/lit-download` fetches the
   PDFs and the BibTeX.
-- **Papers the agent can read.** `research-convert` turns PDFs into markdown with a local
+- **Papers the agent can read.** `omniframe convert` turns PDFs into markdown with a local
   vision model. It is free and runs offline.
 - **Cards and syntheses on your terms.** You decide what every paper card covers and which
   summary documents you want. `/lit-cards` and `/lit-outputs` write exactly that.
@@ -83,7 +83,7 @@ Every area has its own `CLAUDE.md`, which the agent reads before it writes there
 
 ```sh
 git clone https://github.com/LeonardoSani/OmniFrame.git ~/Projects/OmniFrame
-~/Projects/OmniFrame/bin/research-link       # puts the scripts on PATH (~/.local/bin)
+~/Projects/OmniFrame/bin/omniframe link      # puts `omniframe` on PATH, once
 uv tool install marker-pdf                   # the PDF converter. large: pulls torch
 brew install llama.cpp                       # its local backend (Apple Silicon / CPU)
 ```
@@ -94,9 +94,17 @@ On an NVIDIA GPU, use vLLM as the backend instead (Docker + NVIDIA Container Too
 
 ```sh
 cd ~/Projects
-research-init MYPROJ          # creates MYPROJ_Brain/, with the code in MYPROJ_Brain/MYPROJ/
+omniframe init MYPROJ        # creates MYPROJ_Brain/, code in MYPROJ_Brain/MYPROJ/
 ```
 
 Then open `MYPROJ_Brain/` in Obsidian and Claude Code, and write `2_Idea/High_level.md`.
+
+## Update
+
+```sh
+omniframe update             # inside a project: new commands and agent rules
+```
+
+Your content is never touched. Files you edited are shown as a diff before anything changes.
 
 **→ [The Guide](GUIDE.md)** explains how to use every part, in the order you'll need it.

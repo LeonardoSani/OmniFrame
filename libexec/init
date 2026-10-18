@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 #
-# research-init -- create a research project: the brain, and its code folder.
+# omniframe init -- create a research project: the brain, and its code folder.
 #
 #     cd ~/Projects
-#     research-init MYPROJ
+#     omniframe init MYPROJ
 #
 # makes MYPROJ_Brain/ (the brain, a git repo) and MYPROJ_Brain/MYPROJ/ (the code,
 # a uv project that can later be exported alone into a public repo).
@@ -14,16 +14,14 @@
 
 set -euo pipefail
 
-TEMPLATE_REPO="${RESEARCH_TEMPLATE_REPO:-https://github.com/LeonardoSani/OmniFrame.git}"
-TEMPLATE_REF="${RESEARCH_TEMPLATE_REF:-main}"
-TEMPLATE_SUBDIR="${RESEARCH_TEMPLATE_SUBDIR:-template}"
-
-die() { printf 'research-init: %s\n' "$*" >&2; exit 1; }
+die() { printf 'omniframe init: %s\n' "$*" >&2; exit 1; }
 info() { printf '%s\n' "$*"; }
+
+. "$(dirname "$0")/lib.sh"
 
 usage() {
   cat <<'USAGE'
-usage: research-init [options] [NAME]
+usage: omniframe init [options] [NAME]
 
 Creates NAME_Brain/ from the research template, substituting the template
 tokens in file contents and in path names, then runs `git init` there and
@@ -50,16 +48,10 @@ A template file named <name>.append is appended to an existing <name> instead of
 being skipped, or written as <name> if there is nothing there yet.
 
 environment:
-  RESEARCH_TEMPLATE_REPO    same as --repo
-  RESEARCH_TEMPLATE_REF     same as --ref
-  RESEARCH_TEMPLATE_SUBDIR  subdirectory of the repo holding the skeleton
+  OMNIFRAME_TEMPLATE_REPO    same as --repo
+  OMNIFRAME_TEMPLATE_REF     same as --ref
+  OMNIFRAME_TEMPLATE_SUBDIR  subdirectory of the repo holding the skeleton
 USAGE
-}
-
-slugify() {
-  printf '%s' "$1" \
-    | tr '[:upper:]' '[:lower:]' \
-    | sed -e 's/[^a-z0-9]\{1,\}/-/g' -e 's/^-//' -e 's/-$//'
 }
 
 target=""
@@ -88,7 +80,7 @@ done
 
 if [[ -z "$target" ]]; then
   [[ "$(basename "$PWD")" == *_Brain ]] \
-    || die "give a NAME (research-init MYPROJ), or run it inside a NAME_Brain folder"
+    || die "give a NAME (omniframe init MYPROJ), or run it inside a NAME_Brain folder"
   target="$PWD"
 fi
 target="${target%/}"
@@ -110,13 +102,6 @@ code_dir="${code_dir%_Brain}"
 [[ -n "$code_dir" ]] || die "the folder name needs a NAME before _Brain"
 code="$target/$code_dir"
 
-project_name="${opt_name:-$code_dir}"
-slug="$(slugify "$project_name")"
-[[ -n "$slug" ]] || die "could not derive a slug from '$project_name'; pass --name"
-
-pkg="${opt_pkg:-$slug}"
-pkg="$(printf '%s' "$pkg" | tr '[:upper:]-' '[:lower:]_')"
-
 if [[ -n "$opt_author" ]]; then
   author="$opt_author"
 else
@@ -124,75 +109,26 @@ else
   [[ -n "$author" ]] || author="${USER:-unknown}"
 fi
 
-export T_PROJECT_NAME="$project_name"
-export T_CODE_DIR="$code_dir"
-export T_SLUG="$slug"
-export T_PKG="$pkg"
-export T_AUTHOR="$author"
-T_YEAR="$(date +%Y)"; export T_YEAR
-T_DATE="$(date +%Y-%m-%d)"; export T_DATE
+set_tokens "${opt_name:-$code_dir}" "$code_dir" "$opt_pkg" "$author" "$(date +%Y-%m-%d)"
+pkg="$T_PKG"
 
 # --- fetch the skeleton ------------------------------------------------------
 
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
-
-if [[ -d "$TEMPLATE_REPO" ]]; then
-  src="$TEMPLATE_REPO/$TEMPLATE_SUBDIR"
-  origin="$TEMPLATE_REPO (local)"
-else
-  git clone --quiet --depth 1 --branch "$TEMPLATE_REF" "$TEMPLATE_REPO" "$tmp/repo" \
-    || die "could not clone $TEMPLATE_REPO at ref '$TEMPLATE_REF'"
-  src="$tmp/repo/$TEMPLATE_SUBDIR"
-  origin="$TEMPLATE_REPO@$TEMPLATE_REF"
-fi
-
-[[ -d "$src" ]] || die "template repo has no '$TEMPLATE_SUBDIR/' directory"
-src="$(cd "$src" && pwd -P)"
+fetch_template
 
 # --- copy --------------------------------------------------------------------
 
-expand_path() {
-  local p="$1"
-  p="${p//__PROJECT_NAME__/$T_PROJECT_NAME}"
-  p="${p//__CODE_DIR__/$T_CODE_DIR}"
-  p="${p//__SLUG__/$T_SLUG}"
-  p="${p//__PKG__/$T_PKG}"
-  p="${p//__AUTHOR__/$T_AUTHOR}"
-  p="${p//__YEAR__/$T_YEAR}"
-  p="${p//__DATE__/$T_DATE}"
-  printf '%s' "$p"
-}
-
-is_text() {
-  [[ ! -s "$1" ]] && return 0            # empty counts as text
-  LC_ALL=C grep -Iq . "$1" 2>/dev/null
-}
-
-substitute() {
-  perl -pe '
-    s/__PROJECT_NAME__/$ENV{T_PROJECT_NAME}/g;
-    s/__CODE_DIR__/$ENV{T_CODE_DIR}/g;
-    s/__SLUG__/$ENV{T_SLUG}/g;
-    s/__PKG__/$ENV{T_PKG}/g;
-    s/__AUTHOR__/$ENV{T_AUTHOR}/g;
-    s/__YEAR__/$ENV{T_YEAR}/g;
-    s/__DATE__/$ENV{T_DATE}/g;
-  ' "$1"
-}
-
-# true when the file exists and does not end in a newline
-needs_newline() {
-  [[ -s "$1" ]] && [[ -n "$(tail -c 1 "$1")" ]]
-}
-
 info "template : $origin"
 info "target   : $target"
-info "name     : $project_name    code: $code_dir/    pkg: $pkg    author: $author"
+info "name     : $T_PROJECT_NAME    code: $code_dir/    pkg: $pkg    author: $author"
 [[ $dry_run -eq 1 ]] && info "(dry run -- nothing is written)"
 info ""
 
 n_new=0; n_skip=0; n_over=0; n_dir=0; n_appd=0
+# "hash<TAB>path" for each tracked file this run leaves equal to the template
+hashes=""
 
 # empty directories carry meaning in a skeleton, so recreate those too
 while IFS= read -r dir; do
@@ -248,6 +184,8 @@ while IFS= read -r file; do
     elif [[ $force -eq 0 ]]; then
       info "  skip  $dest_rel (exists)"
       n_skip=$((n_skip + 1))
+      h="$(render_hash "$file")"
+      [[ "$(file_hash "$dest")" == "$h" ]] && hashes="$hashes$h"$'\t'"$dest_rel"$'\n'
       continue
     else
       info "  over  $dest_rel"
@@ -264,10 +202,9 @@ while IFS= read -r file; do
   if [[ $append -eq 1 && -e "$dest" ]]; then
     needs_newline "$dest" && printf '\n' >> "$dest"
     substitute "$file" >> "$dest"
-  elif is_text "$file"; then
-    substitute "$file" > "$dest"
   else
-    cp "$file" "$dest"
+    render "$file" > "$dest"
+    [[ $append -eq 0 ]] && hashes="$hashes$(file_hash "$dest")"$'\t'"$dest_rel"$'\n'
   fi
   [[ -x "$file" ]] && chmod +x "$dest"
 done < <(find "$src" -type f | sort)
@@ -293,6 +230,15 @@ else
     (cd "$code" && uv init --quiet --vcs none --name "$pkg") \
       || die "uv init failed in $code"
   fi
+fi
+
+# the record is what `omniframe update` compares against; a project that has
+# one is updated with that command, not re-recorded here
+if [[ -f "$target/$RECORD" ]]; then
+  info "  same  $RECORD (use omniframe update to bring the project up to date)"
+else
+  info "  rec   $RECORD"
+  [[ $dry_run -eq 0 ]] && write_record "$target" "$hashes"
 fi
 
 info ""

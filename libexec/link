@@ -1,32 +1,34 @@
 #!/usr/bin/env bash
 #
-# research-link -- make sure ~/.local/bin points at the scripts in this clone.
+# omniframe link -- make sure ~/.local/bin/omniframe points at this clone.
 #
 # Run it once after cloning the repo on a new machine:
 #
 #     git clone https://github.com/LeonardoSani/OmniFrame.git
-#     ./OmniFrame/bin/research-link
+#     ./OmniFrame/bin/omniframe link
 #
-# Safe to run any number of times. It reports "already consistent" and changes
-# nothing when the links are already correct, so it doubles as a health check:
+# Every sub-command is found through that one link, so a new one needs no
+# re-linking; only moving the clone does. Safe to run any number of times. It
+# reports "already consistent" and changes nothing when the link is correct:
 #
-#     research-link --check     # verify only, non-zero exit if anything is wrong
+#     omniframe link --check     # verify only, non-zero exit if anything is wrong
 
 set -euo pipefail
 
-BIN_DIR="${RESEARCH_BIN_DIR:-$HOME/.local/bin}"
-# every script in bin/ that belongs on PATH
-SCRIPTS="research-init research-convert research-download"
+BIN_DIR="${OMNIFRAME_BIN_DIR:-$HOME/.local/bin}"
+# the one script on PATH, and the per-script links that came before it
+SCRIPTS="omniframe"
+OLD_SCRIPTS="research-init research-convert research-download research-link"
 
-die() { printf 'research-link: %s\n' "$*" >&2; exit 1; }
+die() { printf 'omniframe link: %s\n' "$*" >&2; exit 1; }
 info() { printf '%s\n' "$*"; }
 
 usage() {
   cat <<'USAGE'
-usage: research-link [--check] [--force] [--bin-dir DIR]
+usage: omniframe link [--check] [--force] [--bin-dir DIR]
 
-Ensures DIR/<script> is a symlink to bin/<script> in this clone, for each of:
-research-init, research-convert, research-download.
+Ensures DIR/omniframe is a symlink to bin/omniframe in this clone, and removes
+the old research-* links that pointed into it.
 
   --check         report only; exit 1 if any link is missing or wrong
   --force         replace whatever is in the way (wrong link, or a real file)
@@ -34,7 +36,7 @@ research-init, research-convert, research-download.
   -h, --help      this text
 
 environment:
-  RESEARCH_BIN_DIR   same as --bin-dir
+  OMNIFRAME_BIN_DIR   same as --bin-dir
 USAGE
 }
 
@@ -62,7 +64,7 @@ while [[ -L "$self" ]]; do
     *)  self="$(cd "$(dirname "$self")" && pwd -P)/$link_target" ;;
   esac
 done
-repo_bin="$(cd "$(dirname "$self")" && pwd -P)"
+repo_bin="$(cd "$(dirname "$self")/../bin" && pwd -P)"
 [[ -x "$self" ]] || chmod +x "$self"
 
 info "clone  : $repo_bin"
@@ -109,7 +111,7 @@ link_one() {
       printf '  %-18s WRONG -- points to %s\n' "$name" "$current_abs"
     fi
     if [[ $check_only -eq 1 ]]; then
-      printf '  %-18s   run research-link to repoint it\n' ""
+      printf '  %-18s   run omniframe link to repoint it\n' ""
       return 1
     fi
     rm "$dst"
@@ -121,7 +123,7 @@ link_one() {
   if [[ -e "$dst" ]]; then
     printf '  %-18s WRONG -- a real file is in the way (not a symlink)\n' "$name"
     if [[ $check_only -eq 1 ]]; then
-      printf '  %-18s   run research-link --force to replace it\n' ""
+      printf '  %-18s   run omniframe link --force to replace it\n' ""
       return 1
     fi
     if [[ $force -eq 0 ]]; then
@@ -137,7 +139,7 @@ link_one() {
 
   if [[ $check_only -eq 1 ]]; then
     printf '  %-18s WRONG -- no link yet\n' "$name"
-    printf '  %-18s   run research-link to create it\n' ""
+    printf '  %-18s   run omniframe link to create it\n' ""
     return 1
   fi
 
@@ -150,6 +152,24 @@ link_one() {
 bad=0
 for name in $SCRIPTS; do
   link_one "$name" || bad=$((bad + 1))
+done
+
+# links to scripts this clone used to have in bin/ now point nowhere
+clone_root="${repo_bin%/bin}"
+for name in $OLD_SCRIPTS; do
+  dst="$BIN_DIR/$name"
+  [[ -L "$dst" ]] || continue
+  case "$(readlink "$dst")" in
+    "$clone_root"/*) ;;
+    *) continue ;;
+  esac
+  if [[ $check_only -eq 1 ]]; then
+    printf '  %-18s WRONG -- old link; run omniframe link to remove it\n' "$name"
+    bad=$((bad + 1))
+  else
+    rm "$dst"
+    printf '  %-18s removed -- replaced by omniframe\n' "$name"
+  fi
 done
 
 case ":$PATH:" in

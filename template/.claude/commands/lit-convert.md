@@ -6,7 +6,7 @@ Convert the papers that are in the library but not yet readable.
 
 ## 1. Convert
 
-Run `research-convert` from the project root. It converts only PDFs that have no markdown,
+Run `omniframe convert` from the project root. It converts only PDFs that have no markdown,
 so running it is always safe. It loads a large local model and can take minutes — say so
 before starting.
 
@@ -18,7 +18,7 @@ prints and stop. Do not try to read the PDFs in its place.
 In `1_Literature/Paper_Index.md`:
 
 - every PDF in `1_Literature/PDFs/` with no row gets one under `## Unsorted` — a paper the
-  researcher dropped in by hand — the same row `research-download` writes:
+  researcher dropped in by hand — the same row `omniframe download` writes:
   `| <citekey> | <title> | <venue> | [pdf](PDFs/<citekey>.pdf) | — | pending |`.
   Take the title from the converted markdown; Venue is `—` if the paper does not state it.
 - every converted paper gets its **Markdown** link:

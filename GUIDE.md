@@ -18,7 +18,7 @@ anywhere inside the project.
 10. [Write the paper](#10-write-the-paper)
 11. [Publish the code](#11-publish-the-code)
 12. [Reference](#12-reference)
-13. [Editing the template](#13-editing-the-template)
+13. [Update and edit OmniFrame](#13-update-and-edit-omniframe)
 
 ---
 
@@ -26,42 +26,32 @@ anywhere inside the project.
 
 ```sh
 cd ~/Projects
-research-init MYPROJ
+omniframe init MYPROJ
 ```
 
-This creates two folders, one inside the other:
-
 ```
-MYPROJ_Brain/          the brain: a git repo, your Obsidian vault
+MYPROJ_Brain/          the brain: one git repo, your Obsidian vault
 ├── 0-Master.md  CLAUDE.md  README.md  1_Literature/ … 5_Paper/
-└── MYPROJ/            the code, and nothing else: the future public repo
-    ├── README.md  LICENSE  .gitignore
-    └── pyproject.toml  .python-version  main.py
+└── MYPROJ/            the code only: the future public repo (uv project, MIT)
 ```
-
-`research-init` runs `git init` in `MYPROJ_Brain/` and `uv init` in `MYPROJ/`. Run it
-again inside `MYPROJ_Brain/` (without a name) to add template files that are missing: it
-skips files that already exist.
 
 | flag | |
 | --- | --- |
 | `--dry-run` | print the plan, write nothing |
 | `--force` | overwrite existing files |
 | `--name "Title"` | project name, if nicer than `MYPROJ` |
-| `--author NAME` | defaults to `git config user.name`. It goes in `LICENSE` too |
+| `--author NAME` | defaults to `git config user.name`. Also goes in `LICENSE` |
 
-Open `MYPROJ_Brain/` as an Obsidian vault and start Claude Code in it. Your entry point
-is `0-Master.md`, with links to every area.
+Open `MYPROJ_Brain/` in Obsidian and Claude Code. Start from `0-Master.md`.
 
-**The code folder.** `MYPROJ/` is one git repo with the brain, but it is built to be
-exported alone later (see [Publish the code](#11-publish-the-code)). So:
+**The code folder** is exported alone later ([§11](#11-publish-the-code)), so it stands alone:
 
-- Its Python environment is `MYPROJ/.venv/`. Run `uv add` and `uv run` from inside
-  `MYPROJ/`.
-- It never refers to a path outside itself. Datasets go in `MYPROJ/data/`; checkpoints,
-  logs and figures in `MYPROJ/outputs/`. Both are gitignored.
-- Its `README.md` and `.gitignore` are the public repo's. The brain has its own of each.
-- MIT is the default license. Replace `LICENSE` if you want another one.
+| | |
+| --- | --- |
+| environment | `MYPROJ/.venv/`. Run `uv add` / `uv run` inside `MYPROJ/` |
+| artifacts | `data/`, `outputs/` inside it, gitignored |
+| paths | never outside `MYPROJ/` |
+| `README.md`, `.gitignore` | the public repo's. The brain has its own |
 
 **Every file you fill starts as a blank form**: headings, table headers and field labels,
 with no instructions inside. This guide says what goes under each heading. The agent's
@@ -133,13 +123,13 @@ paper the field rests on), the agent names that paper and asks you before search
 /lit-download                  # fetch the OK papers, then reset the table
 ```
 
-`/lit-download` runs the terminal script `research-download` and reports what arrived.
+`/lit-download` runs the terminal script `omniframe download` and reports what arrived.
 The script works on its own too:
 
 ```sh
-research-download --dry-run    # preview
-research-download              # same as /lit-download
-research-download --list       # every proposal and its mark
+omniframe download --dry-run    # preview
+omniframe download              # same as /lit-download
+omniframe download --list       # every proposal and its mark
 ```
 
 For each `OK` paper, the download:
@@ -152,8 +142,8 @@ If no open-access PDF exists, the paper stays `OK` with the reason in its row. S
 PDF yourself under that name and run the command again.
 
 ```sh
-research-convert               # every PDF without markdown yet
-research-convert --list        # state of the library
+omniframe convert               # every PDF without markdown yet
+omniframe convert --list        # state of the library
 ```
 
 This writes `1_Literature/Papers/<citekey>/`, the markdown plus extracted images. Papers
@@ -171,7 +161,7 @@ authority. For a paper whose maths matters, an external LLM can clean it up. Thi
 money, unless you use a local Ollama:
 
 ```sh
-research-convert --force --only <citekey> --use-llm
+omniframe convert --force --only <citekey> --use-llm
 ```
 
 ## 6. Cards and syntheses
@@ -303,26 +293,20 @@ at the root of the archive, and upload the zip to Overleaf.
 
 ## 11. Publish the code
 
-The public repo gets the contents of `MYPROJ/` at its root, with one fresh commit. The
-history stays in the brain. Commit in the brain first: the export takes committed files
-only, so `.venv/`, `data/` and `outputs/` never leave.
+The contents of `MYPROJ/` become a new repo with one commit. History stays in the brain.
+Only committed files are exported, so commit first.
 
 ```sh
-mkdir ~/Projects/MYPROJ-public
-git -C ~/Projects/MYPROJ_Brain archive HEAD:MYPROJ | tar -x -C ~/Projects/MYPROJ-public
-cd ~/Projects/MYPROJ-public
-
-uv sync && uv run main.py      # it runs without the brain: test before you push
-
-git init
-git add .
-git commit -m "Initial release"
+mkdir ~/Projects/MYPROJ-public && cd ~/Projects/MYPROJ-public
+git -C ~/Projects/MYPROJ_Brain archive HEAD:MYPROJ | tar -x
+uv sync && uv run main.py                 # runs without the brain?
+git init && git add . && git commit -m "Initial release"
 gh repo create MYPROJ --public --source . --push
 ```
 
-Read the file list before the first push: anything committed in `MYPROJ/` goes public.
+Check the file list first: everything committed in `MYPROJ/` goes public.
 
-**To update it** later, export again over the folder, then commit and push:
+**New release:**
 
 ```sh
 cd ~/Projects/MYPROJ-public
@@ -338,14 +322,15 @@ git add . && git commit -m "Release v1.1" && git push
 
 | command | where | does |
 | --- | --- | --- |
-| `research-init` | terminal | lays the template over a project |
+| `omniframe init MYPROJ` | terminal | creates `MYPROJ_Brain/` and its code folder |
+| `omniframe update` | terminal | brings OmniFrame and the project up to date |
 | `/lit-search ["bias"]` | Claude Code | proposes papers from `High_level.md` |
-| `/lit-download` / `research-download` | Claude Code / terminal | fetches the `OK` papers: PDF, BibTeX, index row |
-| `research-convert` / `/lit-convert` | terminal / Claude Code | PDF → markdown |
+| `/lit-download` / `omniframe download` | Claude Code / terminal | fetches the `OK` papers: PDF, BibTeX, index row |
+| `omniframe convert` / `/lit-convert` | terminal / Claude Code | PDF → markdown |
 | `/lit-cards [citekeys]` | Claude Code | writes missing cards, groups the index |
 | `/lit-outputs [name]` | Claude Code | writes the syntheses in the brief |
 | `/wrap` | Claude Code | rewrites the briefing, checks the brain |
-| `research-link [--check]` | terminal | links the scripts into `~/.local/bin` |
+| `omniframe link [--check]` | terminal | puts `omniframe` on PATH. Once per machine |
 
 ### The two keys
 
@@ -365,8 +350,8 @@ paper or an experiment.
 | `card&outputs_def.md`, the Keep column, `Human_encoding/` | you |
 | `Cards/`, `Literature_Outputs/`, `Runs/` (real runs only) | the agent |
 | `3_Implementation/`, `MYPROJ/`, `Results.md`, `Scenario_Tree.md`, `5_Paper/` | both |
-| `PDFs/` | you and `research-download`. Never overwritten |
-| `Papers/` | `research-convert` only. Read-only |
+| `PDFs/` | you and `omniframe download`. Never overwritten |
+| `Papers/` | `omniframe convert` only. Read-only |
 
 ### Where the agent takes instructions from
 
@@ -390,21 +375,35 @@ It reports problems and fixes nothing.
 
 ---
 
-## 13. Editing the template
+## 13. Update and edit OmniFrame
 
-`research-init` clones `template/` from GitHub each time it runs, so a pushed change reaches
-every new project. The scripts in `bin/` run from your local clone and update with
-`git pull`.
-
-To test a change before pushing:
+| what | updated by |
+| --- | --- |
+| the `omniframe` commands | `git pull` in the clone (`omniframe update` does it) |
+| new projects | nothing: `omniframe init` downloads the template each run |
+| an existing project | `omniframe update`, from inside it |
 
 ```sh
-research-init --repo ~/Projects/OmniFrame /tmp/Try
+cd ~/Projects/MYPROJ_Brain
+omniframe update             # --dry-run to preview
 ```
 
-A local `--repo` path is read as it is on disk, uncommitted changes included.
+It needs a clean `git status`, and leaves its changes uncommitted: review with `git diff`.
 
-`research-init` replaces these tokens in file contents and in path names:
-`__PROJECT_NAME__`, `__CODE_DIR__`, `__SLUG__`, `__PKG__`, `__AUTHOR__`, `__YEAR__`,
-`__DATE__`. `__CODE_DIR__` is the plain project name (`MYPROJ`), so the template's
-`__CODE_DIR__/` folder becomes the code folder.
+| template changed a file you… | result |
+| --- | --- |
+| never touched | replaced |
+| edited, agent or navigation file (`CLAUDE.md`, `/commands`, MOCs) | diff shown, you choose |
+| edited, your content (forms, lists, paper, code) | never touched, listed |
+
+`.omniframe` records what the template installed. Never edit it.
+
+**Editing the template.** Test a change before pushing, uncommitted edits included:
+
+```sh
+omniframe init --repo ~/Projects/OmniFrame /tmp/Try
+omniframe update --no-pull   # inside a project: uses the clone's template as it is
+```
+
+Tokens replaced in file contents and path names: `__PROJECT_NAME__`, `__CODE_DIR__` (the
+plain name, `MYPROJ`), `__SLUG__`, `__PKG__`, `__AUTHOR__`, `__YEAR__`, `__DATE__`.

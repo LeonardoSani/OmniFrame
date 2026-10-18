@@ -65,7 +65,7 @@ existing row, never fill **Keep**.
   role — the foundation, a baseline, a rival approach, the benchmark. Not the abstract.
 - **Link** — the paper's identity, as a URL: `https://doi.org/<doi>` when it has a DOI,
   else `https://arxiv.org/abs/<id>`, else its OpenReview or publisher page.
-  `research-download` takes the BibTeX from it.
+  `omniframe download` takes the BibTeX from it.
 - **PDF** — the direct open-access PDF URL, or `—` if there is none.
 
 Escape a `|` inside a title as `\|`. Set `updated:` to today.
@@ -73,4 +73,4 @@ Escape a `|` inside a title as `\|`. Set `updated:` to today.
 ## 5. Tell me
 
 How many papers were added, the queries run, how the bias shaped the result, and anything
-nearly included and why it was not. End with: mark **Keep**, then run `/lit-download` (or `research-download` in the terminal).
+nearly included and why it was not. End with: mark **Keep**, then run `/lit-download` (or `omniframe download` in the terminal).

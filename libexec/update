@@ -1,0 +1,305 @@
+#!/usr/bin/env bash
+#
+# omniframe update -- bring the OmniFrame clone, then this project, up to date.
+#
+#     cd ~/Projects/MYPROJ_Brain
+#     omniframe update
+#
+# The clone is pulled first, so new sub-commands arrive too. Then every template
+# file is compared three ways: the version the project last got (its base, kept
+# in .omniframe), the template's version now, and the project's file now.
+#
+#   template unchanged                      nothing
+#   changed, project file untouched         replaced
+#   changed, agent or navigation file edited   diff shown, you choose
+#   changed, your content edited            never touched, listed
+#   new in the template                     added
+#   removed, file untouched / edited        deleted / asked
+#
+# Agent files: every CLAUDE.md, .claude/commands/*, .obsidian/app.json.
+# Navigation files: 0-Master.md and the area pages (<area>/<n>-<Name>.md).
+# Changes are left uncommitted, for review with `git diff`.
+
+set -euo pipefail
+
+die() { printf 'omniframe update: %s\n' "$*" >&2; exit 1; }
+info() { printf '%s\n' "$*"; }
+
+here="$(cd "$(dirname "$0")" && pwd -P)"
+. "$here/lib.sh"
+clone="${OMNIFRAME_CLONE:-${here%/libexec}}"
+
+usage() {
+  cat <<'USAGE'
+usage: omniframe update [options]
+
+Pulls the OmniFrame clone, then updates the project you are in from its
+template. Your content is never changed; agent and navigation files you
+edited are shown as a diff, and you choose.
+
+options:
+      --dry-run   print what would happen, write nothing, ask nothing
+      --no-pull   do not pull the clone first
+      --repo DIR  take the template from DIR instead of the clone
+  -C DIR          project root (default: found by walking up from here)
+  -h, --help      this text
+USAGE
+}
+
+dry_run=0
+pull=1
+root=""
+repo=""
+args=("$@")
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --dry-run) dry_run=1;       shift ;;
+    --no-pull) pull=0;          shift ;;
+    --repo)    repo="${2:-}";   shift 2 ;;
+    -C)        root="${2:-}";   shift 2 ;;
+    -h|--help) usage; exit 0 ;;
+    *)         die "unknown option: $1 (try --help)" ;;
+  esac
+done
+
+# --- find the project ----------------------------------------------------------
+
+if [[ -z "$root" ]]; then
+  d="$PWD"
+  while [[ "$d" != "/" ]]; do
+    if [[ -f "$d/$RECORD" || ( -f "$d/0-Master.md" && -f "$d/CLAUDE.md" ) ]]; then
+      root="$d"; break
+    fi
+    d="$(dirname "$d")"
+  done
+fi
+[[ -n "$root" ]] || die "no OmniFrame project here or in any parent"
+root="$(cd "$root" && pwd -P)"
+
+git -C "$root" rev-parse --git-dir >/dev/null 2>&1 || die "$root is not a git repo"
+[[ $dry_run -eq 1 || -z "$(git -C "$root" status --porcelain)" ]] \
+  || die "the project has uncommitted changes. commit or stash them first, so git diff shows only the update"
+
+# --- update the clone, then continue with its new version of this script --------
+
+if [[ $pull -eq 1 ]]; then
+  [[ -z "$(git -C "$clone" status --porcelain)" ]] \
+    || die "the OmniFrame clone ($clone) has local changes; commit or stash them, or pass --no-pull"
+  info "clone    : $clone"
+  if [[ $dry_run -eq 1 ]]; then
+    info "           (dry run -- not pulled)"
+  else
+    git -C "$clone" pull --quiet --ff-only \
+      || die "could not fast-forward the clone; resolve it there, or pass --no-pull"
+    exec "$clone/libexec/update" --no-pull ${args[@]+"${args[@]}"}
+  fi
+fi
+
+linked="$(command -v omniframe 2>/dev/null || true)"
+[[ -L "$linked" ]] && linked="$(readlink "$linked")"
+[[ "$linked" == "$clone/bin/omniframe" ]] \
+  || info "note     : the omniframe on PATH is not this clone's; run $clone/bin/omniframe link"
+
+# --- the template and the record --------------------------------------------------
+
+TEMPLATE_REPO="${repo:-$clone}"
+tmp="$(mktemp -d)"
+trap 'rm -rf "$tmp"' EXIT
+fetch_template
+
+rec="$root/$RECORD"
+if [[ -f "$rec" ]]; then
+  set_tokens "$(record_get "$rec" project_name)" "$(record_get "$rec" code_dir)" \
+             "$(record_get "$rec" pkg)" "$(record_get "$rec" author)" "$(record_get "$rec" date)"
+  adopted=0
+else
+  # a project from before the record: its tokens are read back from what the
+  # template wrote into 0-Master.md ("# NAME", then "AUTHOR · started DATE")
+  code_dir="$(basename "$root")"; code_dir="${code_dir%_Brain}"
+  name="$(sed -n '1s/^# //p' "$root/0-Master.md")"
+  byline="$(sed -n '3p' "$root/0-Master.md")"
+  author="${byline% · started *}"
+  date="${byline##* · started }"
+  [[ "$date" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]] \
+    || date="$(git -C "$root" log --reverse --format=%as 2>/dev/null | head -n1)"
+  [[ -n "$date" ]] || date="$(date +%Y-%m-%d)"
+  [[ "$byline" == *" · started "* ]] || author="$(git config user.name 2>/dev/null || echo "${USER:-unknown}")"
+  set_tokens "${name:-$code_dir}" "$code_dir" "" "$author" "$date"
+  rec="/dev/null"
+  adopted=1
+fi
+
+info "project  : $root"
+info "template : $origin ($template_rev)"
+[[ $adopted -eq 1 ]] && info "record   : none yet -- adopting: every file that differs counts as edited"
+[[ $dry_run -eq 1 ]] && info "(dry run -- nothing is written, nothing is asked)"
+info ""
+
+# agent and navigation files: the ones you are asked about when you edited them
+owned() {
+  case "$1" in
+    CLAUDE.md|*/CLAUDE.md|.claude/commands/*|.obsidian/app.json|0-Master.md) return 0 ;;
+    */*/*) return 1 ;;
+    */[0-9]-*.md) return 0 ;;
+  esac
+  return 1
+}
+
+# ask() FILE QUESTION: 0 for the template's side, 1 for yours. With no
+# terminal, or in a dry run, the answer is always yours.
+interactive=0
+[[ -t 1 ]] && { : < /dev/tty; } 2>/dev/null && interactive=1
+ask() {
+  local reply
+  [[ $dry_run -eq 1 || $interactive -eq 0 ]] && return 1
+  while true; do
+    printf '  %s ' "$2" > /dev/tty
+    read -r reply < /dev/tty || return 1
+    case "$reply" in
+      n|N|d|D) return 0 ;;
+      k|K)     return 1 ;;
+    esac
+  done
+}
+
+# show_diff YOURS NEW PATH
+show_diff() {
+  diff -u -L "yours     $3" -L "template  $3" "$1" "$2" | sed 's/^/    /' || true
+}
+
+n_rep=0; n_add=0; n_del=0; n_keep=0; n_form=0; n_dir=0; n_appd=0
+forms=""
+kept=""
+hashes=""
+record_line() { hashes="$hashes$1"$'\t'"$2"$'\n'; }
+
+# --- every tracked template file --------------------------------------------------
+
+while IFS= read -r rel; do
+  dest_rel="$(expand_path "$rel")"
+  dest="$root/$dest_rel"
+  new="$tmp/new"
+  render "$src/$rel" > "$new"
+  [[ -x "$src/$rel" ]] && chmod +x "$new"
+  h_new="$(file_hash "$new")"
+  base="$(record_base "$rec" "$dest_rel")"
+  record_line "$h_new" "$dest_rel"
+
+  if [[ ! -e "$dest" ]]; then
+    if [[ -z "$base" ]]; then
+      action=add
+    elif [[ "$h_new" == "$base" ]]; then
+      continue                                  # you deleted it; the template agrees
+    else
+      action=edited
+    fi
+  else
+    h_cur="$(file_hash "$dest")"
+    if [[ "$h_cur" == "$h_new" ]]; then
+      continue
+    elif [[ -n "$base" && "$h_new" == "$base" ]]; then
+      continue                                  # the template did not change
+    elif [[ -n "$base" && "$h_cur" == "$base" ]]; then
+      action=replace
+    else
+      action=edited
+    fi
+  fi
+
+  if [[ $action == edited ]]; then
+    if owned "$dest_rel"; then
+      info "  edit  $dest_rel -- yours differs, and the template changed it:"
+      if [[ -e "$dest" ]]; then show_diff "$dest" "$new" "$dest_rel"; else info "    (you deleted it)"; fi
+      if ask "$dest_rel" "[n]ew version or [k]eep yours?"; then
+        action=replace
+      else
+        info "  keep  $dest_rel"
+        n_keep=$((n_keep + 1)); kept="$kept  $dest_rel"$'\n'
+        continue
+      fi
+    else
+      info "  form  $dest_rel -- the template's form changed; yours is left as it is"
+      n_form=$((n_form + 1)); forms="$forms  $dest_rel"$'\n'
+      continue
+    fi
+  fi
+
+  if [[ $action == add ]]; then
+    info "  new   $dest_rel"; n_add=$((n_add + 1))
+  else
+    info "  upd   $dest_rel"; n_rep=$((n_rep + 1))
+  fi
+  if [[ $dry_run -eq 0 ]]; then
+    mkdir -p "$(dirname "$dest")"
+    cp -p "$new" "$dest"
+  fi
+done < <(tracked_files)
+
+# --- files the template no longer has -------------------------------------------
+
+if [[ $adopted -eq 0 ]]; then
+  while IFS=$'\t' read -r kind base dest_rel; do
+    [[ "$kind" == file ]] || continue
+    printf '%s' "$hashes" | cut -f2 | grep -qxF "$dest_rel" && continue
+    dest="$root/$dest_rel"
+    [[ -e "$dest" ]] || continue
+    if [[ "$(file_hash "$dest")" != "$base" ]]; then
+      if ! owned "$dest_rel"; then
+        info "  form  $dest_rel -- removed from the template; yours is left as it is"
+        n_form=$((n_form + 1)); forms="$forms  $dest_rel"$'\n'
+        continue
+      fi
+      info "  edit  $dest_rel -- removed from the template, and you edited it"
+      if ! ask "$dest_rel" "[d]elete it or [k]eep yours?"; then
+        info "  keep  $dest_rel"
+        n_keep=$((n_keep + 1)); kept="$kept  $dest_rel"$'\n'
+        continue
+      fi
+    fi
+    info "  del   $dest_rel"; n_del=$((n_del + 1))
+    [[ $dry_run -eq 0 ]] && rm "$dest"
+  done < "$rec"
+fi
+
+# --- folders and merged lines -------------------------------------------------------
+
+while IFS= read -r rel; do
+  dir="$(expand_path "$(dirname "$rel")")"
+  [[ -d "$root/$dir" ]] && continue
+  info "  dir   $dir/"; n_dir=$((n_dir + 1))
+  [[ $dry_run -eq 0 ]] && mkdir -p "$root/$dir"
+done < <(cd "$src" && find . -name .gitkeep -type f | sed 's|^\./||' | sort)
+
+while IFS= read -r rel; do
+  dest_rel="$(expand_path "${rel%.append}")"
+  dest="$root/$dest_rel"
+  missing="$(render "$src/$rel" | while IFS= read -r line; do
+               [[ -z "$line" ]] && continue
+               grep -qxF -- "$line" "$dest" 2>/dev/null || printf '%s\n' "$line"
+             done)"
+  [[ -n "$missing" ]] || continue
+  info "  appd  $dest_rel ($(printf '%s\n' "$missing" | wc -l | tr -d ' ') lines)"
+  n_appd=$((n_appd + 1))
+  if [[ $dry_run -eq 0 ]]; then
+    needs_newline "$dest" && printf '\n' >> "$dest"
+    printf '%s\n' "$missing" >> "$dest"
+  fi
+done < <(cd "$src" && find . -name '*.append' -type f | sed 's|^\./||' | sort)
+
+# --- the new record, and the summary ----------------------------------------------
+
+[[ $dry_run -eq 0 ]] && write_record "$root" "$hashes"
+
+summary=""
+for pair in "$n_rep updated" "$n_add added" "$n_del deleted" "$n_keep kept yours" \
+            "$n_form left as yours" "$n_dir folders" "$n_appd appended"; do
+  [[ "${pair%% *}" -gt 0 ]] && summary="$summary, $pair"
+done
+info ""
+if [[ -n "$summary" ]]; then info "done: ${summary#, }"; else info "done: already up to date"; fi
+[[ -n "$kept" ]] && { info "kept yours (the template's version was offered once):"; printf '%s' "$kept"; }
+[[ -n "$forms" ]] && { info "your content, where the template's form changed (compare by hand):"; printf '%s' "$forms"; }
+if [[ $dry_run -eq 0 && -n "$(git -C "$root" status --porcelain)" ]]; then
+  info "review: git diff    undo: git checkout . && git clean -fd"
+fi

@@ -14,20 +14,20 @@ How a row fills in:
 
 | Column | Filled by | When |
 | ------ | --------- | ---- |
-| citekey, Title, Venue, PDF | `research-download`, or `/lit-convert` / `/lit-cards` for a PDF dropped in by hand | the PDF exists |
-| Markdown | `/lit-convert` (or `/lit-cards`, after a terminal `research-convert`), from `Papers/<citekey>/.conversion.json` | after conversion |
+| citekey, Title, Venue, PDF | `omniframe download`, or `/lit-convert` / `/lit-cards` for a PDF dropped in by hand | the PDF exists |
+| Markdown | `/lit-convert` (or `/lit-cards`, after a terminal `omniframe convert`), from `Papers/<citekey>/.conversion.json` | after conversion |
 | Card | `/lit-cards` | the card is written, and the paper moves to its group |
 
 ## How papers arrive
 
 `2_Idea/High_level.md` → `/lit-search` proposes papers into `Proposed_literature.md` → the
-researcher marks **Keep** → `/lit-download` (`research-download`) fetches the OK ones → `/lit-convert`.
+researcher marks **Keep** → `/lit-download` (`omniframe download`) fetches the OK ones → `/lit-convert`.
 
 `Proposed_literature.md` holds three things: the open proposals, `## Later` (papers
 deferred, kept across searches) and `## Declined` (never propose these again; one
 ``- `citekey` — title`` line each, and deleting a line lets the paper back in). You fill
 every column of a proposal except **Keep** — that one is the researcher's, and you never
-write in it. What `research-download` does with each mark:
+write in it. What `omniframe download` does with each mark:
 
 | Keep | |
 | ---- | - |
@@ -42,7 +42,7 @@ confirmed. A paper you remember but cannot find does not go in.
 ## What is already here when you arrive
 
 - `PDFs/<citekey>.pdf` — the paper as published. Gitignored. Added to by
-  `research-download` or the researcher (hard rule 3).
+  `omniframe download` or the researcher (hard rule 3).
 - `Papers/<citekey>/` — the same paper converted to markdown, together with the images
   extracted from it, and `.conversion.json` recording how. Read-only.
 - `Human_encoding/` — the researcher's own handwritten notes, scanned (hard rule 2). Scans
