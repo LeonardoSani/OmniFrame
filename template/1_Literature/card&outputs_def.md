@@ -6,9 +6,9 @@ updated: __DATE__
 # Cards & outputs definition
 
 The researcher owns this file. It is the only place that decides what the agent extracts
-from the literature and what it writes. Edit it before asking for cards — or let
-`/lit-cards` and `/lit-outputs` help: when it is empty they ask, and write only what you
-confirm.
+from the literature, how it groups the papers, and what it writes. Edit it before asking
+for cards — or let `/lit-cards` and `/lit-outputs` help: when it is empty they ask, and
+write only what you confirm.
 
 Two different kinds of instruction, bound differently:
 
@@ -28,6 +28,11 @@ starter set is a guess, not a recommendation.
 - **Claimed results** — what they report, with the numbers they state
 - **Limitations** — stated by the authors, and visible but unstated
 - **Relevance to us** — why this paper is in this project's library at all
+
+## Grouping
+
+How the paper index groups the library: the criterion, and the groups if you want them
+fixed. Left empty, the first `/lit-cards` proposes options from the cards.
 
 ## Outputs
 

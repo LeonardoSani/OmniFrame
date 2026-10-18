@@ -40,11 +40,14 @@ to the markdown, no formula copied out of it.
 
 In `1_Literature/Paper_Index.md`, set each new card's **Card** link: `[card](Cards/<citekey>.md)`.
 
-Then group. If the `Grouping:` line is still empty, propose three or four
-criteria that fit this library — by approach family, by role toward our idea, by problem
-setting, chronologically, or another the cards suggest — each with a preview of the groups
-it would produce. Ask the researcher to pick, and write their choice on the `Grouping:`
-line.
+Then group, by `## Grouping` in `1_Literature/card&outputs_def.md`. If that section is
+missing but the index still has a filled `Grouping:` line (a project made before the
+section existed), offer to move the criterion into the brief, and delete the line once
+the researcher agrees. If the section is empty, propose three or four criteria that fit
+this library — by approach family, by role toward our idea, by problem setting,
+chronologically, or another the cards suggest — each with a preview of the groups it
+would produce. Ask the researcher to pick, show the drafted `## Grouping`, and write it
+only once they confirm.
 
 Move each newly carded paper from `## Unsorted` into a `## <group>` section with the same
 table. A paper that fits no existing group: ask — a new group, or a better criterion?

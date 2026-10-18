@@ -67,7 +67,7 @@ may lag behind a rename; if the two disagree, trust this and report the discrepa
 | `1_Literature/Paper_Index.md` | **every paper in the library: citekey, title, arXiv · code · site, links to PDF, markdown, card. the way into any paper** |
 | `0-Master.md` | the master MOC: the human's way in |
 | `.omniframe` | what the template installed, for `omniframe update`. written by `omniframe init`/`update`. never edit |
-| `1_Literature/card&outputs_def.md` | the researcher's brief: card sections, commissioned outputs |
+| `1_Literature/card&outputs_def.md` | the researcher's brief: card sections, the index grouping, commissioned outputs |
 | `1_Literature/Proposed_literature.md` | papers `/lit-search` proposed, awaiting the researcher's Decision; Later; Declined |
 | `1_Literature/PDFs/<citekey>.pdf` | papers as published. gitignored. added to, never overwritten |
 | `1_Literature/Papers/<citekey>/` | converted markdown + extracted images. read-only |
@@ -145,9 +145,9 @@ from the repo root.
 | `1_Literature/PDFs/` | the researcher, and `omniframe download` for papers marked OK. added to, never deleted or overwritten without the researcher's permission |
 | `1_Literature/Papers/` | `omniframe convert`. you read it, never touch it |
 | `1_Literature/Human_encoding/` | the researcher. asked, you may create a note or add embeds for scans they name |
-| `1_Literature/card&outputs_def.md` | the researcher. it governs your cards and commissions your outputs. you help fill it only together with them |
+| `1_Literature/card&outputs_def.md` | the researcher. it governs your cards and the index grouping, and commissions your outputs. you help fill it only together with them |
 | `1_Literature/Proposed_literature.md` | you, through `/lit-search` — except **Decision**, which is the researcher's alone |
-| `1_Literature/Paper_Index.md` | you and `omniframe download`. the grouping criterion is the researcher's choice |
+| `1_Literature/Paper_Index.md` | you and `omniframe download`, grouped by `## Grouping` in `1_Literature/card&outputs_def.md` |
 | `1_Literature/Cards/`, `1_Literature/Literature_Outputs/` | you |
 | `2_Idea/` | the researcher. you write here only when asked — `High_level.md` included, drafted together |
 | `3_Implementation/`, `__CODE_DIR__/`, `4_Results_and_Tracking/Results.md`, `4_Results_and_Tracking/Scenario_Tree.md`, `5_Paper/` | both |

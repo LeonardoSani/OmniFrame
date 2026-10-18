@@ -5,10 +5,10 @@ Papers come in, cards and syntheses go out.
 ## `Paper_Index.md`
 
 The way into any paper — see *Finding a paper* in the root `CLAUDE.md`. It holds no
-analysis — it lists and groups. Rows sit under `## <group>` headings by the criterion named
-on its `Grouping:` line, which the researcher chooses (empty until then); papers not yet
-carded wait under `## Unsorted`. Never change the criterion or regroup filed papers
-without asking.
+analysis — it lists and groups. Rows sit under `## <group>` headings by the criterion in
+`## Grouping` of `card&outputs_def.md`, which the researcher chooses (empty until then);
+papers not yet carded wait under `## Unsorted`. Never change the criterion or regroup
+filed papers without asking.
 
 How a row fills in:
 

@@ -179,6 +179,7 @@ that gives it instructions:
 
 - **`## Cards`** sets the sections every card has, in order. Edit a line and every future
   card follows.
+- **`## Grouping`** sets how the paper index groups the library.
 - **`## Outputs`** lists the **syntheses** you want, one line each, saying what each must
   achieve. The agent chooses their shape and writes nothing you haven't listed.
 - **`## Notes to the agent`** holds anything specific to this project's reading.
@@ -190,9 +191,10 @@ that gives it instructions:
 /lit-outputs "The gap"     # only this one
 ```
 
-If the brief is still untouched, both commands first fill it with you. The first
-`/lit-cards` also asks how to group the index (by approach, by role toward your idea, by
-problem setting…) and files each paper under its group.
+If the brief is still untouched, both commands first fill it with you. If `## Grouping`
+is empty, `/lit-cards` proposes a few ways to group the index (by approach, by role toward
+your idea, by problem setting…), writes your choice there, and files each paper under its
+group.
 
 A card fits on one screen, and every claim in it points to the paper's markdown.
 `1_Literature/Paper_Index.md` is the library: each row links to the paper's **arXiv**,
