@@ -77,4 +77,4 @@ Escape a `|` inside a title as `\|`. Set `updated:` to today.
 ## 5. Tell me
 
 How many papers were added, the queries run, how the bias shaped the result, and anything
-nearly included and why it was not. End with: mark **Decision**, then run `/lit-download` (or `omniframe download` in the terminal).
+nearly included and why it was not. End with: mark **Decision**, then run `/lit-download`.

@@ -28,7 +28,8 @@ Four checks, with grep — do not read every file:
 - every `1_Literature/PDFs/<citekey>.pdf` has a row in `1_Literature/Paper_Index.md` —
   one without was added by hand: suggest `/lit-convert`
 - every document still `status: empty` has nothing under its headings — the researcher
-  may have filled one by hand
+  may have filled one by hand. `1_Literature/Human_encoding/` is not checked: you never
+  read it, and its status is the researcher's to set
 
 **Report what is wrong. Fix nothing** — except a document found filled under
 `status: empty`: ask the researcher whether to mark it `filled`, and do so if they agree.

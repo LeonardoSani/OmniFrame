@@ -64,7 +64,8 @@ confirmed. A paper you remember but cannot find does not go in.
 - `PDFs/<citekey>.pdf` — the paper as published. Gitignored. Added to by
   `omniframe download` or the researcher (hard rule 3).
 - `Papers/<citekey>/` — the same paper converted to markdown, together with the images
-  extracted from it, and `.conversion.json` recording how. Read-only.
+  extracted from it, and `.conversion.json` recording how — a hidden file, so list the
+  folder with `ls -a`. Read-only.
 - `Human_encoding/` — the researcher's own handwritten notes, scanned (hard rule 2). Scans
   sit in the folder; `Human_encoding/Human_encoding.md` is their hub, organised as the
   researcher likes, linking note files in `Human_encoding/Notes/<name>.md` that embed the
