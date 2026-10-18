@@ -15,8 +15,8 @@ doesn't make things up.
 - **Papers from an idea.** Describe the idea in plain words. `/lit-search` proposes papers
   the agent actually found and opened, you mark which to keep, and `/lit-download` fetches the
   PDFs and the BibTeX.
-- **Papers the agent can read.** `omniframe convert` turns PDFs into markdown with a local
-  vision model. It is free and runs offline.
+- **Papers the agent can read.** `/lit-convert` turns PDFs into markdown with a local
+  vision model. It is free and runs offline. A PDF you save yourself is picked up too.
 - **Cards and syntheses on your terms.** You decide what every paper card covers and which
   summary documents you want. `/lit-cards` and `/lit-outputs` write exactly that.
 - **One library index.** Every paper appears once, with its arXiv, code and project

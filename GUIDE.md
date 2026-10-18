@@ -3,26 +3,59 @@
 How to use OmniFrame as designed, from an empty folder to a paper. To install it, see the
 [README](README.md).
 
-Commands starting with `/` run in Claude Code. The others run in the terminal, from
-anywhere inside the project.
+1. [Commands at a glance](#commands-at-a-glance)
+2. [Set up a project](#1-set-up-a-project)
+3. [The session loop](#2-the-session-loop)
+4. [Write the idea](#3-write-the-idea)
+5. [Literature](#4-literature)
+6. [Formalise the method](#5-formalise-the-method)
+7. [Plan the experiments](#6-plan-the-experiments)
+8. [Run and track](#7-run-and-track)
+9. [Write the paper](#8-write-the-paper)
+10. [Publish the code](#9-publish-the-code)
+11. [Reference](#10-reference)
+12. [Update and edit OmniFrame](#11-update-and-edit-omniframe)
 
-1. [Set up a project](#1-set-up-a-project)
-2. [The session loop](#2-the-session-loop)
-3. [Write the idea](#3-write-the-idea)
-4. [Find papers](#4-find-papers)
-5. [Download and convert](#5-download-and-convert)
-6. [Cards and syntheses](#6-cards-and-syntheses)
-7. [Formalise the method](#7-formalise-the-method)
-8. [Plan the experiments](#8-plan-the-experiments)
-9. [Run and track](#9-run-and-track)
-10. [Write the paper](#10-write-the-paper)
-11. [Publish the code](#11-publish-the-code)
-12. [Reference](#12-reference)
-13. [Update and edit OmniFrame](#13-update-and-edit-omniframe)
+---
+
+## Commands at a glance
+
+Two kinds of command, typed in two different places.
+
+**In Claude Code** — typed into the chat, inside the project. They start with `/`. This is
+where the work happens.
+
+| Command | Does |
+| ------- | ---- |
+| `/lit-search ["bias"]` | proposes papers from `2_Idea/High_level.md` |
+| `/lit-download` | fetches the papers marked `OK`: PDF, BibTeX, index row |
+| `/lit-convert` | turns PDFs into markdown; brings in PDFs you added by hand |
+| `/lit-cards [citekeys]` | writes a card per paper, and files it in its group |
+| `/lit-outputs [name]` | writes the syntheses in your brief |
+| `/wrap` | ends the session: rewrites the briefing, checks the brain |
+
+Everything else — the idea, specs, run records, results, the paper — you ask for in plain
+words in the chat.
+
+**In the terminal** — a shell, outside Claude. For setting up, and for the code.
+
+| Command | Does |
+| ------- | ---- |
+| `omniframe link` | puts `omniframe` on your PATH. Once per machine |
+| `omniframe init MYPROJ` | creates `MYPROJ_Brain/` and its code folder |
+| `omniframe update` | brings a project's commands and rules up to date |
+| `uv add …` / `uv run …` | inside `MYPROJ/`, for your code |
+
+`omniframe download` and `omniframe convert` also exist: they are the scripts that
+`/lit-download` and `/lit-convert` run. You never need to call them yourself — except
+`omniframe convert --use-llm`, for a paper whose formulas need cleaning
+([§4](#4-literature)).
 
 ---
 
 ## 1. Set up a project
+
+**In the terminal:**
 
 ```sh
 cd ~/Projects
@@ -44,7 +77,7 @@ MYPROJ_Brain/          the brain: one git repo, your Obsidian vault
 
 Open `MYPROJ_Brain/` in Obsidian and Claude Code. Start from `0-Master.md`.
 
-**The code folder** is exported alone later ([§11](#11-publish-the-code)), so it stands alone:
+**The code folder** is exported alone later ([§9](#9-publish-the-code)), so it stands alone:
 
 | | |
 | --- | --- |
@@ -62,7 +95,7 @@ rules live in the `CLAUDE.md` files, never in your content.
 1. **Start.** The agent reads `4_Results_and_Tracking/Where_we_are.md`, the **briefing**:
    **Now**, **Next**, **Open**, under twenty lines.
 2. **Work.**
-3. **End.** Run `/wrap`. It rewrites the briefing and runs a quick consistency check. It
+3. **End.** Run `/wrap` in Claude Code. It rewrites the briefing and runs a quick consistency check. It
    reports problems and fixes nothing.
 
 The briefing is rewritten each time, never appended to. Git keeps the history.
@@ -93,16 +126,34 @@ index, the proposals), run records and navigation pages have no status.
 A vague keyword list gives you a vague reading list. If the file is empty, ask the agent to
 draft it with you. It asks questions and writes only what you confirm.
 
-## 4. Find papers
+## 4. Literature
+
+One pipeline, one command per step. **All in Claude Code:**
 
 ```
-/lit-search                                          # from High_level.md alone
-/lit-search "theory only, after 2020, no surveys"    # steered by a bias
+1. PROPOSE    /lit-search ["bias"]     papers for your idea — then you mark Decision
+2. DOWNLOAD   /lit-download            PDF + BibTeX + a row under ## Unsorted
+3. CONVERT    /lit-convert             PDF → markdown, linked in the index
+4. CARDS      /lit-cards               a card per paper; the paper moves to its group
+5. OUTPUTS    /lit-outputs             the syntheses in your brief
+```
+
+The library is `1_Literature/Paper_Index.md`. Every paper has one row, linking its
+**arXiv**, **code** and **site** (when they exist), the **pdf** (for you), the **md** (for
+the agent) and the **card**. Rows sit under groups you choose; **`## Unsorted`** holds the
+papers downloaded but not yet carded — download puts every new paper there, and
+`/lit-cards` moves it to its group.
+
+### Step 1 — propose
+
+```
+/lit-search                                          from High_level.md alone
+/lit-search "theory only, after 2020, no surveys"    steered by a bias
 ```
 
 The agent adds about ten proposals to `1_Literature/Proposed_literature.md`, each with its
-venue, why it fits and its links. Each paper is one the agent found and opened online, never
-one recalled from memory.
+venue, why it fits and its links. Each paper is one the agent found and opened online,
+never one recalled from memory.
 
 | Link | holds |
 | ---- | ----- |
@@ -114,67 +165,61 @@ The optional **bias** steers this one search. It narrows `High_level.md` and is 
 If it would exclude a foundational paper (for example, "after 2020" would drop the 2017
 paper the field rests on), the agent names that paper and asks you before searching.
 
-**Choose** by filling the **Decision** column. Only you write in it; a legend above the
+**Your decision.** Fill the **Decision** column. Only you write in it; a legend above the
 table repeats the marks.
 
-| Decision | at download |
+| Decision | at the next download |
 | ---- | ----------- |
 | `OK` | downloaded into the library |
 | `LATER` | moved to `## Later`, kept across searches. Mark it `OK` there at any time |
 | `NO` | moved to `## Declined`, never proposed again. Delete its line to let it back in |
 | blank | dropped. A later search may propose it again |
 
-## 5. Download and convert
+### Step 2 — download
 
 ```
-/lit-download                  # fetch the OK papers, then reset the table
+/lit-download
 ```
 
-`/lit-download` runs the terminal script `omniframe download` and reports what arrived.
-The script works on its own too:
-
-```sh
-omniframe download --dry-run    # preview
-omniframe download              # same as /lit-download
-omniframe download --list       # every proposal and its mark
-```
-
-For each `OK` paper, the download:
+For each `OK` paper:
 
 - finds the open PDF from the arXiv link (arXiv, OpenReview, or Semantic Scholar by DOI)
   and saves it as `1_Literature/PDFs/<citekey>.pdf`, never overwriting an existing one
 - adds its BibTeX to `5_Paper/refs.bib`, taken from the DOI or arXiv
-- adds a row to `1_Literature/Paper_Index.md`, with the paper's links
+- adds its row under `## Unsorted` in the index, with the paper's links
 
-If no open PDF is found, the paper stays `OK` with the reason in its row. Save the
-PDF yourself under that name and run the command again.
+**No open PDF online?** The paper stays `OK`, with the reason in its row. Get the PDF
+yourself, save it as `1_Literature/PDFs/<citekey>.pdf`, and run `/lit-download` again: it
+finds the file in place and does the rest.
 
-```sh
-omniframe convert               # every PDF without markdown yet
-omniframe convert --list        # state of the library
+### Step 3 — convert
+
+```
+/lit-convert
 ```
 
-This writes `1_Literature/Papers/<citekey>/`, the markdown plus extracted images, and puts
-the markdown link into the paper's row in the index. Papers already converted are skipped,
-so running it again is safe. Other flags: `--only <citekey>`, `--force`, `--dry-run`. In
-Claude Code, `/lit-convert` runs the same script.
+Turns every new PDF into `1_Literature/Papers/<citekey>/` — the markdown plus extracted
+images — with a local model (slow: minutes), and puts the markdown link into the index.
+Papers already converted are skipped, so running it again is safe.
 
-**Already have a PDF?** Save it into `1_Literature/PDFs/` under any name and run
-`/lit-convert`. It identifies the paper, asks whether it may rename the file to its
-citekey (`author2024keyword`), then puts it through download — for the BibTeX and the
-index row — and conversion. Afterwards it is like any other paper. No search needed.
+**A PDF you downloaded yourself.** Save it into `1_Literature/PDFs/` under any name and run
+`/lit-convert`. It identifies the paper and asks whether it may rename the file to its
+citekey (`paper (1).pdf` → `lu2022dpm.pdf`). Then it puts the paper through download — for
+the BibTeX and the index row — and conversion. Afterwards it is like any other paper. No
+search needed.
 
 **Formulas.** The converter outputs some equations as clean LaTeX and flattens others into
 HTML. This is by design: the agent uses the markdown to understand a paper and never
 copies a formula from it. When it needs a formula, it asks you, and the PDF is the
-authority. For a paper whose maths matters, an external LLM can clean it up. This costs
-money, unless you use a local Ollama:
+authority. For a paper whose maths matters, an external LLM can clean it up — the one
+time you run the converter yourself. It costs money, unless you use a local Ollama. **In
+the terminal:**
 
 ```sh
 omniframe convert --force --only <citekey> --use-llm
 ```
 
-## 6. Cards and syntheses
+### Steps 4–5 — cards and syntheses
 
 `1_Literature/card&outputs_def.md` is your **brief** to the agent, the one content file
 that gives it instructions:
@@ -187,28 +232,24 @@ that gives it instructions:
 - **`## Notes to the agent`** holds anything specific to this project's reading.
 
 ```
-/lit-cards                 # a card for every converted paper that has none
-/lit-cards smith2024foo    # only these
-/lit-outputs               # every synthesis in the brief
-/lit-outputs "The gap"     # only this one
+/lit-cards                 a card for every converted paper that has none
+/lit-cards smith2024foo    only these
+/lit-outputs               every synthesis in the brief
+/lit-outputs "The gap"     only this one
 ```
 
 If the brief is still untouched, both commands first fill it with you. If `## Grouping`
 is empty, `/lit-cards` proposes a few ways to group the index (by approach, by role toward
-your idea, by problem setting…), writes your choice there, and files each paper under its
-group.
-
-A card fits on one screen, and every claim in it points to the paper's markdown.
-`1_Literature/Paper_Index.md` is the library: each row links to the paper's **arXiv**,
-**code** and **site** (when they exist), the **pdf** (for you), the **md** (for the agent)
-and the **card**.
+your idea, by problem setting…), writes your choice there, and moves each carded paper
+from `## Unsorted` to its group. A card fits on one screen, and every claim in it points
+to the paper's markdown.
 
 **Handwritten notes.** Put scans in `1_Literature/Human_encoding/`. Organise them from
 `Human_encoding.md`, with one note per topic in `Notes/` that embeds the scans:
 `![](../scan_03.pdf)`. The agent never reads them. If you ask, it can set up a note, but it
 never interprets one.
 
-## 7. Formalise the method
+## 5. Formalise the method
 
 `2_Idea/Setup_and_Method.md` states the gap the literature showed, formally:
 
@@ -228,7 +269,7 @@ a spec and goes in `3_Implementation/`. So `2_Idea/` never names a layer count, 
 rate, a dataset, a library or a seed. It says *an encoder with these properties*.
 `3_Implementation/` says *which encoder, at what size*.
 
-## 8. Plan the experiments
+## 6. Plan the experiments
 
 **`2_Idea/Experiments.md`** defines each experiment once, under a permanent **E-id**:
 
@@ -270,7 +311,7 @@ flowchart LR
 Under the DAG, `## Runnable now` lists what you can launch today, and `## Blocked` lists
 what each remaining experiment is waiting on.
 
-## 9. Run and track
+## 7. Run and track
 
 When a run finishes, ask the agent to do all three steps in one go:
 
@@ -288,7 +329,7 @@ When a run finishes, ask the agent to do all three steps in one go:
 **No invented numbers.** Every metric in the project traces back to a file in `Runs/`. If
 there is no record, the agent says the number doesn't exist.
 
-## 10. Write the paper
+## 8. Write the paper
 
 `5_Paper/` is self-contained LaTeX: `main.tex`, `preamble.tex`, `sections/*.tex`,
 `refs.bib`, `figures/`. To compile, zip the folder's **contents**, so that `main.tex` sits
@@ -304,10 +345,10 @@ at the root of the archive, and upload the zip to Overleaf.
 - **Claims.** The paper can explain `2_Idea/` at more length, but it must not claim
   anything different. If a claim has to change, change it in `2_Idea/` first.
 
-## 11. Publish the code
+## 9. Publish the code
 
 The contents of `MYPROJ/` become a new repo with one commit. History stays in the brain.
-Only committed files are exported, so commit first.
+Only committed files are exported, so commit first. **In the terminal:**
 
 ```sh
 mkdir ~/Projects/MYPROJ-public && cd ~/Projects/MYPROJ-public
@@ -329,21 +370,7 @@ git add . && git commit -m "Release v1.1" && git push
 
 ---
 
-## 12. Reference
-
-### Commands
-
-| command | where | does |
-| --- | --- | --- |
-| `omniframe init MYPROJ` | terminal | creates `MYPROJ_Brain/` and its code folder |
-| `omniframe update` | terminal | brings OmniFrame and the project up to date |
-| `/lit-search ["bias"]` | Claude Code | proposes papers from `High_level.md` |
-| `/lit-download` / `omniframe download` | Claude Code / terminal | fetches the `OK` papers: PDF, BibTeX, index row |
-| `omniframe convert` / `/lit-convert` | terminal / Claude Code | PDF → markdown, linked in the index. `/lit-convert` also brings in PDFs you added by hand |
-| `/lit-cards [citekeys]` | Claude Code | writes missing cards, groups the index |
-| `/lit-outputs [name]` | Claude Code | writes the syntheses in the brief |
-| `/wrap` | Claude Code | rewrites the briefing, checks the brain |
-| `omniframe link [--check]` | terminal | puts `omniframe` on PATH. Once per machine |
+## 10. Reference
 
 ### The two keys
 
@@ -363,8 +390,9 @@ paper or an experiment.
 | `card&outputs_def.md`, the Decision column, `Human_encoding/` | you |
 | `Cards/`, `Literature_Outputs/`, `Runs/` (real runs only) | the agent |
 | `3_Implementation/`, `MYPROJ/`, `Results.md`, `Scenario_Tree.md`, `5_Paper/` | both |
-| `PDFs/` | you and `omniframe download`. Never overwritten |
+| `PDFs/` | you and `omniframe download`. Never overwritten; renamed to its citekey only with your permission |
 | `Papers/` | `omniframe convert` only. Read-only |
+| `Paper_Index.md` | `omniframe download` (rows) and `omniframe convert` (markdown links); the agent, for cards and groups |
 
 ### Where the agent takes instructions from
 
@@ -388,13 +416,15 @@ It reports problems and fixes nothing.
 
 ---
 
-## 13. Update and edit OmniFrame
+## 11. Update and edit OmniFrame
 
 | what | updated by |
 | --- | --- |
 | the `omniframe` commands | `git pull` in the clone (`omniframe update` does it) |
 | new projects | nothing: `omniframe init` downloads the template each run |
 | an existing project | `omniframe update`, from inside it |
+
+**In the terminal:**
 
 ```sh
 cd ~/Projects/MYPROJ_Brain
@@ -411,7 +441,8 @@ It needs a clean `git status`, and leaves its changes uncommitted: review with `
 
 `.omniframe` records what the template installed. Never edit it.
 
-**Editing the template.** Test a change before pushing, uncommitted edits included:
+**Editing the template.** Test a change before pushing, uncommitted edits included. **In
+the terminal:**
 
 ```sh
 omniframe init --repo ~/Projects/OmniFrame /tmp/Try
