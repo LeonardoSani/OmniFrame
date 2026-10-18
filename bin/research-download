@@ -4,7 +4,7 @@
 #
 # Run it from anywhere inside a research project, after marking the Keep column:
 #
-#     cd ~/Projects/MYPROJ
+#     cd ~/Projects/MYPROJ_Brain
 #     research-download
 #
 # For every row marked OK, in the proposals table or in ## Later:

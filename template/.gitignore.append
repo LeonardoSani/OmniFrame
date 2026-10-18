@@ -1,9 +1,7 @@
-
 # --- research brain ---
 # paper PDFs are recoverable from the citekey; the converted markdown in
 # Papers/ is what gets read, and that is committed
 1_Literature/PDFs/
-data/
 .obsidian/workspace.json
 .obsidian/cache
 .DS_Store

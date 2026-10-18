@@ -1,0 +1,8 @@
+# the environment, rebuilt by `uv sync`
+.venv/
+__pycache__/
+*.pyc
+# datasets, checkpoints, logs and figures: produced, not committed
+data/
+outputs/
+.DS_Store

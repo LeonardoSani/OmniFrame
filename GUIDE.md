@@ -16,31 +16,52 @@ anywhere inside the project.
 8. [Plan the experiments](#8-plan-the-experiments)
 9. [Run and track](#9-run-and-track)
 10. [Write the paper](#10-write-the-paper)
-11. [Reference](#11-reference)
-12. [Editing the template](#12-editing-the-template)
+11. [Publish the code](#11-publish-the-code)
+12. [Reference](#12-reference)
+13. [Editing the template](#13-editing-the-template)
 
 ---
 
 ## 1. Set up a project
 
 ```sh
-mkdir ~/Projects/MYPROJ && cd ~/Projects/MYPROJ
-uv init
-research-init
+cd ~/Projects
+research-init MYPROJ
 ```
 
-`research-init` lays the template over the folder. It skips files that already exist (so
-uv's `pyproject.toml` survives) and appends to `.gitignore`.
+This creates two folders, one inside the other:
+
+```
+MYPROJ_Brain/          the brain: a git repo, your Obsidian vault
+├── 0-Master.md  CLAUDE.md  README.md  1_Literature/ … 5_Paper/
+└── MYPROJ/            the code, and nothing else: the future public repo
+    ├── README.md  LICENSE  .gitignore
+    └── pyproject.toml  .python-version  main.py
+```
+
+`research-init` runs `git init` in `MYPROJ_Brain/` and `uv init` in `MYPROJ/`. Run it
+again inside `MYPROJ_Brain/` (without a name) to add template files that are missing: it
+skips files that already exist.
 
 | flag | |
 | --- | --- |
 | `--dry-run` | print the plan, write nothing |
 | `--force` | overwrite existing files |
-| `--name "Title"` | project name, if nicer than the folder name |
-| `--author NAME` | defaults to `git config user.name` |
+| `--name "Title"` | project name, if nicer than `MYPROJ` |
+| `--author NAME` | defaults to `git config user.name`. It goes in `LICENSE` too |
 
-Open the folder as an Obsidian vault and start Claude Code in it. Your entry point is
-`0-Master.md`, with links to every area.
+Open `MYPROJ_Brain/` as an Obsidian vault and start Claude Code in it. Your entry point
+is `0-Master.md`, with links to every area.
+
+**The code folder.** `MYPROJ/` is one git repo with the brain, but it is built to be
+exported alone later (see [Publish the code](#11-publish-the-code)). So:
+
+- Its Python environment is `MYPROJ/.venv/`. Run `uv add` and `uv run` from inside
+  `MYPROJ/`.
+- It never refers to a path outside itself. Datasets go in `MYPROJ/data/`; checkpoints,
+  logs and figures in `MYPROJ/outputs/`. Both are gitignored.
+- Its `README.md` and `.gitignore` are the public repo's. The brain has its own of each.
+- MIT is the default license. Replace `LICENSE` if you want another one.
 
 **Every file you fill starts as a blank form**: headings, table headers and field labels,
 with no instructions inside. This guide says what goes under each heading. The agent's
@@ -224,7 +245,7 @@ E-ids are never renumbered. Mark an abandoned experiment as abandoned instead of
 | --- | --- |
 | `Specs.md` | per E-id: model, hyperparameters, data / splits, seeds, compute, metrics, plus a note for any choice whose reason isn't obvious |
 | `Figures.md` | one block per figure. A **plot** needs its source runs and encoding, a **schematic** the mechanism it shows and what it leaves out, a **panel** its rule for choosing examples |
-| `Code_Design.md` | repo structure, modules, entry points, artifacts. The template ships no code folder, so decide the layout here first |
+| `Code_Design.md` | how `MYPROJ/` is laid out: modules, entry points, artifacts. The template ships only its shell, so decide the layout here first |
 
 **`4_Results_and_Tracking/Scenario_Tree.md`** is a mermaid DAG of the experiments:
 
@@ -274,14 +295,44 @@ at the root of the archive, and upload the zip to Overleaf.
   paper that has no card.
 - **Notation.** `preamble.tex` macros mirror `## Notation`. When you change a symbol, change
   it in both.
-- **Figures.** Name them descriptively, e.g. `encoder-overview.pdf` with
+- **Figures.** The code writes them to `MYPROJ/outputs/`; copy the ones the paper uses
+  into `figures/`. Name them descriptively, e.g. `encoder-overview.pdf` with
   `\label{fig:encoder-overview}`, not by their number in `Figures.md`.
 - **Claims.** The paper can explain `2_Idea/` at more length, but it must not claim
   anything different. If a claim has to change, change it in `2_Idea/` first.
 
+## 11. Publish the code
+
+The public repo gets the contents of `MYPROJ/` at its root, with one fresh commit. The
+history stays in the brain. Commit in the brain first: the export takes committed files
+only, so `.venv/`, `data/` and `outputs/` never leave.
+
+```sh
+mkdir ~/Projects/MYPROJ-public
+git -C ~/Projects/MYPROJ_Brain archive HEAD:MYPROJ | tar -x -C ~/Projects/MYPROJ-public
+cd ~/Projects/MYPROJ-public
+
+uv sync && uv run main.py      # it runs without the brain: test before you push
+
+git init
+git add .
+git commit -m "Initial release"
+gh repo create MYPROJ --public --source . --push
+```
+
+Read the file list before the first push: anything committed in `MYPROJ/` goes public.
+
+**To update it** later, export again over the folder, then commit and push:
+
+```sh
+cd ~/Projects/MYPROJ-public
+git rm -rq . && git -C ~/Projects/MYPROJ_Brain archive HEAD:MYPROJ | tar -x
+git add . && git commit -m "Release v1.1" && git push
+```
+
 ---
 
-## 11. Reference
+## 12. Reference
 
 ### Commands
 
@@ -313,7 +364,7 @@ paper or an experiment.
 | `2_Idea/` | you. The agent writes there only when asked |
 | `card&outputs_def.md`, the Keep column, `Human_encoding/` | you |
 | `Cards/`, `Literature_Outputs/`, `Runs/` (real runs only) | the agent |
-| `3_Implementation/`, `Results.md`, `Scenario_Tree.md`, `5_Paper/` | both |
+| `3_Implementation/`, `MYPROJ/`, `Results.md`, `Scenario_Tree.md`, `5_Paper/` | both |
 | `PDFs/` | you and `research-download`. Never overwritten |
 | `Papers/` | `research-convert` only. Read-only |
 
@@ -339,7 +390,7 @@ It reports problems and fixes nothing.
 
 ---
 
-## 12. Editing the template
+## 13. Editing the template
 
 `research-init` clones `template/` from GitHub each time it runs, so a pushed change reaches
 every new project. The scripts in `bin/` run from your local clone and update with
@@ -348,10 +399,12 @@ every new project. The scripts in `bin/` run from your local clone and update wi
 To test a change before pushing:
 
 ```sh
-research-init --repo ~/Projects/OmniFrame
+research-init --repo ~/Projects/OmniFrame /tmp/Try
 ```
 
-Note that `--repo` clones the local repository, so it uses committed changes only.
+A local `--repo` path is read as it is on disk, uncommitted changes included.
 
 `research-init` replaces these tokens in file contents and in path names:
-`__PROJECT_NAME__`, `__SLUG__`, `__PKG__`, `__AUTHOR__`, `__YEAR__`, `__DATE__`.
+`__PROJECT_NAME__`, `__CODE_DIR__`, `__SLUG__`, `__PKG__`, `__AUTHOR__`, `__YEAR__`,
+`__DATE__`. `__CODE_DIR__` is the plain project name (`MYPROJ`), so the template's
+`__CODE_DIR__/` folder becomes the code folder.

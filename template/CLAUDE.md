@@ -1,8 +1,9 @@
 # __PROJECT_NAME__ — the research brain
 
 This repo holds one research project whole: the literature, the formal idea, the
-implementation decisions, the results, and the paper. You are working inside a
-researcher's thinking. Your job is to fill, connect and check it — not to author it.
+implementation decisions, the results, the paper, and the code in `__CODE_DIR__/`. You
+are working inside a researcher's thinking. Your job is to fill, connect and check it —
+not to author it.
 
 **Before writing anything in an area, read that area's `CLAUDE.md` first.** Each one
 defines the shape of its files and what counts as done. Do not skip it because a file
@@ -73,6 +74,7 @@ may lag behind a rename; if the two disagree, trust this and report the discrepa
 | `3_Implementation/Specs.md` | per E-id: architecture, hyperparams, data, seeds, compute |
 | `3_Implementation/Figures.md` | what each figure must show |
 | `3_Implementation/Code_Design.md` | repo structure and modules — decides where code goes |
+| `__CODE_DIR__/` | the code, and nothing else: it will be published alone. read `3_Implementation/CLAUDE.md` before writing here |
 | `4_Results_and_Tracking/Results.md` | the analysis, by hypothesis |
 | `4_Results_and_Tracking/Scenario_Tree.md` | the experiment DAG, and what is runnable now |
 | `4_Results_and_Tracking/Runs/<E-id>-<date>.md` | one record per run. the only source of a metric |
@@ -81,9 +83,6 @@ may lag behind a rename; if the two disagree, trust this and report the discrepa
 
 Each area also has its own `CLAUDE.md`: `1_Literature/CLAUDE.md`, `2_Idea/CLAUDE.md`,
 `3_Implementation/CLAUDE.md`, `4_Results_and_Tracking/CLAUDE.md`, `5_Paper/CLAUDE.md`.
-
-Code lives in this repo too, but its layout is decided in
-`3_Implementation/Code_Design.md` — not here, and not by you unprompted.
 
 ## The two keys
 
@@ -145,7 +144,7 @@ from the repo root.
 | `1_Literature/Paper_Index.md` | you and `research-download`. the grouping criterion is the researcher's choice |
 | `1_Literature/Cards/`, `1_Literature/Literature_Outputs/` | you |
 | `2_Idea/` | the researcher. you write here only when asked — `High_level.md` included, drafted together |
-| `3_Implementation/`, `4_Results_and_Tracking/Results.md`, `4_Results_and_Tracking/Scenario_Tree.md`, `5_Paper/` | both |
+| `3_Implementation/`, `__CODE_DIR__/`, `4_Results_and_Tracking/Results.md`, `4_Results_and_Tracking/Scenario_Tree.md`, `5_Paper/` | both |
 | `4_Results_and_Tracking/Runs/` | you, from real runs only |
 
 ## Hard rules
@@ -195,8 +194,10 @@ nothing silently:
   of file has one
 - no unsubstituted template placeholder survives (a bare double-underscored
   uppercase name, as written by the scaffolder)
+- no file in `__CODE_DIR__/` refers to a path outside it
 
-## This repo's README
+## The two READMEs
 
-Keep `README.md` to a short paragraph saying what the project is, pointing at
-`0-Master.md`. The brain is the documentation; the README is a doorway.
+`README.md` at the root is the brain's: a short paragraph saying what the project is,
+pointing at `0-Master.md`. The brain is the documentation; the README is a doorway.
+`__CODE_DIR__/README.md` is the public one; its rules are in `3_Implementation/CLAUDE.md`.

@@ -4,7 +4,7 @@
 #
 # Run it from anywhere inside a research project:
 #
-#     cd ~/Projects/MYPROJ
+#     cd ~/Projects/MYPROJ_Brain
 #     research-convert
 #
 # A paper at "1_Literature/PDFs/<citekey>.pdf" is new when

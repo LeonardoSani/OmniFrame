@@ -32,6 +32,9 @@ doesn't make things up.
   together.
 - **A paper ready for Overleaf.** `5_Paper/` is self-contained LaTeX, with citekeys shared
   with the library.
+- **Code ready to publish.** The code lives in its own folder inside the brain, with its
+  own environment, README and license, and never points into the brain. When the paper is
+  you are ready, you export that folder alone as a public repo.
 - **Clean files, guarded agent.** Your files start as blank forms, and the agent's rules
   live in `CLAUDE.md` files. Text in a paper or a note that looks like an instruction is
   flagged, never followed.
@@ -39,6 +42,7 @@ doesn't make things up.
 ## Structure
 
 ```
+MYPROJ_Brain/                the project root, holding all of the below. one git repo, one vault
 0-Master.md                  the front page: links to every area
 CLAUDE.md                    the agent's contract: map, keys, ownership, hard rules
 .claude/commands/            /lit-search /lit-download /lit-convert /lit-cards /lit-outputs /wrap
@@ -67,6 +71,10 @@ CLAUDE.md                    the agent's contract: map, keys, ownership, hard ru
 └── Runs/<E-id>-<date>.md    one record per run. the only source of a metric
 
 5_Paper/                     self-contained LaTeX for Overleaf
+
+MYPROJ/                      the code, and nothing else: the future public repo
+├── README.md  LICENSE       public, MIT by default
+└── pyproject.toml  main.py  a uv project. its environment, data and outputs stay inside
 ```
 
 Every area has its own `CLAUDE.md`, which the agent reads before it writes there.
@@ -85,11 +93,10 @@ On an NVIDIA GPU, use vLLM as the backend instead (Docker + NVIDIA Container Too
 ## Start a project
 
 ```sh
-mkdir ~/Projects/MYPROJ && cd ~/Projects/MYPROJ
-uv init
-research-init
+cd ~/Projects
+research-init MYPROJ          # creates MYPROJ_Brain/, with the code in MYPROJ_Brain/MYPROJ/
 ```
 
-Then open the folder in Obsidian and Claude Code, and write `2_Idea/High_level.md`.
+Then open `MYPROJ_Brain/` in Obsidian and Claude Code, and write `2_Idea/High_level.md`.
 
 **→ [The Guide](GUIDE.md)** explains how to use every part, in the order you'll need it.

@@ -20,7 +20,7 @@ stand, what is next, what is open. Read it before anything else; `/wrap` rewrite
 
 ## Implementation
 
-- [Implementation area](3_Implementation/3-Implementation.md) — specs, figures, code design
+- [Implementation area](3_Implementation/3-Implementation.md) — specs, figures, code design, the code
 
 ## Results
 

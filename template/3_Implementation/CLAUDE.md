@@ -38,9 +38,23 @@ Figures here are **not** numbered to match the paper. The paper names and labels
 figures (see `5_Paper/CLAUDE.md`), because figures get merged, dropped and reordered
 during writing, and a shared id scheme would be a second thing to keep in sync.
 
-**`Code_Design.md`** — where the code lives and how it is split: **Repo structure**,
+**`Code_Design.md`** — how the code in `__CODE_DIR__/` is split: **Repo structure**,
 **Modules** (module · responsibility), **Entry points** (how an E-id reaches the code that
-runs it), **Artifacts** (where checkpoints and logs go, which are gitignored; paper
-figures go to `5_Paper/figures/`). The template ships no code folder on purpose: that is
-this file's decision. Until it is written, do not scatter
-modules. Whatever `uv init` created is the starting point, not a constraint.
+runs it), **Artifacts** (what goes under `data/` and `outputs/`). The template ships only
+the folder's shell; the layout inside it is this file's decision. Until it is written, do
+not scatter modules. Whatever `uv init` created is the starting point, not a constraint.
+
+## The code folder
+
+`__CODE_DIR__/` holds the project's code and nothing else, because it will be exported
+alone into a public repo. Whatever is in it must work, and make sense, with the brain gone:
+
+- **Self-contained.** Nothing in it reads or writes a path outside it — no `../`, no
+  absolute path. No brain content goes in it: no notes, no specs, no `CLAUDE.md`.
+- **Artifacts stay inside.** Datasets go under `data/`; checkpoints, logs and figures under
+  `outputs/`. Both are gitignored. A figure the paper uses is copied into `5_Paper/figures/`
+  under its descriptive name; the code never writes there.
+- **Dependencies through `uv add` only**, run inside `__CODE_DIR__/`, so `pyproject.toml`
+  and `uv.lock` describe the whole environment. The environment is `__CODE_DIR__/.venv/`.
+- **Its `README.md` is public**: what the code does, how to install and run it. Never a
+  link into the brain.

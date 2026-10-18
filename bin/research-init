@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 #
-# research-init -- lay the AI research template over a project.
+# research-init -- create a research project: the brain, and its code folder.
 #
-# Typical use, straight after creating the project with uv:
+#     cd ~/Projects
+#     research-init MYPROJ
 #
-#     mkdir ~/Projects/MYPROJ && cd ~/Projects/MYPROJ
-#     uv init
-#     research-init
+# makes MYPROJ_Brain/ (the brain, a git repo) and MYPROJ_Brain/MYPROJ/ (the code,
+# a uv project that can later be exported alone into a public repo).
 #
 # The template content is cloned from the template repo on every run, so a
 # project always gets the current version. Files that already exist are left
-# alone unless --force is given, which keeps whatever uv wrote intact.
+# alone unless --force is given, so running it again inside a project is safe.
 
 set -euo pipefail
 
@@ -23,14 +23,17 @@ info() { printf '%s\n' "$*"; }
 
 usage() {
   cat <<'USAGE'
-usage: research-init [options] [DIR]
+usage: research-init [options] [NAME]
 
-Copies the research template into DIR (default: the current directory),
-substituting the template tokens in file contents and in path names.
+Creates NAME_Brain/ from the research template, substituting the template
+tokens in file contents and in path names, then runs `git init` there and
+`uv init` in its code folder NAME_Brain/NAME/. NAME may be a path; a trailing
+_Brain is not doubled. Without NAME, the current folder is used, and its name
+must end in _Brain.
 
 options:
-  -n, --name NAME     project display name  (default: the folder's name)
-  -p, --pkg PKG       python package name   (default: from pyproject.toml, else the slug)
+  -n, --name NAME     project display name  (default: NAME)
+  -p, --pkg PKG       python package name   (default: the slug, with underscores)
   -a, --author NAME   author                (default: git config user.name)
       --repo URL      template repo url, or a local path
       --ref REF       branch/tag/commit to clone              (default: main)
@@ -39,7 +42,7 @@ options:
   -h, --help          this text
 
 tokens, replaced in file contents and in file/directory names:
-  __PROJECT_NAME__  __SLUG__  __PKG__  __AUTHOR__  __YEAR__  __DATE__
+  __PROJECT_NAME__  __CODE_DIR__  __SLUG__  __PKG__  __AUTHOR__  __YEAR__  __DATE__
 
 A template with no tokens in it is simply copied as-is.
 .gitkeep marks a directory to create; it and .DS_Store are never copied.
@@ -78,34 +81,40 @@ while [[ $# -gt 0 ]]; do
     -h|--help)   usage; exit 0 ;;
     --)          shift; break ;;
     -*)          die "unknown option: $1 (try --help)" ;;
-    *)           [[ -n "$target" ]] && die "only one DIR may be given"
+    *)           [[ -n "$target" ]] && die "only one NAME may be given"
                  target="$1";            shift ;;
   esac
 done
 
-[[ -n "$target" ]] || target="$PWD"
-mkdir -p "$target"
-target="$(cd "$target" && pwd -P)"
+if [[ -z "$target" ]]; then
+  [[ "$(basename "$PWD")" == *_Brain ]] \
+    || die "give a NAME (research-init MYPROJ), or run it inside a NAME_Brain folder"
+  target="$PWD"
+fi
+target="${target%/}"
+[[ "$target" == *_Brain ]] || target="${target}_Brain"
+
+parent="$(dirname "$target")"
+[[ -d "$parent" ]] || die "no such directory: $parent"
+target="$(cd "$parent" && pwd -P)/$(basename "$target")"
+[[ $dry_run -eq 1 ]] || mkdir -p "$target"
 
 command -v git >/dev/null 2>&1 || die "git is required"
 command -v perl >/dev/null 2>&1 || die "perl is required"
+command -v uv >/dev/null 2>&1 || die "uv is required (https://docs.astral.sh/uv/)"
 
 # --- work out the token values ----------------------------------------------
 
-project_name="${opt_name:-$(basename "$target")}"
+code_dir="$(basename "$target")"
+code_dir="${code_dir%_Brain}"
+[[ -n "$code_dir" ]] || die "the folder name needs a NAME before _Brain"
+code="$target/$code_dir"
+
+project_name="${opt_name:-$code_dir}"
 slug="$(slugify "$project_name")"
 [[ -n "$slug" ]] || die "could not derive a slug from '$project_name'; pass --name"
 
-if [[ -n "$opt_pkg" ]]; then
-  pkg="$opt_pkg"
-else
-  pkg=""
-  if [[ -f "$target/pyproject.toml" ]]; then
-    pkg="$(sed -n 's/^name[[:space:]]*=[[:space:]]*"\([^"]*\)".*/\1/p' \
-             "$target/pyproject.toml" | head -n1)"
-  fi
-  [[ -n "$pkg" ]] || pkg="$slug"
-fi
+pkg="${opt_pkg:-$slug}"
 pkg="$(printf '%s' "$pkg" | tr '[:upper:]-' '[:lower:]_')"
 
 if [[ -n "$opt_author" ]]; then
@@ -116,6 +125,7 @@ else
 fi
 
 export T_PROJECT_NAME="$project_name"
+export T_CODE_DIR="$code_dir"
 export T_SLUG="$slug"
 export T_PKG="$pkg"
 export T_AUTHOR="$author"
@@ -145,6 +155,7 @@ src="$(cd "$src" && pwd -P)"
 expand_path() {
   local p="$1"
   p="${p//__PROJECT_NAME__/$T_PROJECT_NAME}"
+  p="${p//__CODE_DIR__/$T_CODE_DIR}"
   p="${p//__SLUG__/$T_SLUG}"
   p="${p//__PKG__/$T_PKG}"
   p="${p//__AUTHOR__/$T_AUTHOR}"
@@ -161,6 +172,7 @@ is_text() {
 substitute() {
   perl -pe '
     s/__PROJECT_NAME__/$ENV{T_PROJECT_NAME}/g;
+    s/__CODE_DIR__/$ENV{T_CODE_DIR}/g;
     s/__SLUG__/$ENV{T_SLUG}/g;
     s/__PKG__/$ENV{T_PKG}/g;
     s/__AUTHOR__/$ENV{T_AUTHOR}/g;
@@ -176,7 +188,7 @@ needs_newline() {
 
 info "template : $origin"
 info "target   : $target"
-info "name     : $project_name    pkg: $pkg    author: $author"
+info "name     : $project_name    code: $code_dir/    pkg: $pkg    author: $author"
 [[ $dry_run -eq 1 ]] && info "(dry run -- nothing is written)"
 info ""
 
@@ -259,6 +271,29 @@ while IFS= read -r file; do
   fi
   [[ -x "$file" ]] && chmod +x "$dest"
 done < <(find "$src" -type f | sort)
+
+# --- the brain repo and the code project --------------------------------------
+
+# the brain is the one git repo, and it tracks the code folder too; uv must not
+# start a second repo inside it
+info ""
+if [[ -e "$target/.git" ]]; then
+  info "  same  git repo (already there)"
+else
+  info "  git   git init"
+  [[ $dry_run -eq 0 ]] && git -C "$target" init --quiet
+fi
+
+if [[ -f "$code/pyproject.toml" ]]; then
+  info "  same  $code_dir/pyproject.toml (uv project already there)"
+else
+  info "  uv    uv init --vcs none in $code_dir/"
+  if [[ $dry_run -eq 0 ]]; then
+    mkdir -p "$code"
+    (cd "$code" && uv init --quiet --vcs none --name "$pkg") \
+      || die "uv init failed in $code"
+  fi
+fi
 
 info ""
 info "done: $n_new new, $n_appd appended, $n_over overwritten, $n_skip skipped, $n_dir empty dirs"
