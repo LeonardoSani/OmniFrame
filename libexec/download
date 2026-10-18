@@ -152,9 +152,9 @@ has_bib() {
 pdf_of() {  # candidate open PDF urls for a paper page, best first, one per line
   local link="$1" id doi s2
   id="$(arxiv_of "$link")"
-  [[ -n "$id" ]] && { printf 'https://arxiv.org/pdf/%s' "$id"; return 0; }
+  [[ -n "$id" ]] && { printf 'https://arxiv.org/pdf/%s\n' "$id"; return 0; }
   id="$(printf '%s' "$link" | perl -ne 'print $1 if m{openreview\.net/(?:forum|pdf)\?id=([^&\s#]+)}')"
-  [[ -n "$id" ]] && { printf 'https://openreview.net/pdf?id=%s' "$id"; return 0; }
+  [[ -n "$id" ]] && { printf 'https://openreview.net/pdf?id=%s\n' "$id"; return 0; }
   doi="$(doi_of "$link")"
   [[ -n "$doi" ]] || return 1
   s2="$(curl -fsSL --max-time 60 "https://api.semanticscholar.org/graph/v1/paper/DOI:$doi?fields=openAccessPdf,externalIds" 2>/dev/null)" || return 1
