@@ -3,20 +3,67 @@
 How to use OmniFrame as designed, from an empty folder to a paper. To install it, see the
 [README](README.md).
 
-1. [Commands at a glance](#commands-at-a-glance)
-2. [Set up a project](#1-set-up-a-project)
-3. [The session loop](#2-the-session-loop)
-4. [Write the idea](#3-write-the-idea)
-5. [Literature](#4-literature)
-6. [Formalise the method](#5-formalise-the-method)
-7. [Plan the experiments](#6-plan-the-experiments)
-8. [Run and track](#7-run-and-track)
-9. [Write the paper](#8-write-the-paper)
-10. [Publish the code](#9-publish-the-code)
-11. [Reference](#10-reference)
-12. [Update and edit OmniFrame](#11-update-and-edit-omniframe)
+1. [The whole pipeline](#the-whole-pipeline)
+2. [Commands at a glance](#commands-at-a-glance)
+3. [Set up a project](#1-set-up-a-project)
+4. [The session loop](#2-the-session-loop)
+5. [Write the idea](#3-write-the-idea)
+6. [Literature](#4-literature)
+7. [Formalise the method](#5-formalise-the-method)
+8. [Plan the experiments](#6-plan-the-experiments)
+9. [Run and track](#7-run-and-track)
+10. [Write the paper](#8-write-the-paper)
+11. [Publish the code](#9-publish-the-code)
+12. [Reference](#10-reference)
+13. [Update and edit OmniFrame](#11-update-and-edit-omniframe)
 
 ---
+
+## The whole pipeline
+
+```mermaid
+flowchart TD
+  classDef shell fill:#e5e7eb,stroke:#374151,color:#111
+  classDef claude fill:#fde2cf,stroke:#c2410c,color:#111
+  classDef chat fill:#dbeafe,stroke:#1d4ed8,color:#111
+  classDef you fill:#fef3c7,stroke:#a16207,color:#111
+
+  init["omniframe init MYPROJ"]:::shell --> hl["write 2_Idea/High_level.md"]:::you
+  hl --> se
+
+  subgraph LIT["Literature · 1_Literature/"]
+    se["/lit-search"]:::claude --> dec{"mark Decision<br/>OK · LATER · NO"}:::you
+    dec --> dl["/lit-download"]:::claude
+    dl --> cv["/lit-convert"]:::claude
+    cv --> ca["/lit-cards"]:::claude
+    ca --> ou["/lit-outputs"]:::claude
+  end
+
+  subgraph IDEA["Method · 2_Idea/ and 3_Implementation/"]
+    me["Setup_and_Method.md<br/>problem · notation · H1, H2"]:::chat --> ex["Experiments.md<br/>E01, E02 …"]:::chat
+    ex --> spec["Specs.md · Figures.md<br/>Code_Design.md"]:::chat
+  end
+
+  subgraph RUN["Run and track · MYPROJ/ and 4_Results_and_Tracking/"]
+    code["uv run"]:::shell --> rec["Runs/E-id-date.md"]:::chat
+    rec --> res["Results.md<br/>Scenario_Tree.md"]:::chat
+  end
+
+  ou --> me
+  spec --> code
+  res -. "next runnable experiment" .-> code
+  res --> paper["5_Paper/ → Overleaf"]:::chat
+  code --> pub["git archive → public repo"]:::shell
+```
+
+| colour | where you type it |
+| --- | --- |
+| grey | the terminal |
+| orange | a slash command in Claude Code |
+| blue | Claude Code, asked in plain words |
+| yellow | you: an edit or a decision |
+
+At the end of every session, whatever you did: `/wrap`.
 
 ## Commands at a glance
 
@@ -130,12 +177,26 @@ draft it with you. It asks questions and writes only what you confirm.
 
 One pipeline, one command per step. **All in Claude Code:**
 
-```
-1. PROPOSE    /lit-search ["bias"]     papers for your idea — then you mark Decision
-2. DOWNLOAD   /lit-download            PDF + BibTeX + a row under ## Unsorted
-3. CONVERT    /lit-convert             PDF → markdown, linked in the index
-4. CARDS      /lit-cards               a card per paper; the paper moves to its group
-5. OUTPUTS    /lit-outputs             the syntheses in your brief
+```mermaid
+flowchart TD
+  classDef claude fill:#fde2cf,stroke:#c2410c,color:#111
+  classDef you fill:#fef3c7,stroke:#a16207,color:#111
+  classDef note fill:#f3f4f6,stroke:#9ca3af,color:#111
+
+  se["<b>1 · /lit-search &quot;bias&quot;</b><br/>~10 proposals from High_level.md"]:::claude
+  dec{"you mark<br/>Decision"}:::you
+  dl["<b>2 · /lit-download</b><br/>PDF · BibTeX · row under ## Unsorted"]:::claude
+  cv["<b>3 · /lit-convert</b><br/>markdown, linked in the index"]:::claude
+  ca["<b>4 · /lit-cards</b><br/>a card per paper; the row moves to its group"]:::claude
+  ou["<b>5 · /lit-outputs</b><br/>the syntheses in your brief"]:::claude
+  later["kept in ## Later<br/>mark OK there any time"]:::note
+  no["never proposed again"]:::note
+
+  se --> dec
+  se -. "another bias" .-> se
+  dec -->|OK| dl --> cv --> ca --> ou
+  dec -->|LATER| later
+  dec -->|NO| no
 ```
 
 The library is `1_Literature/Paper_Index.md`. Every paper has one row, linking its
@@ -201,6 +262,27 @@ finds the file in place and does the rest.
 Turns every new PDF into `1_Literature/Papers/<citekey>/` — the markdown plus extracted
 images — with a local model (slow: minutes), and puts the markdown link into the index.
 Papers already converted are skipped, so running it again is safe.
+
+When a PDF does not arrive the normal way:
+
+```mermaid
+flowchart LR
+  classDef claude fill:#fde2cf,stroke:#c2410c,color:#111
+  classDef you fill:#fef3c7,stroke:#a16207,color:#111
+
+  subgraph H["You downloaded a PDF yourself"]
+    direction LR
+    h1["save it in PDFs/<br/>under any name"]:::you --> h2["/lit-convert"]:::claude
+    h2 --> h3(["it asks:<br/>rename to citekey?"]):::you
+    h3 --> h4["download + convert<br/>like any other paper"]:::claude
+  end
+
+  subgraph M["No open PDF online"]
+    direction LR
+    m1["/lit-download flags it<br/>row stays OK"]:::claude --> m2["save it as<br/>PDFs/&lt;citekey&gt;.pdf"]:::you
+    m2 --> m3["/lit-download"]:::claude
+  end
+```
 
 **A PDF you downloaded yourself.** Save it into `1_Literature/PDFs/` under any name and run
 `/lit-convert`. It identifies the paper and asks whether it may rename the file to its

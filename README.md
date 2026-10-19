@@ -1,110 +1,97 @@
 ![OmniFrame](logo.png)
 
-**One repo for one research project: the reading, the idea, the experiments and the paper,
-kept in shape by an AI agent that follows your rules.**
+**A template for AI research projects. One command creates the project folder; Claude Code
+works in it with you, following rules written in the folder.**
 
-OmniFrame is a template for AI research. It lays a fixed structure over a project: the
-literature, the formal method, the implementation decisions, the results and the LaTeX
-paper, each in its own folder with its own rules. You open it in Obsidian; Claude Code works
-in it next to you. Every folder tells the agent what it may write, what it must never touch
-and what counts as done. The result is a research brain you can both navigate, and one that
-doesn't make things up.
+Reading, idea, specs, experiments, results and the LaTeX paper each get their own folder,
+and each folder has a `CLAUDE.md` saying what the agent may write there. You work in
+Obsidian; the agent works next to you. For seminars, see the sibling
+[OmniSem](https://github.com/LeonardoSani/OmniSem).
 
-## What it does
+## How a project flows
 
-- **Papers from an idea.** Describe the idea in plain words. `/lit-search` proposes papers
-  the agent actually found and opened, you mark which to keep, and `/lit-download` fetches the
-  PDFs and the BibTeX.
-- **Papers the agent can read.** `/lit-convert` turns PDFs into markdown with a local
-  vision model. It is free and runs offline. A PDF you save yourself is picked up too.
-- **Cards and syntheses on your terms.** You decide what every paper card covers and which
-  summary documents you want. `/lit-cards` and `/lit-outputs` write exactly that.
-- **One library index.** Every paper appears once, with its arXiv, code and project
-  page, and links to its PDF (for you), its markdown (for the agent) and its card.
-- **Idea kept apart from implementation.** Claims live in `2_Idea/` and concrete choices in
-  `3_Implementation/`, so the method stays general and the specs stay honest.
-- **Experiments as a dependency graph.** Each experiment has an id. A mermaid DAG shows what
-  depends on what and what you can run today.
-- **No invented numbers.** Every metric traces back to a run record. If there is no record,
-  the number does not exist.
-- **Session continuity.** The agent reads a briefing of under twenty lines when a session
-  starts. `/wrap` rewrites it when the session ends and checks that the brain still holds
-  together.
-- **A paper ready for Overleaf.** `5_Paper/` is self-contained LaTeX, with citekeys shared
-  with the library.
-- **Code ready to publish.** The code lives in its own folder inside the brain, with its
-  own environment, README and license, and never points into the brain. When the paper is
-  you are ready, you export that folder alone as a public repo.
-- **Clean files, guarded agent.** Your files start as blank forms, and the agent's rules
-  live in `CLAUDE.md` files. Text in a paper or a note that looks like an instruction is
-  flagged, never followed.
+```mermaid
+flowchart LR
+  classDef step fill:#fde2cf,stroke:#c2410c,color:#111
+  classDef end_ fill:#d1fae5,stroke:#047857,color:#111
 
-## Structure
-
-```
-MYPROJ_Brain/                the project root, holding all of the below. one git repo, one vault
-0-Master.md                  the front page: links to every area
-CLAUDE.md                    the agent's contract: map, keys, ownership, hard rules
-.claude/commands/            /lit-search /lit-download /lit-convert /lit-cards /lit-outputs /wrap
-
-1_Literature/                papers in, cards out
-├── Paper_Index.md           every paper once: arXiv · code · site · pdf · md · card
-├── Proposed_literature.md   proposals awaiting your Decision
-├── card&outputs_def.md      YOU define what a card covers and which syntheses you want
-├── PDFs/  Papers/  Cards/  Literature_Outputs/
-└── Human_encoding/          your scanned handwritten notes. the agent never reads them
-
-2_Idea/                      the claims. no implementation choices
-├── High_level.md            the idea in plain words. what /lit-search reads
-├── Setup_and_Method.md      problem · notation · method · hypotheses
-└── Experiments.md           per E-id: what it establishes, what would refute it
-
-3_Implementation/            the choices. nothing here is a claim
-├── Specs.md                 per E-id: architecture, hyperparams, data, seeds, compute
-├── Figures.md               what each figure must show
-└── Code_Design.md           where the code goes
-
-4_Results_and_Tracking/      what came back
-├── Where_we_are.md          the briefing. read first, rewritten by /wrap
-├── Results.md               the analysis, by hypothesis
-├── Scenario_Tree.md         the experiment DAG and what is runnable now
-└── Runs/<E-id>-<date>.md    one record per run. the only source of a metric
-
-5_Paper/                     self-contained LaTeX for Overleaf
-
-MYPROJ/                      the code, and nothing else: the future public repo
-├── README.md  LICENSE       public, MIT by default
-└── pyproject.toml  main.py  a uv project. its environment, data and outputs stay inside
+  I["<b>Idea</b><br/>in plain words"] --> L["<b>Literature</b><br/>papers · cards<br/>syntheses"]:::step
+  L --> M["<b>Method</b><br/>notation · hypotheses<br/>experiments E01…"]:::step
+  M --> S["<b>Specs</b><br/>the concrete choices"]:::step
+  S --> C["<b>Code</b><br/>uv project"]:::step
+  C --> R["<b>Runs & results</b><br/>records · DAG"]:::step
+  R -. "next experiment" .-> S
+  R --> P(["Paper<br/>LaTeX → Overleaf"]):::end_
+  C --> G(["Public repo"]):::end_
 ```
 
-Every area has its own `CLAUDE.md`, which the agent reads before it writes there.
+## What you get
 
-## Install
+| | |
+| --- | --- |
+| **Literature** | `/lit-search` proposes papers for your idea, each one found and opened online. You pick; `/lit-download` and `/lit-convert` bring the PDF, the BibTeX and a markdown version the agent can read, converted locally and offline. |
+| **Cards** | One card per paper, with the sections you define. Syntheses only when you ask for them. |
+| **Idea vs. implementation** | Claims in `2_Idea/`, concrete choices in `3_Implementation/`. The method stays general, the specs stay honest. |
+| **Experiments** | Each has a permanent id (`E01`…). A mermaid DAG shows what depends on what and what can run today. |
+| **Results** | A metric exists only if a run record has it. |
+| **Paper** | `5_Paper/` is self-contained LaTeX for Overleaf, citing with the library's keys. |
+| **Code** | `MYPROJ/` is a standalone uv project you can publish on its own. |
+| **Continuity** | A briefing under twenty lines at the start of each session, rewritten by `/wrap`. |
+
+## Quick start
 
 ```sh
 git clone https://github.com/LeonardoSani/OmniFrame.git ~/Projects/OmniFrame
-~/Projects/OmniFrame/bin/omniframe link      # puts `omniframe` on PATH, once
-uv tool install marker-pdf                   # the PDF converter. large: pulls torch
-brew install llama.cpp                       # its local backend (Apple Silicon / CPU)
-```
+~/Projects/OmniFrame/bin/omniframe link     # puts `omniframe` on your PATH
+uv tool install marker-pdf                  # the PDF converter. Large: pulls torch
+brew install llama.cpp                      # its local backend (Apple Silicon / CPU)
 
-On an NVIDIA GPU, use vLLM as the backend instead (Docker + NVIDIA Container Toolkit).
-
-## Start a project
-
-```sh
 cd ~/Projects
-omniframe init MYPROJ        # creates MYPROJ_Brain/, code in MYPROJ_Brain/MYPROJ/
+omniframe init MYPROJ                       # → MYPROJ_Brain/, code in MYPROJ_Brain/MYPROJ/
 ```
 
-Then open `MYPROJ_Brain/` in Obsidian and Claude Code, and write `2_Idea/High_level.md`.
+Open `MYPROJ_Brain/` in Obsidian and in Claude Code, and write `2_Idea/High_level.md`. On
+an NVIDIA GPU, use vLLM as the converter's backend instead.
 
-## Update
+**→ [The Guide](GUIDE.md)** has the full pipeline, command by command.
+
+<details>
+<summary><b>Folder layout</b></summary>
+
+```
+MYPROJ_Brain/                one git repo, one Obsidian vault
+├── 0-Master.md              the front page
+├── CLAUDE.md                the agent's rules
+├── 1_Literature/
+│   ├── Paper_Index.md       every paper once: arXiv · code · site · pdf · md · card
+│   ├── Proposed_literature.md   search results waiting for your decision
+│   ├── card&outputs_def.md  what a card covers, which syntheses you want
+│   ├── PDFs/ Papers/ Cards/ Literature_Outputs/
+│   └── Human_encoding/      your handwritten notes. The agent never reads them
+├── 2_Idea/
+│   ├── High_level.md        the idea in plain words. What /lit-search reads
+│   ├── Setup_and_Method.md  problem · notation · method · hypotheses
+│   └── Experiments.md       per E-id: what it establishes, what would refute it
+├── 3_Implementation/
+│   ├── Specs.md             per E-id: architecture, hyperparameters, data, seeds
+│   ├── Figures.md           what each figure must show
+│   └── Code_Design.md       where the code goes
+├── 4_Results_and_Tracking/
+│   ├── Where_we_are.md      the briefing, rewritten by /wrap
+│   ├── Results.md           the analysis, by hypothesis
+│   ├── Scenario_Tree.md     the experiment DAG
+│   └── Runs/                one record per run. The only source of a metric
+├── 5_Paper/                 LaTeX for Overleaf
+└── MYPROJ/                  the code only: the future public repo
+```
+
+</details>
+
+## Updating a project
 
 ```sh
-omniframe update             # inside a project: new commands and agent rules
+omniframe update                            # inside a project
 ```
 
-Your content is never touched. Files you edited are shown as a diff before anything changes.
-
-**→ [The Guide](GUIDE.md)** explains how to use every part, in the order you'll need it.
+Brings in new commands and rules. Your content is never touched; files you edited are shown
+as a diff first.
