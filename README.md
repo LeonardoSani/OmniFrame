@@ -13,14 +13,17 @@ Obsidian; the agent works next to you.
 flowchart TB
   classDef step fill:#fde2cf,stroke:#c2410c,color:#111
   classDef paper fill:#d1fae5,stroke:#047857,color:#111
+  classDef zoom fill:#fff,stroke:#c2410c,stroke-dasharray:4 3,color:#111
 
   subgraph W["every step feeds the paper"]
     direction LR
+    X["search papers<br/>PDF → markdown<br/>paper cards<br/>handwritten notes<br/>(Human_encoding)"]:::zoom
     I["<b>Idea</b>"]:::step --> L["<b>Literature</b>"]:::step
     L --> M["<b>Method</b><br/>hypotheses<br/>experiments"]:::step
     M --> S["<b>Specs</b>"]:::step
     S --> C["<b>Code Design</b>"]:::step
     C --> R["<b>Results</b>"]:::step
+    L -.-> X
   end
 
   W -.-> P
