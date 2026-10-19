@@ -14,8 +14,8 @@ stand, what is next, what is open. Read it before anything else; `/wrap` rewrite
 
 ## The idea
 
-- [High level](2_Idea/High_level.md) — the idea in plain words: topic, scope, keywords. What the paper search reads
-- [Setup & Method](2_Idea/Setup_and_Method.md) — problem, notation, method, hypotheses
+- [High level](2_Idea/High_level.md) — the idea in plain words: topic, motivation, keywords. What the paper search reads
+- [Setup & Method](2_Idea/Setup_and_Method.md) — notation, problem, method, hypotheses and their value
 - [Experiments](2_Idea/Experiments.md) — what each experiment establishes
 - [Human encoding](2_Idea/Human_encoding/Human_encoding.md) — your scanned notes on the idea, organised by you
 

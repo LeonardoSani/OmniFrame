@@ -73,7 +73,7 @@ may lag behind a rename; if the two disagree, trust this and report the discrepa
 | `1_Literature/Cards/<citekey>.md` | your card per paper |
 | `1_Literature/Literature_Outputs/` | your syntheses |
 | `1_Literature/Human_encoding/Human_encoding.md` | the researcher's hub for their scanned notes. never read them |
-| `2_Idea/High_level.md` | the idea in plain words: topic, scope, anchor papers, keywords. what `/lit-search` reads |
+| `2_Idea/High_level.md` | the idea in plain words: topic, motivation, anchor papers, keywords. what `/lit-search` reads |
 | `2_Idea/Setup_and_Method.md` | problem, notation, method, hypotheses |
 | `2_Idea/Experiments.md` | where an E-id is defined, once |
 | `2_Idea/Human_encoding/Human_encoding.md` | the researcher's hub for their scanned notes on the idea. read one only when they point you to it |

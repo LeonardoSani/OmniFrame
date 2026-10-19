@@ -7,9 +7,7 @@ updated: __DATE__
 
 ## Topic
 
-## The idea
-
-## In scope, out of scope
+## Idea & Motivation
 
 ## Anchor papers
 

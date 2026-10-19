@@ -164,8 +164,7 @@ index, the proposals), run records and navigation pages have no status.
 | section | what goes in |
 | --- | --- |
 | Topic | one line: the field, and the problem inside it |
-| The idea | a paragraph: what you suspect, want to try or want to understand |
-| In scope, out of scope | what the reading should cover, and what looks close but isn't |
+| Idea & Motivation | a paragraph: what you suspect, want to try or want to understand, and why |
 | Anchor papers | papers you already know are central (optional) |
 | Keywords | the field's terms, synonyms included |
 
@@ -336,10 +335,10 @@ never interprets one. Notes on the idea itself go in `2_Idea/Human_encoding/` (s
 
 | section | what goes in |
 | --- | --- |
-| Problem | what is given, what is wanted, what makes it hard |
 | Notation | every symbol, once. `5_Paper/preamble.tex` mirrors this table |
+| Problem | what is given, what is wanted, what makes it hard |
 | Method | the objective, its constraints, the mapping, its assumptions |
-| Hypotheses | `H1`, `H2`…, each falsifiable and naming the experiments that test it |
+| Hypotheses & Value | `H1`, `H2`…, each falsifiable; then a short paragraph on what the field gains if they hold |
 | Anticipated experiments | three or four lines. The detail goes in `Experiments.md` |
 
 Rename or drop any heading that doesn't fit. `2_Idea/` holds your claims: the agent writes

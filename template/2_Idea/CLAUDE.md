@@ -1,7 +1,7 @@
 # 2_Idea
 
 The idea, from plain words to formal: what the project is after, then the problem, the
-notation, the method, the hypotheses, and what each experiment establishes. Three files —
+notation, the method, the hypotheses and their value, and what each experiment establishes. Three files —
 `High_level.md` comes first; the other two are the formal layer, written and rewritten
 together. Beside them, `Human_encoding/` holds the researcher's handwritten notes.
 
@@ -57,10 +57,8 @@ one of the three files.
 and intuition is allowed.
 
 - **Topic** — one line: the field, and the problem inside it.
-- **The idea** — a paragraph: what the researcher suspects, wants to try, or wants to
-  understand.
-- **In scope, out of scope** — what the literature should cover, and what looks close but
-  is not this project.
+- **Idea & Motivation** — a paragraph: what the researcher suspects, wants to try, or
+  wants to understand, and why it is worth doing.
 - **Anchor papers** — papers already known to be central. Optional; their references and
   citations are often the best leads.
 - **Keywords** — the field's terms for this, synonyms included.
@@ -69,14 +67,16 @@ It is the seed `/lit-search` reads to propose papers — a vague keyword list he
 becomes a vague reading list. When it is empty and the researcher wants
 help, draft it *with* them: ask, propose, and write only what they confirm.
 
-**`Setup_and_Method.md`** — suggested headings: Problem · Notation · Method · Hypotheses ·
-Anticipated experiments. They are a prompt, not a schema: rename them, add to them, drop
+**`Setup_and_Method.md`** — suggested headings: Notation · Problem · Method · Hypotheses &
+Value · Anticipated experiments. They are a prompt, not a schema: rename them, add to them, drop
 one that does not fit the project.
 
-- **Problem** — the gap, formally: what is given, what is wanted, what makes it hard.
 - **Notation** — the single source of truth for symbols. `5_Paper/preamble.tex` mirrors it.
+- **Problem** — the gap, formally: what is given, what is wanted, what makes it hard.
 - **Method** — the objective, its constraints, the mapping, its assumptions.
-- **Hypotheses** — each falsifiable, numbered `H1`, `H2`…, naming the E-ids that test it.
+- **Hypotheses & Value** — one or more hypotheses, each falsifiable, numbered `H1`, `H2`…;
+  then a short paragraph on the value: what the field gains if they hold. No E-ids here —
+  `Experiments.md` names the hypothesis each experiment tests.
 - **Anticipated experiments** — three or four lines; the detail lives in `Experiments.md`.
 
 **`Experiments.md`** — one `### E01 — <name>` block per experiment: **Establishes** (which

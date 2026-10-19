@@ -5,17 +5,19 @@ updated: __DATE__
 
 # Setup & method
 
-## Problem
-
 ## Notation
 
 | Symbol | Type | Meaning |
 | ------ | ---- | ------- |
 
+## Problem
+
 ## Method
 
-## Hypotheses
+## Hypotheses & Value
 
-- **H1** — . Tested by: .
+- **H1** — .
+
+**Value.**
 
 ## Anticipated experiments
