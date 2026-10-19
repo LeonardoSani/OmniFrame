@@ -16,11 +16,11 @@ block-beta
     I["<b>Idea</b>"] space L["<b>Literature</b>"] space M["<b>Method</b><br/>hypotheses<br/>experiments"] space S["<b>Specs</b>"] space C["<b>Code Design</b>"] space R["<b>Results</b>"]
   end
   space:11
-  space:4 P["<b>Paper</b><br/>written along the way"]:3 space:4
+  space:4 P["<b>Paper</b><br/>written and updated<br/>during the research process"]:3 space:4
   space:11
   block:LD:5
     columns 4
-    e1["search<br/>papers"] e2["PDF →<br/>markdown"] e3["paper<br/>cards"] e4["handwritten notes<br/>(Human_encoding)"]
+    e1["search<br/>papers"] e2["PDF →<br/>markdown"] e3["paper<br/>cards"] e4["handwritten<br/>notes"]
   end
   space:6
 
