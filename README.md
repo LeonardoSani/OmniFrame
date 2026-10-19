@@ -86,7 +86,8 @@ MYPROJ_Brain/                one git repo, one Obsidian vault
 ├── 2_Idea/
 │   ├── High_level.md        the idea in plain words. What /lit-search reads
 │   ├── Setup_and_Method.md  problem · notation · method · hypotheses
-│   └── Experiments.md       per E-id: what it establishes, what would refute it
+│   ├── Experiments.md       per E-id: what it establishes, what would refute it
+│   └── Human_encoding/      your handwritten notes. The agent reads one only when you ask
 ├── 3_Implementation/
 │   ├── Specs.md             per E-id: architecture, hyperparameters, data, seeds
 │   ├── Figures.md           what each figure must show

@@ -3,7 +3,7 @@
 The idea, from plain words to formal: what the project is after, then the problem, the
 notation, the method, the hypotheses, and what each experiment establishes. Three files —
 `High_level.md` comes first; the other two are the formal layer, written and rewritten
-together.
+together. Beside them, `Human_encoding/` holds the researcher's handwritten notes.
 
 **These are the researcher's claims. Do not write here unless asked.** When you are
 asked, you are editing someone's formalisation — match what is there, do not restructure
@@ -38,6 +38,18 @@ says *there is an encoder with these properties*; Implementation says *which one
 size*. `Experiments.md` says what an experiment establishes; `Specs.md` says how it runs.
 
 If you find a concrete choice in here, say so — it leaked from the wrong area.
+
+## Handwritten notes
+
+`Human_encoding/` — the researcher's own handwritten notes on the idea, scanned. Scans sit
+in the folder; `Human_encoding/Human_encoding.md` is their hub, organised as the
+researcher likes, linking note files in `Human_encoding/Notes/<name>.md` that embed the
+scans as `![](../scan.pdf)`.
+
+Read a note only when the researcher points you to it, and only for the task they named.
+Asked, you may create a note `.md` or add embed lines for scans they name. Never cite a
+note as a source: what it says becomes a claim only once the researcher writes it into
+one of the three files.
 
 ## Shapes
 

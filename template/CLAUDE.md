@@ -76,6 +76,7 @@ may lag behind a rename; if the two disagree, trust this and report the discrepa
 | `2_Idea/High_level.md` | the idea in plain words: topic, scope, anchor papers, keywords. what `/lit-search` reads |
 | `2_Idea/Setup_and_Method.md` | problem, notation, method, hypotheses |
 | `2_Idea/Experiments.md` | where an E-id is defined, once |
+| `2_Idea/Human_encoding/Human_encoding.md` | the researcher's hub for their scanned notes on the idea. read one only when they point you to it |
 | `3_Implementation/Specs.md` | per E-id: architecture, hyperparams, data, seeds, compute |
 | `3_Implementation/Figures.md` | what each figure must show |
 | `3_Implementation/Code_Design.md` | repo structure and modules — decides where code goes |
@@ -110,7 +111,7 @@ frontmatter:
 
 | Kind | Files | Frontmatter |
 | ---- | ----- | ----------- |
-| document — someone writes it | `2_Idea/*`, `3_Implementation/Specs.md`, `Figures.md`, `Code_Design.md`, `4_Results_and_Tracking/Results.md`, `Scenario_Tree.md`, `Where_we_are.md`, `1_Literature/card&outputs_def.md`, cards, syntheses, the `Human_encoding/` hub and notes | `status` + `updated` |
+| document — someone writes it | `2_Idea/*`, `3_Implementation/Specs.md`, `Figures.md`, `Code_Design.md`, `4_Results_and_Tracking/Results.md`, `Scenario_Tree.md`, `Where_we_are.md`, `1_Literature/card&outputs_def.md`, cards, syntheses, the `Human_encoding/` hubs and notes | `status` + `updated` |
 | list — rows kept by scripts and commands | `1_Literature/Paper_Index.md`, `1_Literature/Proposed_literature.md` | `updated` |
 | record — one per run | `4_Results_and_Tracking/Runs/*.md` | its own fields, see `4_Results_and_Tracking/CLAUDE.md` |
 | navigation | `0-Master.md` and the area MOCs | none |
@@ -149,6 +150,7 @@ from the repo root.
 | `1_Literature/Paper_Index.md` | `omniframe download` (rows, under `## Unsorted`) and `omniframe convert` (Markdown links); you, for the Card links and the grouping, by `## Grouping` in `1_Literature/card&outputs_def.md` |
 | `1_Literature/Cards/`, `1_Literature/Literature_Outputs/` | you |
 | `2_Idea/` | the researcher. you write here only when asked — `High_level.md` included, drafted together |
+| `2_Idea/Human_encoding/` | the researcher. read a note only when they point you to it; asked, you may create a note or add embeds for scans they name |
 | `3_Implementation/`, `__CODE_DIR__/`, `4_Results_and_Tracking/Results.md`, `4_Results_and_Tracking/Scenario_Tree.md`, `5_Paper/` | both |
 | `4_Results_and_Tracking/Runs/` | you, from real runs only |
 

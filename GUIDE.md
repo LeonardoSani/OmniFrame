@@ -328,7 +328,7 @@ to the paper's markdown.
 **Handwritten notes.** Put scans in `1_Literature/Human_encoding/`. Organise them from
 `Human_encoding.md`, with one note per topic in `Notes/` that embeds the scans:
 `![](../scan_03.pdf)`. The agent never reads them. If you ask, it can set up a note, but it
-never interprets one.
+never interprets one. Notes on the idea itself go in `2_Idea/Human_encoding/` (section 5).
 
 ## 5. Formalise the method
 
@@ -349,6 +349,11 @@ there only when you ask, in a direct, notation-driven style.
 a spec and goes in `3_Implementation/`. So `2_Idea/` never names a layer count, a learning
 rate, a dataset, a library or a seed. It says *an encoder with these properties*.
 `3_Implementation/` says *which encoder, at what size*.
+
+**Handwritten notes on the idea.** Put scans in `2_Idea/Human_encoding/`, organised like
+the literature notes: a `Human_encoding.md` hub, one note per topic in `Notes/`. Here the
+agent reads a note when you point it to one, e.g. while you formalise the method together.
+It never cites a note: a claim counts once it is written in `Setup_and_Method.md`.
 
 ## 6. Plan the experiments
 
@@ -468,7 +473,7 @@ paper or an experiment.
 | path | written by |
 | --- | --- |
 | `2_Idea/` | you. The agent writes there only when asked |
-| `card&outputs_def.md`, the Decision column, `Human_encoding/` | you |
+| `card&outputs_def.md`, the Decision column, both `Human_encoding/` folders | you |
 | `Cards/`, `Literature_Outputs/`, `Runs/` (real runs only) | the agent |
 | `3_Implementation/`, `MYPROJ/`, `Results.md`, `Scenario_Tree.md`, `5_Paper/` | both |
 | `PDFs/` | you and `omniframe download`. Never overwritten; renamed to its citekey only with your permission |
