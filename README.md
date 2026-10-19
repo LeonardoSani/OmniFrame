@@ -10,24 +10,34 @@ Obsidian; the agent works next to you.
 ## How a project flows
 
 ```mermaid
-flowchart TB
+block-beta
+  columns 11
+  block:ROW:11
+    I["<b>Idea</b>"] space L["<b>Literature</b>"] space M["<b>Method</b><br/>hypotheses<br/>experiments"] space S["<b>Specs</b>"] space C["<b>Code Design</b>"] space R["<b>Results</b>"]
+  end
+  space:11
+  space:4 P["<b>Paper</b><br/>written along the way"]:3 space:4
+  space:11
+  block:LD:5
+    columns 4
+    e1["search<br/>papers"] e2["PDF →<br/>markdown"] e3["paper<br/>cards"] e4["handwritten notes<br/>(Human_encoding)"]
+  end
+  space:6
+
+  I --> L
+  L --> M
+  M --> S
+  S --> C
+  C --> R
+  ROW --> P
+  L --> LD
+
   classDef step fill:#fde2cf,stroke:#c2410c,color:#111
   classDef paper fill:#d1fae5,stroke:#047857,color:#111
-  classDef zoom fill:#fff,stroke:#c2410c,stroke-dasharray:4 3,color:#111
-
-  subgraph W["every step feeds the paper"]
-    direction LR
-    X["search papers<br/>PDF → markdown<br/>paper cards<br/>handwritten notes<br/>(Human_encoding)"]:::zoom
-    I["<b>Idea</b>"]:::step --> L["<b>Literature</b>"]:::step
-    L --> M["<b>Method</b><br/>hypotheses<br/>experiments"]:::step
-    M --> S["<b>Specs</b>"]:::step
-    S --> C["<b>Code Design</b>"]:::step
-    C --> R["<b>Results</b>"]:::step
-    L -.-> X
-  end
-
-  W -.-> P
-  P["<b>Paper</b><br/>written along the way, not at the end"]:::paper
+  classDef zoom fill:#fff,stroke:#c2410c,color:#111
+  class I,L,M,S,C,R step
+  class P paper
+  class e1,e2,e3,e4 zoom
 ```
 
 ## What you get
