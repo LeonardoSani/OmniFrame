@@ -10,16 +10,21 @@ Obsidian; the agent works next to you.
 ## How a project flows
 
 ```mermaid
-flowchart LR
+flowchart TB
   classDef step fill:#fde2cf,stroke:#c2410c,color:#111
-  classDef end_ fill:#d1fae5,stroke:#047857,color:#111
+  classDef paper fill:#d1fae5,stroke:#047857,color:#111
 
-  I["<b>Idea</b>"]:::step --> L["<b>Literature</b>"]:::step
-  L --> M["<b>Method</b><br/>hypotheses<br/>experiments"]:::step
-  M --> S["<b>Specs</b>"]:::step
-  S --> C["<b>Code</b>"]:::step
-  C --> R["<b>Results</b>"]:::step
-  R --> P(["<b>Paper</b>"]):::end_
+  subgraph W["every step feeds the paper"]
+    direction LR
+    I["<b>Idea</b>"]:::step --> L["<b>Literature</b>"]:::step
+    L --> M["<b>Method</b><br/>hypotheses<br/>experiments"]:::step
+    M --> S["<b>Specs</b>"]:::step
+    S --> C["<b>Code Design</b>"]:::step
+    C --> R["<b>Results</b>"]:::step
+  end
+
+  W -.-> P
+  P["<b>Paper</b><br/>written along the way, not at the end"]:::paper
 ```
 
 ## What you get
