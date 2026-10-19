@@ -13,7 +13,7 @@ Obsidian; the agent works next to you.
 block-beta
   columns 11
   block:ROW:11
-    I["<b>Idea</b>"] space L["<b>Literature</b>"] space M["<b>Method</b><br/>hypotheses<br/>experiments"] space S["<b>Specs</b>"] space C["<b>Code Design</b>"] space R["<b>Results</b>"]
+    I["<b>Idea</b>"] space L["<b>Literature</b>"] space M["<b>Method</b>"] space S["<b>Specs</b>"] space C["<b>Code Design</b>"] space R["<b>Results</b>"]
   end
   space:11
   space:4 P["<b>Paper</b><br/>written and updated<br/>during the research process"]:3 space:4
