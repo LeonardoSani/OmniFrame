@@ -28,33 +28,32 @@ flowchart TD
   classDef chat fill:#dbeafe,stroke:#1d4ed8,color:#111
   classDef you fill:#fef3c7,stroke:#a16207,color:#111
 
-  init["omniframe init MYPROJ"]:::shell --> hl["write 2_Idea/High_level.md"]:::you
-  hl --> se
+  init["omniframe init MYPROJ"]:::shell
+  hl["2_Idea/High_level.md"]:::you
+  se["/lit-search"]:::claude
+  dec{"Decision"}:::you
+  dl["/lit-download"]:::claude
+  cv["/lit-convert"]:::claude
+  ca["/lit-cards"]:::claude
+  ou["/lit-outputs"]:::claude
+  me["2_Idea/Setup_and_Method.md"]:::chat
+  ex["2_Idea/Experiments.md"]:::chat
+  spec["3_Implementation/Specs.md"]:::chat
+  tree["Scenario_Tree.md"]:::chat
+  run["uv run in MYPROJ/"]:::shell
+  rec["Runs/E-id-date.md"]:::chat
+  res["Results.md"]:::chat
+  paper["5_Paper/"]:::chat
 
-  subgraph LIT["Literature · 1_Literature/"]
-    se["/lit-search"]:::claude --> dec{"mark Decision<br/>OK · LATER · NO"}:::you
-    dec --> dl["/lit-download"]:::claude
-    dl --> cv["/lit-convert"]:::claude
-    cv --> ca["/lit-cards"]:::claude
-    ca --> ou["/lit-outputs"]:::claude
-  end
-
-  subgraph IDEA["Method · 2_Idea/ and 3_Implementation/"]
-    me["Setup_and_Method.md<br/>problem · notation · H1, H2"]:::chat --> ex["Experiments.md<br/>E01, E02 …"]:::chat
-    ex --> spec["Specs.md · Figures.md<br/>Code_Design.md"]:::chat
-  end
-
-  subgraph RUN["Run and track · MYPROJ/ and 4_Results_and_Tracking/"]
-    code["uv run"]:::shell --> rec["Runs/E-id-date.md"]:::chat
-    rec --> res["Results.md<br/>Scenario_Tree.md"]:::chat
-  end
-
-  ou --> me
-  spec --> code
-  res -. "next runnable experiment" .-> code
-  res --> paper["5_Paper/ → Overleaf"]:::chat
-  code --> pub["git archive → public repo"]:::shell
+  init --> hl --> se --> dec --> dl --> cv --> ca --> ou --> me --> ex
+  ex --> spec
+  ex --> tree
+  spec --> tree
+  tree --> run --> rec --> res --> paper
 ```
+
+`Scenario_Tree.md` is the experiment DAG: built from the experiments in `2_Idea/` and their
+specs in `3_Implementation/`, it says which experiment you can run today.
 
 | colour | where you type it |
 | --- | --- |

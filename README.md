@@ -5,8 +5,7 @@ works in it with you, following rules written in the folder.**
 
 Reading, idea, specs, experiments, results and the LaTeX paper each get their own folder,
 and each folder has a `CLAUDE.md` saying what the agent may write there. You work in
-Obsidian; the agent works next to you. For seminars, see the sibling
-[OmniSem](https://github.com/LeonardoSani/OmniSem).
+Obsidian; the agent works next to you.
 
 ## How a project flows
 
@@ -15,14 +14,12 @@ flowchart LR
   classDef step fill:#fde2cf,stroke:#c2410c,color:#111
   classDef end_ fill:#d1fae5,stroke:#047857,color:#111
 
-  I["<b>Idea</b><br/>in plain words"] --> L["<b>Literature</b><br/>papers · cards<br/>syntheses"]:::step
-  L --> M["<b>Method</b><br/>notation · hypotheses<br/>experiments E01…"]:::step
-  M --> S["<b>Specs</b><br/>the concrete choices"]:::step
-  S --> C["<b>Code</b><br/>uv project"]:::step
-  C --> R["<b>Runs & results</b><br/>records · DAG"]:::step
-  R -. "next experiment" .-> S
-  R --> P(["Paper<br/>LaTeX → Overleaf"]):::end_
-  C --> G(["Public repo"]):::end_
+  I["<b>Idea</b>"]:::step --> L["<b>Literature</b>"]:::step
+  L --> M["<b>Method</b><br/>hypotheses<br/>experiments"]:::step
+  M --> S["<b>Specs</b>"]:::step
+  S --> C["<b>Code</b>"]:::step
+  C --> R["<b>Results</b>"]:::step
+  R --> P(["<b>Paper</b>"]):::end_
 ```
 
 ## What you get
