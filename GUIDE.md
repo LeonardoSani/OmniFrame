@@ -181,7 +181,7 @@ flowchart TD
   classDef you fill:#fef3c7,stroke:#a16207,color:#111
   classDef note fill:#f3f4f6,stroke:#9ca3af,color:#111
 
-  se["<b>1 · /lit-search &quot;bias&quot;</b><br/>~10 proposals from High_level.md"]:::claude
+  se["<b>1 · /lit-search #quot;bias#quot;</b><br/>~10 proposals from High_level.md"]:::claude
   dec{"you mark<br/>Decision"}:::you
   dl["<b>2 · /lit-download</b><br/>PDF · BibTeX · row under ## Unsorted"]:::claude
   cv["<b>3 · /lit-convert</b><br/>markdown, linked in the index"]:::claude
@@ -277,7 +277,7 @@ flowchart LR
 
   subgraph M["No open PDF online"]
     direction LR
-    m1["/lit-download flags it<br/>row stays OK"]:::claude --> m2["save it as<br/>PDFs/&lt;citekey&gt;.pdf"]:::you
+    m1["/lit-download flags it<br/>row stays OK"]:::claude --> m2["save it as<br/>PDFs/#lt;citekey#gt;.pdf"]:::you
     m2 --> m3["/lit-download"]:::claude
   end
 ```
