@@ -1,8 +1,3 @@
----
-status: empty
-updated: __DATE__
----
-
 # High level
 
 ## Topic

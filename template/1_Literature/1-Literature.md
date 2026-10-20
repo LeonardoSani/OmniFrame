@@ -2,11 +2,6 @@
 
 **→ [Paper index](Paper_Index.md)** — every paper in the library, grouped: arXiv · code · site · pdf · md · card.
 
-## Steer
-
-- [Cards & outputs definition](card&outputs_def.md) — what a card covers, which syntheses
-  are commissioned. Yours; `/lit-cards` and `/lit-outputs` help fill it when empty.
-
 ## Find
 
 - [Proposed literature](Proposed_literature.md) — papers proposed for the idea, awaiting
@@ -15,13 +10,13 @@
 
 ## Outputs
 
-- `Literature_Outputs/` — the syntheses, only what the definition commissions.
-  `/lit-outputs` writes them.
+- `Cards/` — one card per paper. `/lit-cards` writes them.
+- `Literature_Outputs/` — the syntheses you ask for. `/lit-outputs` writes them.
 
 ## Your notes
 
 - [Human encoding](Human_encoding/Human_encoding.md) — your scanned notes, organised by
-  you. Not keyed to papers; the agent never reads them.
+  you. The agent reads one only when you point it there.
 
 ## Upstream and downstream
 

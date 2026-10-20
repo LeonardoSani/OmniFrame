@@ -1,43 +1,36 @@
 ---
-description: Close out a research session — rewrite the briefing and check the brain holds together
+description: Close out a research session — rewrite the briefing, add a journal entry, quick checks
 ---
 
-Close out this session.
+Close out this session. The rules for both files are in
+`4_Results_and_Tracking/CLAUDE.md`.
 
 ## 1. Rewrite the briefing
 
-Rewrite `4_Results_and_Tracking/Where_we_are.md` so it describes the present. Its shape
-and rules are in `4_Results_and_Tracking/CLAUDE.md` — read that section first. For this
-session:
+Rewrite `4_Results_and_Tracking/Where_we_are.md` so it describes the present:
 
 - **Now** — fold what changed this session into what was already true.
 - **Next** — drop what got done. Keep what is blocked, saying what blocks it.
 - **Open** — add anything this session raised and could not settle.
 
-Set `updated:` to today, and `status: filled` if it was still `empty`.
+## 2. Add a journal entry
 
-If nothing of substance changed, say so and leave the file as it is.
+Append a `## YYYY-MM-DD` entry (today) at the bottom of
+`4_Results_and_Tracking/Journal.md`: what was tried, decided or abandoned this session, and
+why. A few lines; the reasoning, not a list of edited files. Leave every earlier entry,
+including the researcher's own, as it is.
 
-## 2. Check the brain holds together
+If nothing of substance happened, say so and skip both steps.
 
-Four checks, with grep — do not read every file:
+## 3. Quick checks
 
-- every `E-id` in `4_Results_and_Tracking/Scenario_Tree.md` exists in
-  `2_Idea/Experiments.md`, and every experiment appears as a node in the DAG
-- every `1_Literature/Papers/<citekey>/` has a `1_Literature/Cards/<citekey>.md`
-- every `1_Literature/PDFs/<citekey>.pdf` has a row in `1_Literature/Paper_Index.md` —
-  one without was added by hand: suggest `/lit-convert`
-- every document still `status: empty` has nothing under its headings — the researcher
-  may have filled one by hand. The two `Human_encoding/` folders, in `1_Literature/` and
-  `2_Idea/`, are not checked: their status is the researcher's to set
+With grep, not by reading every file. **Report what is wrong, fix nothing:**
 
-**Report what is wrong. Fix nothing** — except a document found filled under
-`status: empty`: ask the researcher whether to mark it `filled`, and do so if they agree.
-Note anything else found in `Open` so it is not lost.
+- a `1_Literature/PDFs/<citekey>.pdf` with no row in `1_Literature/Paper_Index.md` — added
+  by hand: suggest `/lit-convert`
+- a `1_Literature/Papers/<citekey>/` with no card — suggest `/lit-cards`
+- an E-id in `4_Results_and_Tracking/Scenario_Tree.md` missing from `2_Idea/Experiments.md`
 
-(The deeper audit — cards matching `card&outputs_def.md` section for section, `refs.bib`
-against the library — is a separate job. Run it when the brief changes, not every session.)
+## 4. Tell me
 
-## 3. Tell me
-
-A short summary: what you changed, what the checks found, and what is waiting next time.
+A short summary: what changed, what the checks found, what is waiting next time.

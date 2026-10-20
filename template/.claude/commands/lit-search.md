@@ -10,10 +10,14 @@ Bias from the researcher, may be empty: $ARGUMENTS
 
 ## 1. Read the idea
 
-Read `2_Idea/High_level.md`. If it is still `status: empty`, or has no topic and no idea
-in it, **stop**: say so, and offer to draft it together — ask about the topic, the idea
-and its motivation, anchor papers, keywords, then show the draft and write it only once
-the researcher confirms. Never search from a guess.
+Read `2_Idea/High_level.md`. If it has no topic and no idea in it, **stop**: say so, and
+offer to draft it together — ask about the topic, the idea and its motivation, anchor
+papers, keywords, then show the draft and write it only once the researcher confirms.
+Never search from a guess.
+
+Later in a project, the rest of `2_Idea/` and the **Open** section of
+`4_Results_and_Tracking/Where_we_are.md` often say more precisely what the reading now
+needs: use them to sharpen the queries.
 
 The bias steers this search only: kind of paper, period, venue, method family, what to
 leave out. It tilts or narrows the idea; it does not replace it. If it contradicts

@@ -2,7 +2,6 @@
   "useMarkdownLinks": true,
   "newLinkFormat": "relative",
   "userIgnoreFilters": [
-    "__CODE_DIR__/data/",
-    "__CODE_DIR__/outputs/"
+    "__CODE_DIR__/.venv/"
   ]
 }

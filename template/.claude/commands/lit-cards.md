@@ -1,54 +1,38 @@
 ---
-description: Write the missing paper cards, then file each paper in its group in the index
-argument-hint: [citekeys, default every converted paper without a card]
+description: Write the missing paper cards, then file each paper in a group of the index
+argument-hint: [citekeys] ["focus", e.g. "assumptions and benchmarks"]
 ---
 
-Write cards. Read `1_Literature/CLAUDE.md` first — it defines what a card is.
+Write cards. Read `1_Literature/CLAUDE.md` first.
 
-Citekeys asked for, may be empty: $ARGUMENTS
+Citekeys and focus, may be empty: $ARGUMENTS
 
-## 1. The brief
+## 1. Which papers
 
-Read `## Cards` in `1_Literature/card&outputs_def.md`. If the file is still
-`status: empty`, the sections there are an untouched starter set: **stop and fill the
-brief with the researcher first.** Ask what this project needs from every paper — offer
-the starter sections as options, ask what to drop, rename or add — then show the drafted
-`## Cards` and write it only once they confirm. Cards written to a guessed brief would
-all have to be redone.
+Every citekey asked for, or by default every paper in `1_Literature/Paper_Index.md` whose
+Card is not yet a `[card](…)` link. A paper whose **Markdown** is still `—` is not
+converted: list it, say "run `/lit-convert`", and skip it.
 
-## 2. Which papers
+## 2. Write the cards
 
-Every citekey asked for, or by default every paper in the index whose Card is not yet a
-`[card](…)` link. A paper whose **Markdown** is still `—` is not converted: list it, say
-"run `/lit-convert`", and skip it. So is a PDF in `1_Literature/PDFs/` with no index row:
-it was added by hand, and `/lit-convert` brings it in.
+One `1_Literature/Cards/<citekey>.md` per paper, read through its Markdown link. With no
+focus given, the default card of `1_Literature/CLAUDE.md`; with a focus, shape the card
+around it.
 
-## 3. Write the cards
+## 3. File them in the index
 
-One `1_Literature/Cards/<citekey>.md` per paper, reading it through its Markdown link in
-the index. Exactly the sections of `## Cards`, in order — the rules in
-`1_Literature/CLAUDE.md` hold: one screen, `—` for an empty section, every claim traceable
-to the markdown, no formula copied out of it.
+Set each new card's **Card** link, `[card](Cards/<citekey>.md)`, and move the paper's row
+from `## Unsorted` to a `## <group>` section with the same table.
 
-## 4. File them in the index
+- **Groups exist:** file each paper in the one that fits. If none fits, ask: a new group,
+  or regroup?
+- **No groups yet:** propose three or four ways to group this library — by approach
+  family, by role toward the idea, by problem setting, or whatever the cards suggest —
+  each with a preview of the groups it gives, and say the researcher can name their own.
+  Create the headings they choose.
 
-In `1_Literature/Paper_Index.md`, set each new card's **Card** link: `[card](Cards/<citekey>.md)`.
+Never regroup papers already filed without asking. Set `updated:` to today.
 
-Then group, by `## Grouping` in `1_Literature/card&outputs_def.md`. If that section is
-missing but the index still has a filled `Grouping:` line (a project made before the
-section existed), offer to move the criterion into the brief, and delete the line once
-the researcher agrees. If the section is empty, propose three or four criteria that fit
-this library — by approach family, by role toward our idea, by problem setting,
-chronologically, or another the cards suggest — each with a preview of the groups it
-would produce. Ask the researcher to pick, show the drafted `## Grouping`, and write it
-only once they confirm.
-
-Move each newly carded paper from `## Unsorted` into a `## <group>` section with the same
-table. A paper that fits no existing group: ask — a new group, or a better criterion?
-Never regroup papers already filed without asking.
-
-Set `updated:` to today.
-
-## 5. Tell me
+## 4. Tell me
 
 The cards written, where each paper was filed, and anything skipped.

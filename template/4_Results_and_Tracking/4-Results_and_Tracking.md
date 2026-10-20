@@ -1,9 +1,9 @@
 # Results and tracking
 
 - [Where we are](Where_we_are.md) — the briefing. Read it first; `/wrap` rewrites it.
-- [Scenario tree](Scenario_Tree.md) — the experiment DAG, and what is runnable now
-- [The analysis](Results.md) — what the experiments showed, by hypothesis
-- `Runs/<E-id>-<date>.md` — one record per run. Append-only, and the only source of a metric.
+- [Journal](Journal.md) — what was tried, decided and abandoned, and why. Write in it freely.
+- [The analysis](Results.md) — what the experiments showed
+- [Scenario tree](Scenario_Tree.md) — how experiments depend on each other, and what can run now
 
 ## Upstream
 
