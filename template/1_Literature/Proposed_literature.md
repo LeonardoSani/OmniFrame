@@ -4,7 +4,7 @@ updated: __DATE__
 
 # Proposed literature
 
-**Decision** — `OK`: download · `LATER`: set aside in ## Later · `NO`: never propose again · blank: dropped at the next download
+**Decision** — `OK`: download · `NO`: never propose again · blank: kept, in ## Later until you mark it
 
 | Decision | citekey | Paper | Venue | Why | arXiv | Code | Site |
 | -------- | ------- | ----- | ----- | --- | ----- | ---- | ---- |

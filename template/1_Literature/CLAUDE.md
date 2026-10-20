@@ -6,27 +6,41 @@ Papers come in, cards and syntheses go out.
 
 1. **`/lit-search`** proposes papers into `Proposed_literature.md`; the researcher marks
    **Decision**.
-2. **`/lit-download`** runs `omniframe download`: each `OK` paper gets its PDF, its BibTeX,
-   and a row under `## Unsorted` in `Paper_Index.md`.
-3. **`/lit-convert`** runs `omniframe convert`: PDFs become markdown, and the index gets
-   the Markdown links. It first brings in any PDF the researcher saved into `PDFs/` by hand.
-4. **`/lit-cards`**, then **`/lit-outputs`** when the researcher asks for a synthesis.
+2. **`/lit-download`** runs `omniframe download` — each `OK` paper gets its PDF, its BibTeX,
+   and a row under `## Unsorted` in `Paper_Index.md` — then `omniframe convert`, which turns
+   the PDFs into markdown and links it in the index. Given a link, it brings that paper in
+   directly, with no search.
+3. **`/lit-cards-index`** writes the cards and does the final indexing; **`/lit-outputs`**
+   writes a synthesis when the researcher asks for one.
 
-`Proposed_literature.md` holds the open proposals, `## Later` (deferred) and `## Declined`
-(never propose these again). You fill every column except **Decision**; the one exception
-is the `OK` that `/lit-convert` writes for a PDF the researcher added by hand.
+**`/lit-convert`** brings in a PDF the researcher saved into `PDFs/` by hand, and converts
+anything not converted yet.
+
+`Proposed_literature.md` holds three lists. You fill every column except **Decision**; the
+exceptions are the `OK` that `/lit-download` writes for a link the researcher gave, and that
+`/lit-convert` writes for a PDF they added by hand — both were their choice. What
+`omniframe download` does with each mark:
+
+| list | `OK` | `NO` | blank |
+| ---- | ---- | ---- | ----- |
+| the proposals | downloaded | moved to `## Declined` | moved to `## Later` |
+| `## Later` | downloaded | moved to `## Declined` | stays |
+
+`## Declined` is never proposed again; deleting a line lets the paper back in.
 
 ## `Paper_Index.md`
 
 It lists and groups; it holds no analysis. `## Unsorted` holds the papers downloaded but
 not yet carded — `omniframe download` needs that heading, so never rename or remove it.
-`/lit-cards` moves each carded paper under a `## <group>` heading. The groups are the
+`/lit-cards-index` moves each carded paper under a `## <group>` heading. The groups are the
 researcher's: never regroup filed papers without asking.
 
 ## Reading a paper
 
-Read it through its Markdown link in the index. If a paper has a PDF but no `Papers/`
-folder, it is not converted yet: say so, do not read the PDF in its place.
+Read it through its Markdown link in the index: conversion is the normal route, cheaper
+and reusable. For a quick question about a paper not converted yet, you may read its PDF
+directly — say that you did. Cards are always written from the markdown, so every claim
+in them stays traceable.
 
 **Formulas in the markdown are unreliable.** The converter turns some equations into clean
 LaTeX and flattens others into HTML `<sup>`/`<sub>`, where a subscript and a superscript

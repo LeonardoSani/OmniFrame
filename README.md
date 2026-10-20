@@ -44,7 +44,7 @@ block-beta
 
 | | |
 | --- | --- |
-| **Literature** | `/lit-search` proposes papers for your idea, each one found and opened online. You pick; `/lit-download` and `/lit-convert` bring the PDF, the BibTeX and a markdown version the agent can read, converted locally and offline. |
+| **Literature** | `/lit-search` proposes papers for your idea, each one found and opened online. You pick, or give a link; `/lit-download` brings the PDF, the BibTeX and a markdown version the agent can read, converted locally and offline. |
 | **Cards** | One card per paper, shaped by the focus you give, and syntheses when you ask for them. |
 | **Idea vs. implementation** | Your claims in `2_Idea/`, concrete choices in `3_Implementation/`. Files are free: a few headings, no forms. |
 | **Experiments** | Each has a stable id (`E01`…). A mermaid tree shows what depends on what. |

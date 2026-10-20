@@ -33,9 +33,9 @@ they say they are finishing without it, do the same anyway.
 | Command | Does |
 | ------- | ---- |
 | `/lit-search ["bias"]` | proposes papers from `2_Idea/` into `1_Literature/Proposed_literature.md` |
-| `/lit-download` | runs `omniframe download`: the papers marked OK get PDF, BibTeX, a row in the paper index |
-| `/lit-convert` | runs `omniframe convert` (PDF → markdown); first brings in any PDF added by hand |
-| `/lit-cards [citekeys] ["focus"]` | writes the missing cards, and files each paper in a group of the index |
+| `/lit-download [links]` | brings in the papers marked OK, or the ones linked: PDF, BibTeX, index row, then markdown |
+| `/lit-convert` | brings in any PDF added by hand, and converts what is not converted yet |
+| `/lit-cards-index [citekeys] ["focus"]` | writes the missing cards, and does the final indexing: each paper filed in its group |
 | `/lit-outputs ["what to write"]` | writes a literature synthesis |
 | `/wrap` | closes the session: briefing, journal entry, quick checks |
 

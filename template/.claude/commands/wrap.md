@@ -28,7 +28,7 @@ With grep, not by reading every file. **Report what is wrong, fix nothing:**
 
 - a `1_Literature/PDFs/<citekey>.pdf` with no row in `1_Literature/Paper_Index.md` — added
   by hand: suggest `/lit-convert`
-- a `1_Literature/Papers/<citekey>/` with no card — suggest `/lit-cards`
+- a `1_Literature/Papers/<citekey>/` with no card — suggest `/lit-cards-index`
 - an E-id in `4_Results_and_Tracking/Scenario_Tree.md` missing from `2_Idea/Experiments.md`
 
 ## 4. Tell me

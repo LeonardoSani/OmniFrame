@@ -13,8 +13,8 @@
 #   - its BibTeX, fetched from the DOI or arXiv, goes to 5_Paper/refs.bib under the citekey
 #   - the paper gets a row under ## Unsorted in 1_Literature/Paper_Index.md, with its
 #     arXiv, Code and Site links
-# Then the table is reset: done rows leave, LATER rows move to ## Later, NO rows go to
-# ## Declined, blank rows leave. A row that could not be finished stays OK, with the
+# Then the table is reset: done rows leave, NO rows go to ## Declined, unmarked rows in the
+# proposals table move to ## Later (unmarked rows in ## Later stay). A row that could not be finished stays OK, with the
 # reason in its Why cell -- fix it (often: drop the PDF in by hand) and run again.
 #
 # Deterministic and idempotent: no agent is involved, and a second run changes nothing.
@@ -43,8 +43,9 @@ options:
   -h, --help      this text
 
 marks, in the Decision column (any case):
-  OK      download it                  LATER   move it to ## Later
-  NO      drop it, remember declined   blank   drop it (a later search may propose it again)
+  OK      download it
+  NO      move it to ## Declined: never proposed again
+  blank   keep it: moved to ## Later, and kept there until marked
 USAGE
 }
 
@@ -192,16 +193,15 @@ info "project : $root"
 [[ $dry_run -eq 1 ]] && info "(dry run -- nothing is downloaded or written)"
 info ""
 
-n_ok=0; n_done=0; n_flag=0; n_later=0; n_no=0; n_blank=0; n_odd=0
+n_ok=0; n_done=0; n_flag=0; n_later=0; n_no=0; n_odd=0
 
 while IFS=$'\x1f' read -r sec keep ck paper venue why arxiv code site; do
   m="$(mark_of "$keep")"
   case "$m" in
-    LATER) [[ "$sec" == main ]] && { info "  later $ck"; n_later=$((n_later + 1)); }; continue ;;
+    ""|LATER) [[ "$sec" == main ]] && { info "  later $ck"; n_later=$((n_later + 1)); }; continue ;;
     NO)    info "  no    $ck"; n_no=$((n_no + 1)); continue ;;
-    "")    [[ "$sec" == main ]] && n_blank=$((n_blank + 1)); continue ;;
     OK)    ;;
-    *)     info "  ??    $ck -- mark '$keep' is not OK, LATER or NO: row left alone"
+    *)     info "  ??    $ck -- mark '$keep' is not OK or NO: row left alone"
            n_odd=$((n_odd + 1)); continue ;;
   esac
   n_ok=$((n_ok + 1))
@@ -260,7 +260,7 @@ done < <(read_rows)
 
 if [[ $dry_run -eq 1 ]]; then
   info ""
-  info "dry run: $n_ok to download, $n_later to Later, $n_no to Declined, $n_blank blank to drop, $n_odd left alone"
+  info "dry run: $n_ok to download, $n_later to Later, $n_no to Declined, $n_odd left alone"
   exit 0
 fi
 
@@ -323,9 +323,8 @@ RESULTS="$results" TODAY="$today" perl -e '
   for my $r (@rows_m) {
     my @c = cells($r); my $m = mark($c[0]); my $x = $res{$c[1]};
     if    ($m eq "OK")    { next if $x && $x->[0] eq "done"; flag(\@c, $x->[1]) if $x; push @main, row(@c) }
-    elsif ($m eq "LATER") { $c[0] = ""; push @moved, row(@c) }
+    elsif ($m eq "" || $m eq "LATER") { $c[0] = ""; push @moved, row(@c) }   # LATER: old synonym of blank
     elsif ($m eq "NO")    { push @declined, "- `$c[1]` — $c[2]\n" }
-    elsif ($m eq "")      { }
     else                  { push @main, $r }
   }
   for my $r (@rows_l) {
@@ -357,7 +356,7 @@ mv "$work/proposed.new" "$proposed"
 # --- tell me -------------------------------------------------------------------
 
 info ""
-info "done: $n_done in the library, $n_flag flagged, $n_later to Later, $n_no declined, $n_blank blank dropped"
+info "done: $n_done in the library, $n_flag flagged, $n_later to Later, $n_no declined"
 [[ $n_odd -gt 0 ]] && info "      $n_odd row(s) with an unknown mark left alone"
 [[ $n_flag -gt 0 ]] && info "flagged rows stay OK with the reason in Why -- fix them and run again"
 [[ $n_done -gt 0 ]] && info "next: omniframe convert (terminal) or /lit-convert (Claude Code)"

@@ -24,11 +24,10 @@ leave out. It tilts or narrows the idea; it does not replace it. If it contradic
 `High_level.md`, say so and ask which wins.
 
 Never assume the researcher already knows the foundations. A paper is known only if it is
-in the library, in `refs.bib`, or among the anchor papers (step 2) — nothing else, however
-standard it seems. If the bias would leave out foundational work the idea rests on (a
-period that predates it, "no surveys", one method family), name those papers and **ask
-before searching** whether to include them despite the bias. If the bias is empty, or
-cuts nothing foundational, go on without asking.
+in the library, in `refs.bib`, or among the anchor papers of `High_level.md` — nothing
+else, however standard it seems. If the bias leaves out foundational work the idea rests
+on (a period that predates it, "no surveys", one method family), search as asked anyway,
+and name those papers at the end (step 5).
 
 ## 2. Know what is already there
 
@@ -46,8 +45,6 @@ and citations of the anchor papers — they are often better leads than keywords
 
 About 10 papers, unless the bias says otherwise. Fewer and right beats more and loose. Mix
 what the project needs: foundational work, the closest prior work, recent work.
-Foundations the researcher chose in step 1 to keep go in even where the bias would
-exclude them; their **Why** says so.
 
 **Every paper is real and checked.** Open its page and confirm title, authors and venue.
 Never propose a paper from memory: one you could not find a page for does not go in the
@@ -81,4 +78,7 @@ Escape a `|` inside a title as `\|`. Set `updated:` to today.
 ## 5. Tell me
 
 How many papers were added, the queries run, how the bias shaped the result, and anything
-nearly included and why it was not. End with: mark **Decision**, then run `/lit-download`.
+nearly included and why it was not. Name any foundational paper the bias left out, e.g.
+*"Left out by 'after 2020': `vaswani2017attention`, the foundation of this line of work —
+want it proposed?"*. End with: mark **Decision** (`OK` or `NO`; unmarked rows wait in
+`## Later`), then run `/lit-download`.

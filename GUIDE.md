@@ -33,8 +33,7 @@ flowchart TD
   se["/lit-search"]:::claude
   dec{"Decision"}:::you
   dl["/lit-download"]:::claude
-  cv["/lit-convert"]:::claude
-  ca["/lit-cards"]:::claude
+  ca["/lit-cards-index"]:::claude
   ou["/lit-outputs"]:::claude
   me["2_Idea/Setup_and_Method.md"]:::chat
   ex["2_Idea/Experiments.md"]:::chat
@@ -44,7 +43,7 @@ flowchart TD
   res["Results.md"]:::chat
   paper["5_Paper/"]:::chat
 
-  init --> hl --> se --> dec --> dl --> cv --> ca --> ou --> me --> ex
+  init --> hl --> se --> dec --> dl --> ca --> ou --> me --> ex
   ex --> spec
   ex --> tree
   spec --> tree
@@ -73,9 +72,9 @@ where the work happens.
 | Command | Does |
 | ------- | ---- |
 | `/lit-search ["bias"]` | proposes papers from `2_Idea/High_level.md` |
-| `/lit-download` | fetches the papers marked `OK`: PDF, BibTeX, index row |
-| `/lit-convert` | turns PDFs into markdown; brings in PDFs you added by hand |
-| `/lit-cards [citekeys] ["focus"]` | writes a card per paper, and files it in a group |
+| `/lit-download [links]` | brings in the papers marked `OK`, or the ones you link: PDF, BibTeX, index row, markdown |
+| `/lit-convert` | brings in PDFs you saved by hand; converts anything not converted yet |
+| `/lit-cards-index [citekeys] ["focus"]` | writes a card per paper, and does the final indexing: each paper in its group |
 | `/lit-outputs ["what to write"]` | writes a literature synthesis |
 | `/wrap` | ends the session: briefing, journal entry, quick checks |
 
@@ -163,7 +162,7 @@ draft it with you. It asks questions and writes only what you confirm.
 
 ## 4. Literature
 
-One pipeline, one command per step. **All in Claude Code:**
+**All in Claude Code:**
 
 ```mermaid
 flowchart TD
@@ -171,129 +170,73 @@ flowchart TD
   classDef you fill:#fef3c7,stroke:#a16207,color:#111
   classDef note fill:#f3f4f6,stroke:#9ca3af,color:#111
 
-  se["<b>1 · /lit-search #quot;bias#quot;</b><br/>~10 proposals from High_level.md"]:::claude
+  se["<b>1 · /lit-search #quot;bias#quot;</b><br/>~10 proposals"]:::claude
   dec{"you mark<br/>Decision"}:::you
-  dl["<b>2 · /lit-download</b><br/>PDF · BibTeX · row under ## Unsorted"]:::claude
-  cv["<b>3 · /lit-convert</b><br/>markdown, linked in the index"]:::claude
-  ca["<b>4 · /lit-cards</b><br/>a card per paper; the row moves to its group"]:::claude
-  ou["<b>5 · /lit-outputs</b><br/>the syntheses you ask for"]:::claude
-  later["kept in ## Later<br/>mark OK there any time"]:::note
-  no["never proposed again"]:::note
+  link["you have a link"]:::you
+  dl["<b>2 · /lit-download</b><br/>PDF · BibTeX · index row · markdown"]:::claude
+  ca["<b>3 · /lit-cards-index</b><br/>a card per paper, filed in its group"]:::claude
+  ou["<b>4 · /lit-outputs</b><br/>the syntheses you ask for"]:::claude
+  later["## Later<br/>mark it any time"]:::note
+  no["## Declined<br/>never proposed again"]:::note
 
   se --> dec
-  se -. "another bias" .-> se
-  dec -->|OK| dl --> cv --> ca --> ou
-  dec -->|LATER| later
+  dec -->|OK| dl
+  link --> dl
+  dl --> ca --> ou
+  dec -->|blank| later
   dec -->|NO| no
+  later -->|OK| dl
+  later -->|NO| no
 ```
 
-The library is `1_Literature/Paper_Index.md`. Every paper has one row, linking its
-**arXiv**, **code** and **site** (when they exist), the **pdf** (for you), the **md** (for
-the agent) and the **card**. Rows sit under groups you choose; **`## Unsorted`** holds the
-papers downloaded but not yet carded — download puts every new paper there, and
-`/lit-cards` moves it to its group.
+The library is `1_Literature/Paper_Index.md`: one row per paper, linking its **arXiv**,
+**code** and **site** (when they exist), the **pdf** (for you), the **md** (for the agent)
+and the **card**. New papers wait under **`## Unsorted`**; `/lit-cards-index` files them in
+their group.
 
 ### Step 1 — propose
 
 ```
-/lit-search                                          from High_level.md alone
+/lit-search                                          from 2_Idea/
 /lit-search "theory only, after 2020, no surveys"    steered by a bias
 ```
 
 The agent adds about ten proposals to `1_Literature/Proposed_literature.md`, each with its
-venue, why it fits and its links. Each paper is one the agent found and opened online,
-never one recalled from memory.
+venue, why it fits, and its arXiv, code and site links. Every paper is one it found and
+opened online. The **bias** steers this one search; if it left out a foundational paper,
+the agent names it at the end.
 
-| Link | holds |
-| ---- | ----- |
-| **arXiv** | the arXiv page, or the paper's own page if it is not on arXiv. Always there |
-| **Code** | the official GitHub repo. Blank if none |
-| **Site** | the official project page. Blank if none |
+**Your decision**, in the **Decision** column. `Proposed_literature.md` has three lists:
 
-The optional **bias** steers this one search. It narrows `High_level.md` and is not saved.
-If it would exclude a foundational paper (for example, "after 2020" would drop the 2017
-paper the field rests on), the agent names that paper and asks you before searching.
-
-**Your decision.** Fill the **Decision** column. Only you write in it; a legend above the
-table repeats the marks.
-
-| Decision | at the next download |
-| ---- | ----------- |
-| `OK` | downloaded into the library |
-| `LATER` | moved to `## Later`, kept across searches. Mark it `OK` there at any time |
-| `NO` | moved to `## Declined`, never proposed again. Delete its line to let it back in |
-| blank | dropped. A later search may propose it again |
+| list | `OK` | `NO` | blank |
+| --- | --- | --- | --- |
+| proposals | downloaded | moved to Declined | moved to Later |
+| `## Later` | downloaded | moved to Declined | stays |
+| `## Declined` | never proposed again. Delete a line to let a paper back in | | |
 
 ### Step 2 — download
 
 ```
-/lit-download
+/lit-download                                   the papers marked OK
+/lit-download https://arxiv.org/abs/2403.01234  a paper you already know, no search
 ```
 
-For each `OK` paper:
+For each paper: the open PDF goes to `1_Literature/PDFs/<citekey>.pdf` (never overwriting
+one), its BibTeX to `5_Paper/refs.bib`, its row under `## Unsorted`. Then the PDFs are
+converted to markdown with a local model (slow: minutes) and linked in the index.
 
-- finds the open PDF from the arXiv link (arXiv, OpenReview, or Semantic Scholar by DOI)
-  and saves it as `1_Literature/PDFs/<citekey>.pdf`, never overwriting an existing one
-- adds its BibTeX to `5_Paper/refs.bib`, taken from the DOI or arXiv
-- adds its row under `## Unsorted` in the index, with the paper's links
+| case | what to do |
+| --- | --- |
+| no open PDF online | the row stays `OK` with the reason. Save the PDF as `PDFs/<citekey>.pdf`, run `/lit-download` again |
+| a PDF you downloaded yourself | save it in `PDFs/` under any name, run `/lit-convert`. It identifies the paper, asks to rename it to its citekey, and brings it in |
+| formulas that matter | the converter flattens some equations, so the agent takes formulas from the PDF. To clean the markdown with an LLM, in the terminal: `omniframe convert --force --only <citekey> --use-llm` |
 
-**No open PDF online?** The paper stays `OK`, with the reason in its row. Get the PDF
-yourself, save it as `1_Literature/PDFs/<citekey>.pdf`, and run `/lit-download` again: it
-finds the file in place and does the rest.
-
-### Step 3 — convert
-
-```
-/lit-convert
-```
-
-Turns every new PDF into `1_Literature/Papers/<citekey>/` — the markdown plus extracted
-images — with a local model (slow: minutes), and puts the markdown link into the index.
-Papers already converted are skipped, so running it again is safe.
-
-When a PDF does not arrive the normal way:
-
-```mermaid
-flowchart LR
-  classDef claude fill:#fde2cf,stroke:#c2410c,color:#111
-  classDef you fill:#fef3c7,stroke:#a16207,color:#111
-
-  subgraph H["You downloaded a PDF yourself"]
-    direction LR
-    h1["save it in PDFs/<br/>under any name"]:::you --> h2["/lit-convert"]:::claude
-    h2 --> h3(["it asks:<br/>rename to citekey?"]):::you
-    h3 --> h4["download + convert<br/>like any other paper"]:::claude
-  end
-
-  subgraph M["No open PDF online"]
-    direction LR
-    m1["/lit-download flags it<br/>row stays OK"]:::claude --> m2["save it as<br/>PDFs/#lt;citekey#gt;.pdf"]:::you
-    m2 --> m3["/lit-download"]:::claude
-  end
-```
-
-**A PDF you downloaded yourself.** Save it into `1_Literature/PDFs/` under any name and run
-`/lit-convert`. It identifies the paper and asks whether it may rename the file to its
-citekey (`paper (1).pdf` → `lu2022dpm.pdf`). Then it puts the paper through download — for
-the BibTeX and the index row — and conversion. Afterwards it is like any other paper. No
-search needed.
-
-**Formulas.** The converter outputs some equations as clean LaTeX and flattens others into
-HTML. This is by design: the agent uses the markdown to understand a paper and never
-copies a formula from it. When it needs a formula, it reads it from the PDF. For a paper whose maths matters, an external LLM can clean it up — the one
-time you run the converter yourself. It costs money, unless you use a local Ollama. **In
-the terminal:**
-
-```sh
-omniframe convert --force --only <citekey> --use-llm
-```
-
-### Steps 4–5 — cards and syntheses
+### Steps 3–4 — cards and syntheses
 
 ```
-/lit-cards                                   a card for every converted paper that has none
-/lit-cards smith2024foo                      only these
-/lit-cards "assumptions and benchmarks"      shaped around a focus
+/lit-cards-index                                 a card for every converted paper that has none
+/lit-cards-index smith2024foo                    only these
+/lit-cards-index "assumptions and benchmarks"    shaped around a focus
 /lit-outputs "the gap: what the field can't do yet"
 ```
 
@@ -301,9 +244,9 @@ Without a focus, a card covers the problem, the method, the reported results, th
 limitations and the relevance to your idea, adapted to the kind of paper. It fits on one
 screen, and every claim points to the paper's markdown.
 
-After writing, `/lit-cards` files each paper under a group of the index. The first time,
-it proposes a few ways to group the library (by approach, by role toward your idea, by
-problem setting…), or you name your own; later papers go into the groups that exist.
+Then `/lit-cards-index` does the final indexing: each paper moves from `## Unsorted` to its
+group. The first time, it proposes a few ways to group the library (by approach, by role
+toward your idea…), or you name your own.
 
 `/lit-outputs` writes the synthesis you describe into `Literature_Outputs/`. With no
 argument, it asks what you need.

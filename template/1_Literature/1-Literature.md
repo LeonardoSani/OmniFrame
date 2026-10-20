@@ -10,7 +10,7 @@
 
 ## Outputs
 
-- `Cards/` — one card per paper. `/lit-cards` writes them.
+- `Cards/` — one card per paper. `/lit-cards-index` writes them.
 - `Literature_Outputs/` — the syntheses you ask for. `/lit-outputs` writes them.
 
 ## Your notes

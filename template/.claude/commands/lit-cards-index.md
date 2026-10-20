@@ -1,5 +1,5 @@
 ---
-description: Write the missing paper cards, then file each paper in a group of the index
+description: Write the missing paper cards, and do the final indexing — file each paper in its group
 argument-hint: [citekeys] ["focus", e.g. "assumptions and benchmarks"]
 ---
 

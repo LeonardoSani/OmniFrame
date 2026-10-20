@@ -1,5 +1,5 @@
 ---
-description: Make the papers in the library readable — and bring in any PDF added by hand
+description: Bring in any PDF added by hand, and convert the papers not converted yet
 ---
 
 Convert the papers that are in the library but not yet readable. Read
@@ -34,9 +34,9 @@ markdown, then writes the Markdown link into the index row of each converted pap
 loads a large local model and can take minutes — say so before starting.
 
 If it fails because marker or llama.cpp is missing, relay the install instruction it
-prints and stop. Do not try to read the PDFs in its place.
+prints and stop: the papers stay unconverted until it is installed.
 
 ## 3. Tell me
 
 What was added by hand, what was converted, what failed, and which papers now wait for
-`/lit-cards`.
+`/lit-cards-index`.
