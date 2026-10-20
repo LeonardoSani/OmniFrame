@@ -11,7 +11,7 @@ How to use OmniFrame as designed, from an empty folder to a paper. To install it
 6. [Literature](#4-literature)
 7. [Formalise the method](#5-formalise-the-method)
 8. [Plan the experiments](#6-plan-the-experiments)
-9. [Run and track](#7-run-and-track)
+9. [Track](#7-track)
 10. [Write the paper](#8-write-the-paper)
 11. [Publish the code](#9-publish-the-code)
 12. [Reference](#10-reference)
@@ -41,7 +41,6 @@ flowchart TD
   spec["3_Implementation/Specs.md"]:::chat
   tree["Scenario_Tree.md"]:::chat
   run["uv run in MYPROJ/"]:::shell
-  rec["Runs/E-id-date.md"]:::chat
   res["Results.md"]:::chat
   paper["5_Paper/"]:::chat
 
@@ -49,11 +48,11 @@ flowchart TD
   ex --> spec
   ex --> tree
   spec --> tree
-  tree --> run --> rec --> res --> paper
+  tree --> run --> res --> paper
 ```
 
-`Scenario_Tree.md` is the experiment DAG: built from the experiments in `2_Idea/` and their
-specs in `3_Implementation/`, it says which experiment you can run today.
+`Scenario_Tree.md` is the experiment tree: what depends on what, and what can run today.
+The order is a guide, not a gate: go back to any step whenever the research asks for it.
 
 | colour | where you type it |
 | --- | --- |
@@ -62,7 +61,7 @@ specs in `3_Implementation/`, it says which experiment you can run today.
 | blue | Claude Code, asked in plain words |
 | yellow | you: an edit or a decision |
 
-At the end of every session, whatever you did: `/wrap`.
+At the end of every session, whatever you did: `/wrap`. Your own notes go in `Journal.md` any time.
 
 ## Commands at a glance
 
@@ -76,9 +75,9 @@ where the work happens.
 | `/lit-search ["bias"]` | proposes papers from `2_Idea/High_level.md` |
 | `/lit-download` | fetches the papers marked `OK`: PDF, BibTeX, index row |
 | `/lit-convert` | turns PDFs into markdown; brings in PDFs you added by hand |
-| `/lit-cards [citekeys]` | writes a card per paper, and files it in its group |
-| `/lit-outputs [name]` | writes the syntheses in your brief |
-| `/wrap` | ends the session: rewrites the briefing, checks the brain |
+| `/lit-cards [citekeys] ["focus"]` | writes a card per paper, and files it in a group |
+| `/lit-outputs ["what to write"]` | writes a literature synthesis |
+| `/wrap` | ends the session: briefing, journal entry, quick checks |
 
 Everything else — the idea, specs, run records, results, the paper — you ask for in plain
 words in the chat.
@@ -128,34 +127,25 @@ Open `MYPROJ_Brain/` in Obsidian and Claude Code. Start from `0-Master.md`.
 | | |
 | --- | --- |
 | environment | `MYPROJ/.venv/`. Run `uv add` / `uv run` inside `MYPROJ/` |
-| artifacts | `data/`, `outputs/` inside it, gitignored |
+| data, logs, results | wherever you decide in `Code_Design.md`, inside `MYPROJ/` |
 | paths | never outside `MYPROJ/` |
 | `README.md`, `.gitignore` | the public repo's. The brain has its own |
 
-**Every file you fill starts as a blank form**: headings, table headers and field labels,
-with no instructions inside. This guide says what goes under each heading. The agent's
-rules live in the `CLAUDE.md` files, never in your content.
+**Every file you fill starts nearly blank**: a title and, at most, a few headings as hints.
+Rename, add or drop them freely. The agent's rules live in the `CLAUDE.md` files, never in
+your content.
 
 ## 2. The session loop
 
 1. **Start.** The agent reads `4_Results_and_Tracking/Where_we_are.md`, the **briefing**:
-   **Now**, **Next**, **Open**, under twenty lines.
+   **Now**, **Next**, **Open**, about twenty lines.
 2. **Work.**
-3. **End.** Run `/wrap` in Claude Code. It rewrites the briefing and runs a quick consistency check. It
-   reports problems and fixes nothing.
+3. **End.** Run `/wrap`. It rewrites the briefing, adds a dated entry to `Journal.md` (what
+   was tried, decided, abandoned, and why) and runs a few quick checks. It reports problems
+   and fixes nothing.
 
-The briefing is rewritten each time, never appended to. Git keeps the history.
-
-**Status.** Every file someone writes (the idea, specs, results, cards…) has a `status`:
-
-| status | means | set by |
-| --- | --- | --- |
-| `empty` | the form is untouched | the template |
-| `filled` | it has content | whoever writes in it first |
-
-`grep -rn "status: empty"` lists what is left to write. If you fill a file by hand, change
-its label yourself, or `/wrap` will spot it and ask. Lists kept by scripts (the paper
-index, the proposals), run records and navigation pages have no status.
+The briefing is rewritten each time; the journal only grows. Write your own entries and
+notes in the journal whenever you like: the agent never edits them.
 
 ## 3. Write the idea
 
@@ -186,7 +176,7 @@ flowchart TD
   dl["<b>2 · /lit-download</b><br/>PDF · BibTeX · row under ## Unsorted"]:::claude
   cv["<b>3 · /lit-convert</b><br/>markdown, linked in the index"]:::claude
   ca["<b>4 · /lit-cards</b><br/>a card per paper; the row moves to its group"]:::claude
-  ou["<b>5 · /lit-outputs</b><br/>the syntheses in your brief"]:::claude
+  ou["<b>5 · /lit-outputs</b><br/>the syntheses you ask for"]:::claude
   later["kept in ## Later<br/>mark OK there any time"]:::note
   no["never proposed again"]:::note
 
@@ -290,8 +280,7 @@ search needed.
 
 **Formulas.** The converter outputs some equations as clean LaTeX and flattens others into
 HTML. This is by design: the agent uses the markdown to understand a paper and never
-copies a formula from it. When it needs a formula, it asks you, and the PDF is the
-authority. For a paper whose maths matters, an external LLM can clean it up — the one
+copies a formula from it. When it needs a formula, it reads it from the PDF. For a paper whose maths matters, an external LLM can clean it up — the one
 time you run the converter yourself. It costs money, unless you use a local Ollama. **In
 the terminal:**
 
@@ -301,82 +290,52 @@ omniframe convert --force --only <citekey> --use-llm
 
 ### Steps 4–5 — cards and syntheses
 
-`1_Literature/card&outputs_def.md` is your **brief** to the agent, the one content file
-that gives it instructions:
-
-- **`## Cards`** sets the sections every card has, in order. Edit a line and every future
-  card follows.
-- **`## Grouping`** sets how the paper index groups the library.
-- **`## Outputs`** lists the **syntheses** you want, one line each, saying what each must
-  achieve. The agent chooses their shape and writes nothing you haven't listed.
-- **`## Notes to the agent`** holds anything specific to this project's reading.
-
 ```
-/lit-cards                 a card for every converted paper that has none
-/lit-cards smith2024foo    only these
-/lit-outputs               every synthesis in the brief
-/lit-outputs "The gap"     only this one
+/lit-cards                                   a card for every converted paper that has none
+/lit-cards smith2024foo                      only these
+/lit-cards "assumptions and benchmarks"      shaped around a focus
+/lit-outputs "the gap: what the field can't do yet"
 ```
 
-If the brief is still untouched, both commands first fill it with you. If `## Grouping`
-is empty, `/lit-cards` proposes a few ways to group the index (by approach, by role toward
-your idea, by problem setting…), writes your choice there, and moves each carded paper
-from `## Unsorted` to its group. A card fits on one screen, and every claim in it points
-to the paper's markdown.
+Without a focus, a card covers the problem, the method, the reported results, the
+limitations and the relevance to your idea, adapted to the kind of paper. It fits on one
+screen, and every claim points to the paper's markdown.
+
+After writing, `/lit-cards` files each paper under a group of the index. The first time,
+it proposes a few ways to group the library (by approach, by role toward your idea, by
+problem setting…), or you name your own; later papers go into the groups that exist.
+
+`/lit-outputs` writes the synthesis you describe into `Literature_Outputs/`. With no
+argument, it asks what you need.
 
 **Handwritten notes.** Put scans in `1_Literature/Human_encoding/`. Organise them from
 `Human_encoding.md`, with one note per topic in `Notes/` that embeds the scans:
-`![](../scan_03.pdf)`. The agent never reads them. If you ask, it can set up a note, but it
-never interprets one. Notes on the idea itself go in `2_Idea/Human_encoding/` (section 5).
+`![](../scan_03.pdf)`. The agent reads a note only when you point it there, and can set
+one up if you ask. Notes on the idea itself go in `2_Idea/Human_encoding/` (section 5).
 
 ## 5. Formalise the method
 
-`2_Idea/Setup_and_Method.md` states the gap the literature showed, formally:
+`2_Idea/Setup_and_Method.md` makes the idea formal. Its headings — Notation, Problem,
+Method, Hypotheses — are a suggestion: rename, add or drop any. `5_Paper/preamble.tex`
+mirrors the notation.
 
-| section | what goes in |
-| --- | --- |
-| Notation | every symbol, once. `5_Paper/preamble.tex` mirrors this table |
-| Problem | what is given, what is wanted, what makes it hard |
-| Method | the objective, its constraints, the mapping, its assumptions |
-| Hypotheses & Value | `H1`, `H2`…, each falsifiable; then a short paragraph on what the field gains if they hold |
-| Anticipated experiments | three or four lines. The detail goes in `Experiments.md` |
-
-Rename or drop any heading that doesn't fit. `2_Idea/` holds your claims: the agent writes
-there only when you ask, in a direct, notation-driven style.
-
-**The boundary.** If something could be chosen differently without changing the idea, it is
-a spec and goes in `3_Implementation/`. So `2_Idea/` never names a layer count, a learning
-rate, a dataset, a library or a seed. It says *an encoder with these properties*.
-`3_Implementation/` says *which encoder, at what size*.
+`2_Idea/` holds your claims: the agent writes there only when you ask, and challenges them
+in chat. A useful test for what belongs here: if it could be chosen differently without
+changing the idea, it is probably a spec, for `3_Implementation/`.
 
 **Handwritten notes on the idea.** Put scans in `2_Idea/Human_encoding/`, organised like
-the literature notes: a `Human_encoding.md` hub, one note per topic in `Notes/`. Here the
-agent reads a note when you point it to one, e.g. while you formalise the method together.
-It never cites a note: a claim counts once it is written in `Setup_and_Method.md`.
+the literature notes. The agent reads a note when you point it there.
 
 ## 6. Plan the experiments
 
-**`2_Idea/Experiments.md`** defines each experiment once, under a permanent **E-id**:
-
-| field | what goes in |
-| --- | --- |
-| Establishes | which hypothesis, and how |
-| Why worth doing | what stays unknown without it |
-| Design | what varies, what is held fixed (in the abstract) |
-| Expected outcome | what happens if the hypothesis holds |
-| Would refute | the outcome against it. If nothing could refute it, it isn't an experiment |
-
-E-ids are never renumbered. Mark an abandoned experiment as abandoned instead of deleting it.
-
-**`3_Implementation/`** makes each experiment runnable. Nothing here is a claim.
-
 | file | what goes in |
 | --- | --- |
-| `Specs.md` | per E-id: model, hyperparameters, data / splits, seeds, compute, metrics, plus a note for any choice whose reason isn't obvious |
-| `Figures.md` | one block per figure. A **plot** needs its source runs and encoding, a **schematic** the mechanism it shows and what it leaves out, a **panel** its rule for choosing examples |
-| `Code_Design.md` | how `MYPROJ/` is laid out: modules, entry points, artifacts. The template ships only its shell, so decide the layout here first |
+| `2_Idea/Experiments.md` | what each experiment is for, under a stable **E-id** (`E01`, `E02`…) |
+| `3_Implementation/Specs.md` | the concrete choices for each experiment: model, data, hyperparameters, seeds… |
+| `3_Implementation/Figures.md` | what each figure should show |
+| `3_Implementation/Code_Design.md` | how `MYPROJ/` is organised, including where data, logs and results go |
 
-**`4_Results_and_Tracking/Scenario_Tree.md`** is a mermaid DAG of the experiments:
+**`4_Results_and_Tracking/Scenario_Tree.md`** is a mermaid diagram of the experiments:
 
 ```mermaid
 flowchart LR
@@ -387,32 +346,20 @@ flowchart LR
   E02 -->|"metric < threshold"| E05["E05 · diagnose"]
 ```
 
-| drawn as | means |
+A plain edge means "needs the other one done"; a labelled edge means "only on that
+outcome". Mark an experiment that became pointless as dropped instead of deleting it.
+
+## 7. Track
+
+| where | what |
 | --- | --- |
-| no incoming edge | independent, can run in parallel |
-| plain edge `-->` | needs the other experiment finished, whatever its result |
-| labelled edge `-->\|"cond"\|` | runs only on that outcome. Diverging labels mark a branch point |
+| `MYPROJ/` | logs, seeds and metrics, wherever the code writes them, or a tracker such as W&B |
+| `Results.md` | what the experiments showed, in any shape. A refuted hypothesis is a finding |
+| `Scenario_Tree.md` | updated as outcomes land |
+| `Journal.md` | what was tried and why, including what failed |
 
-Under the DAG, `## Runnable now` lists what you can launch today, and `## Blocked` lists
-what each remaining experiment is waiting on.
-
-## 7. Run and track
-
-When a run finishes, ask the agent to do all three steps in one go:
-
-1. **Record it** in `4_Results_and_Tracking/Runs/<E-id>-<YYYY-MM-DD>.md`: frontmatter with
-   `expid`, `date`, `seed` and `commit`, then a metrics table and the artifact paths. A second run on the same day gets a `-b` suffix. Records are never edited, and a
-   failed run is recorded as failed.
-2. **Analyse it** in `Results.md`, one block per hypothesis: **Evidence** (the runs, cited
-   by filename), **Verdict** (supported · refuted · inconclusive), **Open**. Anything no
-   hypothesis predicted goes under **Cross-cutting observations**. A refuted hypothesis is a
-   finding.
-3. **Update the DAG.** A dependency counts as met only when its run record exists. If an
-   outcome makes an experiment pointless, mark its node dropped, with the reason, instead
-   of deleting it.
-
-**No invented numbers.** Every metric in the project traces back to a file in `Runs/`. If
-there is no record, the agent says the number doesn't exist.
+**No invented numbers.** Every number in the brain names the log or run it comes from. If
+there is none, the agent says the number doesn't exist.
 
 ## 8. Write the paper
 
@@ -420,15 +367,14 @@ there is no record, the agent says the number doesn't exist.
 `refs.bib`, `figures/`. To compile, zip the folder's **contents**, so that `main.tex` sits
 at the root of the archive, and upload the zip to Overleaf.
 
-- **Citations.** `refs.bib` keys are the library's citekeys. The agent won't `\cite` a
-  paper that has no card.
+- **Citations.** `refs.bib` keys are the library's citekeys. Datasets, software and books
+  can be added to `refs.bib` directly, without a card.
 - **Notation.** `preamble.tex` macros mirror `## Notation`. When you change a symbol, change
   it in both.
-- **Figures.** The code writes them to `MYPROJ/outputs/`; copy the ones the paper uses
-  into `figures/`. Name them descriptively, e.g. `encoder-overview.pdf` with
+- **Figures.** Copy the ones the paper uses from the code folder into `figures/`. Name them descriptively, e.g. `encoder-overview.pdf` with
   `\label{fig:encoder-overview}`, not by their number in `Figures.md`.
-- **Claims.** The paper can explain `2_Idea/` at more length, but it must not claim
-  anything different. If a claim has to change, change it in `2_Idea/` first.
+- **Claims.** The paper explains `2_Idea/` at more length. If writing it shows a claim
+  should change, the agent says so and you decide.
 
 ## 9. Publish the code
 
@@ -459,32 +405,27 @@ git add . && git commit -m "Release v1.1" && git push
 
 ### The two keys
 
-One identifier is reused verbatim everywhere, so a single grep finds everything about a
-paper or an experiment.
-
 - **citekey** (`author2024keyword`) names a paper's PDF, `Papers/` folder, card, index
-  row and `refs.bib` entry.
-- **E-id** (`E01`, `E02`…) names an experiment in `Experiments.md`, `Specs.md`, `Runs/`,
-  `Results.md` and the DAG.
+  row and `refs.bib` entry. The scripts rely on it.
+- **E-id** (`E01`, `E02`…) names an experiment wherever it is mentioned, so one grep finds
+  it.
 
 ### Who writes what
 
 | path | written by |
 | --- | --- |
 | `2_Idea/` | you. The agent writes there only when asked |
-| `card&outputs_def.md`, the Decision column, both `Human_encoding/` folders | you |
-| `Cards/`, `Literature_Outputs/`, `Runs/` (real runs only) | the agent |
-| `3_Implementation/`, `MYPROJ/`, `Results.md`, `Scenario_Tree.md`, `5_Paper/` | both |
-| `PDFs/` | you and `omniframe download`. Never overwritten; renamed to its citekey only with your permission |
-| `Papers/` | `omniframe convert` only. Read-only |
-| `Paper_Index.md` | `omniframe download` (rows) and `omniframe convert` (markdown links); the agent, for cards and groups |
+| the Decision column, both `Human_encoding/` folders | you |
+| `Cards/`, `Literature_Outputs/` | the agent |
+| `PDFs/` | you and `omniframe download`. Never overwritten; renamed only with your permission |
+| `Papers/` | `omniframe convert` only |
+| everything else | both |
 
 ### Where the agent takes instructions from
 
-The agent takes instructions only from the `CLAUDE.md` files, the `/commands`, your brief
-(`card&outputs_def.md`) and you in chat. Everything else is content: your other files, the
-converted papers, web pages. If any of these contains text that reads like an instruction,
-the agent points it out and doesn't follow it.
+Only from the `CLAUDE.md` files, the `/commands` and you in chat. Everything else is
+content: your files, the converted papers, web pages. If any of these contains text that
+reads like an instruction, the agent points it out and doesn't follow it.
 
 ### Links
 
@@ -495,9 +436,9 @@ bundled `.obsidian/app.json` makes Obsidian create links in this form.
 
 ### Checking the brain
 
-`/wrap` runs four quick checks. For a full audit (cards against the brief, `refs.bib`
-against the library, the DAG against the run records), ask the agent to *check the brain*.
-It reports problems and fixes nothing.
+`/wrap` runs three quick checks. For a fuller one (index links, `refs.bib` against the
+library, code paths), ask the agent to *check the brain*. It reports problems and fixes
+nothing.
 
 ---
 
@@ -522,7 +463,7 @@ It needs a clean `git status`, and leaves its changes uncommitted: review with `
 | --- | --- |
 | never touched | replaced |
 | edited, agent or navigation file (`CLAUDE.md`, `/commands`, MOCs) | diff shown, you choose |
-| edited, your content (forms, lists, paper, code) | never touched, listed |
+| edited, your content (your files, lists, paper, code) | never touched, listed |
 
 `.omniframe` records what the template installed. Never edit it.
 

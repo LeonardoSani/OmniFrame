@@ -45,13 +45,13 @@ block-beta
 | | |
 | --- | --- |
 | **Literature** | `/lit-search` proposes papers for your idea, each one found and opened online. You pick; `/lit-download` and `/lit-convert` bring the PDF, the BibTeX and a markdown version the agent can read, converted locally and offline. |
-| **Cards** | One card per paper, with the sections you define. Syntheses only when you ask for them. |
-| **Idea vs. implementation** | Claims in `2_Idea/`, concrete choices in `3_Implementation/`. The method stays general, the specs stay honest. |
-| **Experiments** | Each has a permanent id (`E01`…). A mermaid DAG shows what depends on what and what can run today. |
-| **Results** | A metric exists only if a run record has it. |
+| **Cards** | One card per paper, shaped by the focus you give, and syntheses when you ask for them. |
+| **Idea vs. implementation** | Your claims in `2_Idea/`, concrete choices in `3_Implementation/`. Files are free: a few headings, no forms. |
+| **Experiments** | Each has a stable id (`E01`…). A mermaid tree shows what depends on what. |
+| **Results** | Every number names the log or run it comes from. Nothing invented. |
 | **Paper** | `5_Paper/` is self-contained LaTeX for Overleaf, citing with the library's keys. |
 | **Code** | `MYPROJ/` is a standalone uv project you can publish on its own. |
-| **Continuity** | A briefing under twenty lines at the start of each session, rewritten by `/wrap`. |
+| **Continuity** | A short briefing read at the start of each session, and a journal of what was tried and why. `/wrap` updates both. |
 
 ## Quick start
 
@@ -80,23 +80,22 @@ MYPROJ_Brain/                one git repo, one Obsidian vault
 ├── 1_Literature/
 │   ├── Paper_Index.md       every paper once: arXiv · code · site · pdf · md · card
 │   ├── Proposed_literature.md   search results waiting for your decision
-│   ├── card&outputs_def.md  what a card covers, which syntheses you want
 │   ├── PDFs/ Papers/ Cards/ Literature_Outputs/
-│   └── Human_encoding/      your handwritten notes. The agent never reads them
+│   └── Human_encoding/      your handwritten notes. The agent reads one only when you ask
 ├── 2_Idea/
 │   ├── High_level.md        the idea in plain words. What /lit-search reads
-│   ├── Setup_and_Method.md  problem · notation · method · hypotheses
-│   ├── Experiments.md       per E-id: what it establishes, what would refute it
+│   ├── Setup_and_Method.md  notation · problem · method · hypotheses
+│   ├── Experiments.md       what each experiment is for, by E-id
 │   └── Human_encoding/      your handwritten notes. The agent reads one only when you ask
 ├── 3_Implementation/
-│   ├── Specs.md             per E-id: architecture, hyperparameters, data, seeds
+│   ├── Specs.md             the concrete choices for each experiment
 │   ├── Figures.md           what each figure must show
 │   └── Code_Design.md       where the code goes
 ├── 4_Results_and_Tracking/
 │   ├── Where_we_are.md      the briefing, rewritten by /wrap
-│   ├── Results.md           the analysis, by hypothesis
-│   ├── Scenario_Tree.md     the experiment DAG
-│   └── Runs/                one record per run. The only source of a metric
+│   ├── Journal.md           what was tried, decided, abandoned, and why
+│   ├── Results.md           the analysis
+│   └── Scenario_Tree.md     the experiment tree
 ├── 5_Paper/                 LaTeX for Overleaf
 └── MYPROJ/                  the code only: the future public repo
 ```
