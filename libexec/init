@@ -2,10 +2,10 @@
 #
 # omniframe init -- create a research project: the brain, and its code folder.
 #
-#     cd ~/Projects
 #     omniframe init MYPROJ
 #
-# makes MYPROJ_Brain/ (the brain, a git repo) and MYPROJ_Brain/MYPROJ/ (the code,
+# makes MYPROJ_Brain/ in your projects folder (asked once, then remembered):
+# MYPROJ_Brain/ (the brain, a git repo) and MYPROJ_Brain/MYPROJ/ (the code,
 # a uv project that can later be exported alone into a public repo).
 #
 # The template content is cloned from the template repo on every run, so a
@@ -25,9 +25,10 @@ usage: omniframe init [options] [NAME]
 
 Creates NAME_Brain/ from the research template, substituting the template
 tokens in file contents and in path names, then runs `git init` there and
-`uv init` in its code folder NAME_Brain/NAME/. NAME may be a path; a trailing
-_Brain is not doubled. Without NAME, the current folder is used, and its name
-must end in _Brain.
+`uv init` in its code folder NAME_Brain/NAME/. A plain NAME goes in your
+projects folder: the first run asks for it and remembers it. NAME may instead be
+a path (./X, ~/X, /X, a/X), used as written. A trailing _Brain is not doubled.
+Without NAME, the current folder is used, and its name must end in _Brain.
 
 options:
   -n, --name NAME     project display name  (default: NAME)
@@ -36,6 +37,7 @@ options:
       --repo URL      template repo url, or a local path
       --ref REF       branch/tag/commit to clone              (default: main)
   -f, --force         overwrite files that already exist
+      --set-dir DIR   remember DIR as the projects folder (alone: just save it)
       --dry-run       print what would happen, write nothing
   -h, --help          this text
 
@@ -48,6 +50,7 @@ A template file named <name>.append is appended to an existing <name> instead of
 being skipped, or written as <name> if there is nothing there yet.
 
 environment:
+  OMNIFRAME_PROJECTS_DIR     projects folder, instead of the remembered one
   OMNIFRAME_TEMPLATE_REPO    same as --repo
   OMNIFRAME_TEMPLATE_REF     same as --ref
   OMNIFRAME_TEMPLATE_SUBDIR  subdirectory of the repo holding the skeleton
@@ -58,6 +61,7 @@ target=""
 opt_name=""
 opt_pkg=""
 opt_author=""
+set_dir=""
 force=0
 dry_run=0
 
@@ -68,6 +72,9 @@ while [[ $# -gt 0 ]]; do
     -a|--author) opt_author="${2:-}";    shift 2 ;;
     --repo)      TEMPLATE_REPO="${2:-}"; shift 2 ;;
     --ref)       TEMPLATE_REF="${2:-}";  shift 2 ;;
+    --set-dir)   set_dir="${2:-}"
+                 [[ -n "$set_dir" ]] || die "--set-dir needs a folder"
+                 shift 2 ;;
     -f|--force)  force=1;                shift ;;
     --dry-run)   dry_run=1;              shift ;;
     -h|--help)   usage; exit 0 ;;
@@ -78,10 +85,50 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+# --- the projects folder: where a plain NAME goes ------------------------------
+
+projects_file="${XDG_CONFIG_HOME:-$HOME/.config}/omniframe/projects_dir"
+
+save_projects_dir() {
+  local d="${1/#\~/$HOME}"
+  mkdir -p "$d" || die "cannot create $d"
+  d="$(cd "$d" && pwd -P)"
+  mkdir -p "$(dirname "$projects_file")"
+  printf '%s\n' "$d" > "$projects_file"
+  info "projects folder: $d  (saved in $projects_file)"
+}
+
+projects_dir() {
+  local d="${OMNIFRAME_PROJECTS_DIR:-}"
+  [[ -z "$d" && -f "$projects_file" ]] && d="$(head -n 1 "$projects_file")"
+  if [[ -z "$d" ]]; then
+    # not asked yet; a script with no terminal gets the current folder
+    if [[ ! -t 0 ]]; then printf '%s' "$PWD"; return; fi
+    printf 'Where should your projects go? [~/Projects]: ' >&2
+    read -r d || true
+    d="${d:-$HOME/Projects}"
+    if [[ $dry_run -eq 1 ]]; then info "(dry run: not saved)" >&2
+    else save_projects_dir "$d" >&2; fi
+  fi
+  d="${d/#\~/$HOME}"
+  printf '%s' "${d%/}"
+}
+
+if [[ -n "$set_dir" ]]; then
+  save_projects_dir "$set_dir"
+  [[ -n "$target" ]] || exit 0
+fi
+
 if [[ -z "$target" ]]; then
   [[ "$(basename "$PWD")" == *_Brain ]] \
     || die "give a NAME (omniframe init MYPROJ), or run it inside a NAME_Brain folder"
   target="$PWD"
+elif [[ "$target" != */* && "$target" != "~"* ]]; then
+  pdir="$(projects_dir)"
+  [[ $dry_run -eq 1 || -d "$pdir" ]] || mkdir -p "$pdir" || die "cannot create $pdir"
+  target="$pdir/$target"
+else
+  target="${target/#\~/$HOME}"
 fi
 target="${target%/}"
 [[ "$target" == *_Brain ]] || target="${target}_Brain"

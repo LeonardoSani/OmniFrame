@@ -61,9 +61,10 @@ git clone https://github.com/LeonardoSani/OmniFrame.git ~/Projects/OmniFrame
 uv tool install marker-pdf                  # the PDF converter. Large: pulls torch
 brew install llama.cpp                      # its local backend (Apple Silicon / CPU)
 
-cd ~/Projects
 omniframe init MYPROJ                       # → MYPROJ_Brain/, code in MYPROJ_Brain/MYPROJ/
 ```
+
+The first `init` asks where your projects go (default `~/Projects`) and remembers it.
 
 Open `MYPROJ_Brain/` in Obsidian and in Claude Code, and write `2_Idea/High_level.md`. On
 an NVIDIA GPU, use vLLM as the converter's backend instead.

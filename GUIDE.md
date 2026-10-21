@@ -101,9 +101,11 @@ words in the chat.
 **In the terminal:**
 
 ```sh
-cd ~/Projects
 omniframe init MYPROJ
 ```
+
+The first time, it asks for your projects folder (default `~/Projects`) and remembers it:
+every project is created there, wherever you run the command.
 
 ```
 MYPROJ_Brain/          the brain: one git repo, your Obsidian vault
@@ -113,6 +115,7 @@ MYPROJ_Brain/          the brain: one git repo, your Obsidian vault
 
 | flag | |
 | --- | --- |
+| `--set-dir DIR` | change the remembered projects folder |
 | `--dry-run` | print the plan, write nothing |
 | `--force` | overwrite existing files |
 | `--name "Title"` | project name, if nicer than `MYPROJ` |
