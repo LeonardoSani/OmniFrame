@@ -15,9 +15,10 @@ converted: list it, say "run `/lit-download`", and skip it.
 
 ## 2. Write the cards
 
-One `1_Literature/Cards/<citekey>.md` per paper, read through its Markdown link. With no
-focus given, the default card of `1_Literature/CLAUDE.md`; with a focus, shape the card
-around it.
+One `1_Literature/Cards/<citekey>.md` per paper, read through its Markdown link. With a
+focus, shape the card around it. Without one, follow the shape of the cards already in
+`1_Literature/Cards/` — they carry the researcher's earlier focus; for the very first cards,
+use the default card of `1_Literature/CLAUDE.md`.
 
 ## 3. File them in the index
 

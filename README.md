@@ -48,7 +48,7 @@ block-beta
 | **Cards** | One card per paper, shaped by the focus you give, and syntheses when you ask for them. |
 | **Idea vs. implementation** | Your claims in `2_Idea/`, concrete choices in `3_Implementation/`. Files are free: a few headings, no forms. |
 | **Experiments** | Each has a stable id (`E01`…). A mermaid tree shows what depends on what. |
-| **Results** | Every number names the log or run it comes from. Nothing invented. |
+| **Results** | Every result names the log or run it comes from. Nothing invented. |
 | **Paper** | `5_Paper/` is self-contained LaTeX for Overleaf, citing with the library's keys. |
 | **Code** | `MYPROJ/` is a standalone uv project you can publish on its own. |
 | **Continuity** | A short briefing read at the start of each session, and a journal of what was tried and why. `/wrap` updates both. |

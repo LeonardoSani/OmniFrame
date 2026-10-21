@@ -18,7 +18,7 @@ entry.
 
 ## `Results.md`
 
-The analysis: what the experiments showed, in whatever shape fits. Every number names its
+The analysis: what the experiments showed, in whatever shape fits. Every result names its
 source (a log, an output, a tracker run). A refuted hypothesis is a finding: record it as
 one, and never bend a result toward the method.
 

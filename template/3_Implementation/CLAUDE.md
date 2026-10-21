@@ -22,5 +22,5 @@ public repo. So:
   into the brain.
 
 Logs, seeds and metrics stay wherever the code writes them, as `Code_Design.md` decides,
-or in a tracker such as W&B. When you quote a number in the brain, name the file or run
+or in a tracker such as W&B. When you quote a result in the brain, name the file or run
 it comes from.

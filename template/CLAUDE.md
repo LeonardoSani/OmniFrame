@@ -79,9 +79,10 @@ still `—`, the paper is not converted yet: say so, and offer `/lit-download`.
 
 ## Hard rules
 
-1. **Never invent a number, never invent a paper.** Every number you write names where it
-   comes from: a log or output of the code, a tracker run, a paper. If you cannot point to
-   one, the number does not exist — say so. Every paper you propose or cite is one whose
+1. **Never invent a result, never invent a paper.** Every result or metric you write names
+   where it comes from: a log or output of the code, a tracker run, a paper. If you cannot
+   point to one, the result does not exist — say so. Proposals, estimates and thresholds
+   are not results: label them as what they are. Every paper you propose or cite is one whose
    page you found and opened.
 2. **The Decision column in `1_Literature/Proposed_literature.md` is the researcher's.**
 3. **Never delete or overwrite in `1_Literature/PDFs/`; never edit `1_Literature/Papers/`.**

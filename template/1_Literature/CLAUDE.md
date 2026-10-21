@@ -49,8 +49,9 @@ a formula must be reproduced, read it from the PDF page itself.
 **`Cards/<citekey>.md`** — one per paper, one screen. By default: the problem, the method,
 the results it reports, its limitations, and its relevance to this project's idea. Adapt
 it to the paper (a survey, a theory paper and a benchmark do not need the same card) and
-to any focus the researcher gave. Every claim points to the section of the markdown it
-comes from; a number the paper did not state does not belong in it.
+to any focus the researcher gave; without one, keep the shape of the cards already
+written. Every claim points to the section of the markdown it comes from; a number the
+paper did not state does not belong in it.
 
 **`Literature_Outputs/<name>.md`** — a synthesis the researcher asked for, argued from the
 cards. Its shape is yours.

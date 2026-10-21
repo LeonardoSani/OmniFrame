@@ -239,8 +239,9 @@ converted to markdown with a local model (slow: minutes) and linked in the index
 /lit-outputs "the gap: what the field can't do yet"
 ```
 
-Without a focus, a card covers the problem, the method, the reported results, the
-limitations and the relevance to your idea, adapted to the kind of paper. It fits on one
+Without a focus, new cards follow the shape of the ones already written, so a focus you
+gave once carries over. The very first cards cover the problem, the method, the reported
+results, the limitations and the relevance to your idea, adapted to the kind of paper. It fits on one
 screen, and every claim points to the paper's markdown.
 
 Then `/lit-cards-index` does the final indexing: each paper moves from `## Unsorted` to its
@@ -300,8 +301,9 @@ outcome". Mark an experiment that became pointless as dropped instead of deletin
 | `Scenario_Tree.md` | updated as outcomes land |
 | `Journal.md` | what was tried and why, including what failed |
 
-**No invented numbers.** Every number in the brain names the log or run it comes from. If
-there is none, the agent says the number doesn't exist.
+**No invented results.** Every result or metric in the brain names the log or run it comes
+from. If there is none, the agent says the result doesn't exist. Proposals, estimates and
+thresholds are free, labelled as such.
 
 ## 8. Write the paper
 
@@ -378,8 +380,8 @@ bundled `.obsidian/app.json` makes Obsidian create links in this form.
 
 ### Checking the brain
 
-`/wrap` runs three quick checks. For a fuller one (index links, `refs.bib` against the
-library, code paths), ask the agent to *check the brain*. It reports problems and fixes
+`/wrap` runs two quick checks. For a fuller one (papers without a card, index links,
+`refs.bib` against the library, code paths), ask the agent to *check the brain*. It reports problems and fixes
 nothing.
 
 ---
