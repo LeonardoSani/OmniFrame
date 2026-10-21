@@ -5,7 +5,8 @@ Papers come in, cards and syntheses go out.
 ## How papers arrive
 
 1. **`/lit-search`** proposes papers into `Proposed_literature.md`; the researcher marks
-   **Decision**.
+   **Decision**. The anchor papers of `2_Idea/High_level.md` not yet in the library come
+   in the same way, already marked `OK`.
 2. **`/lit-download`** runs `omniframe download` — each `OK` paper gets its PDF, its BibTeX,
    and a row under `## Unsorted` in `Paper_Index.md` — then `omniframe convert`, which turns
    the PDFs into markdown and links it in the index. It also brings in a paper given as a
@@ -13,9 +14,10 @@ Papers come in, cards and syntheses go out.
 3. **`/lit-cards-index`** writes the cards and does the final indexing; **`/lit-outputs`**
    writes a synthesis when the researcher asks for one.
 
-`Proposed_literature.md` holds three lists. You fill every column except **Decision**; the
-one exception is the `OK` that `/lit-download` writes for a paper the researcher gave as a
-link or saved by hand — both were their choice. What
+`Proposed_literature.md` holds three lists. You fill every column except **Decision**. The
+exceptions are the `OK` that `/lit-search` writes for an anchor paper, and the one
+`/lit-download` writes for a paper the researcher gave as a link or saved by hand — all
+were their choice. What
 `omniframe download` does with each mark:
 
 | list | `OK` | `NO` | blank |

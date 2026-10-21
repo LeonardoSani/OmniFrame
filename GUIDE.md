@@ -156,7 +156,7 @@ notes in the journal whenever you like: the agent never edits them.
 | --- | --- |
 | Topic | one line: the field, and the problem inside it |
 | Idea & Motivation | a paragraph: what you suspect, want to try or want to understand, and why |
-| Anchor papers | papers you already know are central (optional) |
+| Anchor papers | papers you already know are central, e.g. from your supervisor (optional). The first `/lit-search` finds them and marks them `OK` |
 | Keywords | the field's terms, synonyms included |
 
 A vague keyword list gives you a vague reading list. If the file is empty, ask the agent to
@@ -206,7 +206,8 @@ their group.
 The agent adds about ten proposals to `1_Literature/Proposed_literature.md`, each with its
 venue, why it fits, and its arXiv, code and site links. Every paper is one it found and
 opened online. The **bias** steers this one search; if it left out a foundational paper,
-the agent names it at the end.
+the agent names it at the end. Your anchor papers not yet in the library are added too,
+already marked `OK`: they come in with the next download and are not searched again.
 
 **Your decision**, in the **Decision** column. `Proposed_literature.md` has three lists:
 

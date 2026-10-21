@@ -3,8 +3,9 @@ description: Propose papers for the project from 2_Idea/High_level.md — search
 argument-hint: [optional bias, e.g. "theory papers only, after 2020"]
 ---
 
-Propose literature for this project. Search only: nothing is downloaded, and nothing is
-written outside `1_Literature/Proposed_literature.md`.
+Propose literature for this project, and bring in the anchor papers of `High_level.md`
+the first time. Search only: nothing is downloaded, and nothing is written outside
+`1_Literature/Proposed_literature.md`.
 
 Bias from the researcher, may be empty: $ARGUMENTS
 
@@ -24,10 +25,9 @@ leave out. It tilts or narrows the idea; it does not replace it. If it contradic
 `High_level.md`, say so and ask which wins.
 
 Never assume the researcher already knows the foundations. A paper is known only if it is
-in the library, in `refs.bib`, or among the anchor papers of `High_level.md` — nothing
-else, however standard it seems. If the bias leaves out foundational work the idea rests
-on (a period that predates it, "no surveys", one method family), search as asked anyway,
-and name those papers at the end (step 5).
+in the library or in `refs.bib` — nothing else, however standard it seems. If the bias
+leaves out foundational work the idea rests on (a period that predates it, "no surveys",
+one method family), search as asked anyway, and name those papers at the end (step 6).
 
 ## 2. Know what is already there
 
@@ -37,7 +37,22 @@ Collect every citekey and title already known, so nothing is proposed twice:
 - `5_Paper/refs.bib`
 - `1_Literature/Proposed_literature.md` — the open proposals, `## Later`, `## Declined`
 
-## 3. Search
+## 3. Bring in the anchor papers
+
+The anchor papers are the researcher's choice — often given by a supervisor — and they
+still have to be read, so each one comes into the library. The bias does not apply to them.
+An anchor may be a title, a link, or just authors and a year: match it against step 2 by
+title or by link.
+
+For each anchor that matches nothing from step 2: find it online and confirm title, authors
+and venue, with its official code and project page, as in step 4. Write its row by the
+rules of step 5, with Decision `OK` and Why `anchor paper`. It does not count toward the
+ten of step 4.
+
+An anchor already in the library is done. One in `## Declined` stays there: say so. One you
+cannot identify, or that matches several papers, does not go in: name it in step 6.
+
+## 4. Search
 
 Several queries, built from the keywords, the anchor papers and the bias. Semantic Scholar
 (`api.semanticscholar.org`), arXiv, OpenReview, DBLP, and the web. Follow the references
@@ -51,12 +66,12 @@ Never propose a paper from memory: one you could not find a page for does not go
 table. Then look for its official code (GitHub) and project page — linked from the paper,
 its arXiv page or its authors — and open them.
 
-## 4. Write the rows
+## 5. Write the rows
 
 Append them to the first table in `1_Literature/Proposed_literature.md`. Never touch an
-existing row, never fill **Decision**.
+existing row, never fill **Decision** — except `OK` on an anchor row (step 3).
 
-- **Decision** — blank. Always.
+- **Decision** — blank, except on an anchor row.
 - **citekey** — `author2024keyword`, lowercase: first author's surname, year, one
   distinctive word of the title. Unique against everything collected in step 2.
 - **Paper** — the title, exactly.
@@ -75,10 +90,11 @@ Never a third-party reimplementation.
 
 Escape a `|` inside a title as `\|`. Set `updated:` to today.
 
-## 5. Tell me
+## 6. Tell me
 
-How many papers were added, the queries run, how the bias shaped the result, and anything
-nearly included and why it was not. Name any foundational paper the bias left out, e.g.
+Which anchor papers came in, and any not found or declined. How many papers were
+proposed, the queries run, how the bias shaped the result, and anything nearly included
+and why it was not. Name any foundational paper the bias left out, e.g.
 *"Left out by 'after 2020': `vaswani2017attention`, the foundation of this line of work —
 want it proposed?"*. End with: mark **Decision** (`OK` or `NO`; unmarked rows wait in
 `## Later`), then run `/lit-download`.
