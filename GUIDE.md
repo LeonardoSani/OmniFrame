@@ -393,7 +393,7 @@ nothing.
 
 | what | updated by |
 | --- | --- |
-| the `omniframe` commands | `git pull` in the clone (`omniframe update` does it) |
+| the `omniframe` commands | `omniframe update`, from anywhere: it pulls the clone |
 | new projects | nothing: `omniframe init` downloads the template each run |
 | an existing project | `omniframe update`, from inside it |
 

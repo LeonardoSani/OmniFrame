@@ -5,9 +5,10 @@
 #     cd ~/Projects/MYPROJ_Brain
 #     omniframe update
 #
-# The clone is pulled first, so new sub-commands arrive too. Then every template
-# file is compared three ways: the version the project last got (its base, kept
-# in .omniframe), the template's version now, and the project's file now.
+# The clone is pulled first, so new sub-commands arrive too; outside a project,
+# that is all it does. Then every template file is compared three ways: the
+# version the project last got (its base, kept in .omniframe), the template's
+# version now, and the project's file now.
 #
 #   template unchanged                      nothing
 #   changed, project file untouched         replaced
@@ -34,7 +35,7 @@ usage() {
 usage: omniframe update [options]
 
 Pulls the OmniFrame clone, then updates the project you are in from its
-template. Your content is never changed; agent and navigation files you
+template. Outside a project, it only pulls the clone. Your content is never changed; agent and navigation files you
 edited are shown as a diff, and you choose.
 
 options:
@@ -74,7 +75,27 @@ if [[ -z "$root" ]]; then
     d="$(dirname "$d")"
   done
 fi
-[[ -n "$root" ]] || die "no OmniFrame project here or in any parent"
+
+pull_clone() {
+  [[ -z "$(git -C "$clone" status --porcelain)" ]] \
+    || die "the OmniFrame clone ($clone) has local changes; commit or stash them, or pass --no-pull"
+  info "clone    : $clone"
+  if [[ $dry_run -eq 1 ]]; then
+    info "           (dry run -- not pulled)"
+  else
+    git -C "$clone" pull --quiet --ff-only \
+      || die "could not fast-forward the clone; resolve it there, or pass --no-pull"
+  fi
+}
+
+# outside a project, updating OmniFrame itself is the whole job
+if [[ -z "$root" ]]; then
+  [[ $pull -eq 1 ]] || die "no OmniFrame project here or in any parent"
+  pull_clone
+  [[ $dry_run -eq 1 ]] \
+    || info "no project here: OmniFrame is up to date. Run it inside a project to update that too"
+  exit 0
+fi
 root="$(cd "$root" && pwd -P)"
 
 git -C "$root" rev-parse --git-dir >/dev/null 2>&1 || die "$root is not a git repo"
@@ -84,16 +105,8 @@ git -C "$root" rev-parse --git-dir >/dev/null 2>&1 || die "$root is not a git re
 # --- update the clone, then continue with its new version of this script --------
 
 if [[ $pull -eq 1 ]]; then
-  [[ -z "$(git -C "$clone" status --porcelain)" ]] \
-    || die "the OmniFrame clone ($clone) has local changes; commit or stash them, or pass --no-pull"
-  info "clone    : $clone"
-  if [[ $dry_run -eq 1 ]]; then
-    info "           (dry run -- not pulled)"
-  else
-    git -C "$clone" pull --quiet --ff-only \
-      || die "could not fast-forward the clone; resolve it there, or pass --no-pull"
-    exec "$clone/libexec/update" --no-pull ${args[@]+"${args[@]}"}
-  fi
+  pull_clone
+  [[ $dry_run -eq 1 ]] || exec "$clone/libexec/update" --no-pull ${args[@]+"${args[@]}"}
 fi
 
 linked="$(command -v omniframe 2>/dev/null || true)"
