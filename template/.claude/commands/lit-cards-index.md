@@ -11,7 +11,7 @@ Citekeys and focus, may be empty: $ARGUMENTS
 
 Every citekey asked for, or by default every paper in `1_Literature/Paper_Index.md` whose
 Card is not yet a `[card](…)` link. A paper whose **Markdown** is still `—` is not
-converted: list it, say "run `/lit-convert`", and skip it.
+converted: list it, say "run `/lit-download`", and skip it.
 
 ## 2. Write the cards
 

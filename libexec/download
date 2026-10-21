@@ -359,5 +359,5 @@ info ""
 info "done: $n_done in the library, $n_flag flagged, $n_later to Later, $n_no declined"
 [[ $n_odd -gt 0 ]] && info "      $n_odd row(s) with an unknown mark left alone"
 [[ $n_flag -gt 0 ]] && info "flagged rows stay OK with the reason in Why -- fix them and run again"
-[[ $n_done -gt 0 ]] && info "next: omniframe convert (terminal) or /lit-convert (Claude Code)"
+[[ $n_done -gt 0 ]] && info "next: omniframe convert (/lit-download in Claude Code runs it for you)"
 exit 0

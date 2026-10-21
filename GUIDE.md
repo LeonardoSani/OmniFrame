@@ -72,8 +72,7 @@ where the work happens.
 | Command | Does |
 | ------- | ---- |
 | `/lit-search ["bias"]` | proposes papers from `2_Idea/High_level.md` |
-| `/lit-download [links]` | brings in the papers marked `OK`, or the ones you link: PDF, BibTeX, index row, markdown |
-| `/lit-convert` | brings in PDFs you saved by hand; converts anything not converted yet |
+| `/lit-download [links]` | brings in the papers marked `OK`, the ones you link, and PDFs you saved by hand: PDF, BibTeX, index row, markdown |
 | `/lit-cards-index [citekeys] ["focus"]` | writes a card per paper, and does the final indexing: each paper in its group |
 | `/lit-outputs ["what to write"]` | writes a literature synthesis |
 | `/wrap` | ends the session: briefing, journal entry, quick checks |
@@ -91,7 +90,7 @@ words in the chat.
 | `uv add …` / `uv run …` | inside `MYPROJ/`, for your code |
 
 `omniframe download` and `omniframe convert` also exist: they are the scripts that
-`/lit-download` and `/lit-convert` run. You never need to call them yourself — except
+`/lit-download` runs. You never need to call them yourself — except
 `omniframe convert --use-llm`, for a paper whose formulas need cleaning
 ([§4](#4-literature)).
 
@@ -228,7 +227,7 @@ converted to markdown with a local model (slow: minutes) and linked in the index
 | case | what to do |
 | --- | --- |
 | no open PDF online | the row stays `OK` with the reason. Save the PDF as `PDFs/<citekey>.pdf`, run `/lit-download` again |
-| a PDF you downloaded yourself | save it in `PDFs/` under any name, run `/lit-convert`. It identifies the paper, asks to rename it to its citekey, and brings it in |
+| a PDF you downloaded yourself | save it in `PDFs/` under any name, run `/lit-download`. It identifies the paper, asks to rename it to its citekey, and brings it in |
 | formulas that matter | the converter flattens some equations, so the agent takes formulas from the PDF. To clean the markdown with an LLM, in the terminal: `omniframe convert --force --only <citekey> --use-llm` |
 
 ### Steps 3–4 — cards and syntheses

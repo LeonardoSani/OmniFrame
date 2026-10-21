@@ -8,17 +8,14 @@ Papers come in, cards and syntheses go out.
    **Decision**.
 2. **`/lit-download`** runs `omniframe download` — each `OK` paper gets its PDF, its BibTeX,
    and a row under `## Unsorted` in `Paper_Index.md` — then `omniframe convert`, which turns
-   the PDFs into markdown and links it in the index. Given a link, it brings that paper in
-   directly, with no search.
+   the PDFs into markdown and links it in the index. It also brings in a paper given as a
+   link, or a PDF the researcher saved into `PDFs/` by hand.
 3. **`/lit-cards-index`** writes the cards and does the final indexing; **`/lit-outputs`**
    writes a synthesis when the researcher asks for one.
 
-**`/lit-convert`** brings in a PDF the researcher saved into `PDFs/` by hand, and converts
-anything not converted yet.
-
 `Proposed_literature.md` holds three lists. You fill every column except **Decision**; the
-exceptions are the `OK` that `/lit-download` writes for a link the researcher gave, and that
-`/lit-convert` writes for a PDF they added by hand — both were their choice. What
+one exception is the `OK` that `/lit-download` writes for a paper the researcher gave as a
+link or saved by hand — both were their choice. What
 `omniframe download` does with each mark:
 
 | list | `OK` | `NO` | blank |

@@ -33,8 +33,7 @@ they say they are finishing without it, do the same anyway.
 | Command | Does |
 | ------- | ---- |
 | `/lit-search ["bias"]` | proposes papers from `2_Idea/` into `1_Literature/Proposed_literature.md` |
-| `/lit-download [links]` | brings in the papers marked OK, or the ones linked: PDF, BibTeX, index row, then markdown |
-| `/lit-convert` | brings in any PDF added by hand, and converts what is not converted yet |
+| `/lit-download [links]` | brings in the papers marked OK, linked, or saved by hand in `PDFs/`: PDF, BibTeX, index row, markdown |
 | `/lit-cards-index [citekeys] ["focus"]` | writes the missing cards, and does the final indexing: each paper filed in its group |
 | `/lit-outputs ["what to write"]` | writes a literature synthesis |
 | `/wrap` | closes the session: briefing, journal entry, quick checks |
@@ -44,7 +43,7 @@ they say they are finishing without it, do the same anyway.
 **Start from `1_Literature/Paper_Index.md`.** It lists every paper once, with its web
 links and three files: the PDF, the converted markdown, the card. Follow the link there —
 do not glob `Papers/` or guess a markdown filename: the converter chose it. If the link is
-still `—`, the paper is not converted yet: say so, and offer `/lit-convert`.
+still `—`, the paper is not converted yet: say so, and offer `/lit-download`.
 
 ## The map
 

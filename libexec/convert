@@ -102,7 +102,7 @@ has_markdown() {
 }
 
 # fill the Markdown cell of every index row whose paper is converted, and name the
-# PDFs that have no row at all: added by hand, /lit-convert brings them in
+# PDFs that have no row at all: added by hand, /lit-download brings them in
 link_index() {
   local index="$root/$INDEX" new rc=0
   [[ -f "$index" ]] || return 0
@@ -140,7 +140,7 @@ link_index() {
   done < <(find "$pdfs" -maxdepth 1 -name '*.pdf' | sort)
   if [[ -n "$missing" ]]; then
     info "  not in the index:$missing"
-    info "  (added by hand -- /lit-convert in Claude Code files them)"
+    info "  (added by hand -- /lit-download in Claude Code files them)"
   fi
   return 0
 }
