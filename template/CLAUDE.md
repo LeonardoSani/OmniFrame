@@ -56,7 +56,7 @@ still `—`, the paper is not converted yet: say so, and offer `/lit-download`.
 | `1_Literature/Papers/<citekey>/` | converted markdown + images. read-only |
 | `1_Literature/Cards/`, `1_Literature/Literature_Outputs/` | your cards and syntheses |
 | `1_Literature/Human_encoding/` | the researcher's handwritten notes on the reading |
-| `2_Idea/` | the idea: `High_level.md`, `Setup_and_Method.md`, `Experiments.md`, and the researcher's handwritten notes in `Human_encoding/` |
+| `2_Idea/` | the idea: `High_level.md`, `Outline.md`, `Setup_and_Method.md`, `Experiments.md`, and the researcher's handwritten notes in `Human_encoding/`. The outline and the experiments grow side by side: early experiments may change the idea |
 | `3_Implementation/` | the concrete choices: `Specs.md`, `Figures.md`, `Code_Design.md` |
 | `__CODE_DIR__/` | the code, and nothing else: it will be published alone |
 | `4_Results_and_Tracking/` | `Where_we_are.md` (briefing), `Journal.md`, `Results.md`, `Scenario_Tree.md` |

@@ -162,6 +162,13 @@ notes in the journal whenever you like: the agent never edits them.
 A vague keyword list gives you a vague reading list. If the file is empty, ask the agent to
 draft it with you. It asks questions and writes only what you confirm.
 
+**The outline.** While there is no set scheme to follow, write `2_Idea/Outline.md`: the
+intermediate goals, and the output you want from each, in any shape. Ask the agent in
+plain words to sharpen or evaluate it. A rough outline inside `High_level.md` works too, or
+none at all. It lives alongside `Experiments.md`: early proof experiments can be planned
+while the rest is still an outline, and may change the idea. The agent uses the outline to
+frame the briefing's **Next** and **Open**, most of all early on.
+
 ## 4. Literature
 
 **All in Claude Code:**

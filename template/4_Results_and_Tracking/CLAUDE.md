@@ -9,6 +9,10 @@ what is running), **Next** (the one to three moves that would happen if work res
 now), **Open** (what is undecided, and what would decide it). Cite rather than restate.
 Rewrite it, never append: it describes only the present.
 
+The outline (`2_Idea/Outline.md`, or a rough one in `2_Idea/High_level.md`) helps frame
+**Next** and **Open** alongside `2_Idea/Experiments.md`: most of all early on, when few or
+no experiments are planned yet.
+
 ## `Journal.md` — the history
 
 Dated entries, `## YYYY-MM-DD`, added at the bottom. What was tried, decided, abandoned,

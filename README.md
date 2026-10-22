@@ -85,6 +85,7 @@ MYPROJ_Brain/                one git repo, one Obsidian vault
 │   └── Human_encoding/      your handwritten notes. The agent reads one only when you ask
 ├── 2_Idea/
 │   ├── High_level.md        the idea in plain words. What /lit-search reads
+│   ├── Outline.md           your plan: intermediate goals and the outputs you want
 │   ├── Setup_and_Method.md  notation · problem · method · hypotheses
 │   ├── Experiments.md       what each experiment is for, by E-id
 │   └── Human_encoding/      your handwritten notes. The agent reads one only when you ask
