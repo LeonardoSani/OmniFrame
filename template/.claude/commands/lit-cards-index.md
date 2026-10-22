@@ -27,10 +27,8 @@ from `## Unsorted` to a `## <group>` section with the same table.
 
 - **Groups exist:** file each paper in the one that fits. If none fits, ask: a new group,
   or regroup?
-- **No groups yet:** propose three or four ways to group this library — by approach
-  family, by role toward the idea, by problem setting, or whatever the cards suggest —
-  each with a preview of the groups it gives, and say the researcher can name their own.
-  Create the headings they choose.
+- **No groups yet:** propose a few ways to group this library, each with a preview of the
+  groups it gives; the researcher may name their own. Create the headings they choose.
 
 Never regroup papers already filed without asking. Set `updated:` to today.
 

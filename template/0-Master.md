@@ -14,7 +14,8 @@ stand, what is next, what is open. Read it before anything else; `/wrap` rewrite
 ## Playground
 
 - [Playground area](2_Playground/2-Playground.md) — before the idea is fixed: reproductions, paper code, small tests
-- [What it taught](2_Playground/Results.md) — the lessons that shape the idea and the experiments
+- [Playground experiments](2_Playground/Experiments_pg.md) — small tests, repos explored, results reproduced
+- [What it taught](2_Playground/Results_pg.md) — the lessons that shape the idea and the experiments
 
 ## The idea
 

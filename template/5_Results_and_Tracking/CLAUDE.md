@@ -7,12 +7,8 @@ What came back, what it means, and where the work stands.
 Read first every session, so keep it short: about twenty lines. **Now** (what stands,
 what is running), **Next** (the one to three moves that would happen if work resumed
 now), **Open** (what is undecided, and what would decide it). Cite rather than restate.
-Rewrite it, never append: it describes only the present.
-
-The outline (`3_Idea/Outline.md`, or a rough one in `3_Idea/High_level.md`) helps frame
-**Next** and **Open** alongside `3_Idea/Experiments.md`: most of all early on, when few or
-no experiments are planned yet. Early on, **Now** also covers the playground: what
-`2_Playground/Results.md` has shown so far.
+Rewrite it, never append: it describes only the present. It covers the whole project:
+early on, that is mostly the playground and the outline.
 
 ## `Journal.md` — the history
 
@@ -23,10 +19,8 @@ entry.
 
 ## `Results.md`
 
-The analysis: what the experiments showed, in whatever shape fits; the playground's
-lessons are in `2_Playground/Results.md`. Every result names its source (a log, an
-output, a tracker run). A refuted hypothesis is a finding: record it as one, and never
-bend a result toward the method.
+What the experiments showed, in whatever shape fits. A refuted hypothesis is a finding:
+record it as one, and never bend a result toward the method.
 
 ## `Scenario_Tree.md`
 

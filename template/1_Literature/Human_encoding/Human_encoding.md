@@ -1,3 +1,1 @@
 # Human encoding
-
-## Notes

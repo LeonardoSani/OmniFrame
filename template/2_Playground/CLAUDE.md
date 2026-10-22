@@ -1,28 +1,24 @@
 # 2_Playground
 
-The stage before the idea is fixed: understanding the literature and its code,
-reproducing anchor-paper results, small proof-of-concept experiments. It runs side by side
-with `3_Idea/`, and what it teaches may change the idea. Free form: no E-ids needed, no
-structure to impose.
+Understanding before the idea is fixed: exploring a paper's code, reproducing its results,
+small proof-of-concept tests. What it teaches may change the idea. Free form.
 
 | File | Holds |
 | ---- | ----- |
-| `Code_Design.md` | how `__PLAY_DIR__/` is organised |
-| `Results.md` | what the playground taught: what helps define the idea, the method, the experiments |
+| `Experiments_pg.md` | the playground experiments and what each is for |
+| `Code_Design_pg.md` | how `__PLAY_DIR__/` is organised |
+| `Results_pg.md` | what the playground taught, for the idea, the method, the experiments |
+
+Playground experiments get no E-ids: those belong to `3_Idea/Experiments.md`. One that
+grows into a real experiment gets its E-id there.
 
 ## The playground code
 
-`__PLAY_DIR__/` is a uv project of its own, beside `__CODE_DIR__/`: its own environment,
-for packages and repos that are not meant for the final code. `uv add` and `uv run` inside
-it.
+`__PLAY_DIR__/` is a uv project of its own, for packages and repos not meant for the final
+code; `uv add` and `uv run` inside it.
 
-- A paper's repo cloned into it loses its `.git`: the brain is the one repo. Note its
-  source URL and commit in `Code_Design.md`.
+- A repo cloned into it loses its `.git`: the brain is the one repo. Note where it came
+  from (URL, commit) in `Code_Design_pg.md`.
 - Large data and checkpoints go in its `.gitignore`.
-- It may read anything. `__CODE_DIR__/` never imports from or points into it: code worth
-  keeping is rewritten there.
-
-## `Results.md`
-
-Hard rule 1 applies: each finding names the run or log it comes from. A failed
-reproduction is a finding. Write what it means for the idea, not only the number.
+- `__CODE_DIR__/` never imports from it or points into it: code worth keeping is rewritten
+  there.

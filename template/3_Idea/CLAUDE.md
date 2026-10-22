@@ -18,16 +18,13 @@ idea, it is probably a spec and fits better in `4_Implementation/`.
 
 ## The outline
 
-`Outline.md` is the researcher's plan, most useful while there is no set scheme yet. It is
-for them first; for you it is context. It lives alongside `Experiments.md`, not before it:
-a few early experiments may be planned while the rest is still an outline, and their
-outcome, or what `2_Playground/Results.md` records, may change the idea and the outline
-with it. Asked to refine or evaluate it, do so in chat: challenge a vague goal, or one
-with no output that would show it is reached. It has no fixed structure: do not impose
-one.
+`Outline.md` is the researcher's plan while there is no set scheme yet: for them first,
+for you context. It lives alongside `Experiments.md`, not before it. Asked to refine or
+evaluate it, do so in chat: challenge a vague goal, or one with no output that would show
+it is reached.
 
-`High_level.md` may hold a rougher outline of its own, or none. When `Outline.md` is
-empty, use that one; when the two disagree, say so and ask which holds.
+`High_level.md` may hold a rougher outline, or none. When the two disagree, say so and ask
+which holds.
 
 ## Handwritten notes
 

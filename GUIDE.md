@@ -47,6 +47,7 @@ flowchart TD
 
   init --> hl --> se --> dec --> dl --> ca --> ou --> pg --> me --> ex
   ex --> spec
+  pg -.->|"may change"| hl
   ex --> tree
   spec --> tree
   tree --> run --> res --> paper
@@ -87,9 +88,9 @@ words in the chat.
 | Command | Does |
 | ------- | ---- |
 | `omniframe link` | puts `omniframe` on your PATH. Once per machine |
-| `omniframe init MYPROJ` | creates `MYPROJ_Brain/` and its code folder |
+| `omniframe init MYPROJ` | creates `MYPROJ_Brain/`, its code folder and its playground |
 | `omniframe update` | brings a project's commands and rules up to date |
-| `uv add …` / `uv run …` | inside `MYPROJ/`, for your code |
+| `uv add …` / `uv run …` | inside `MYPROJ/` for your code, inside `MYPROJ_Playground/` for the playground |
 
 `omniframe download` and `omniframe convert` also exist: they are the scripts that
 `/lit-download` runs. You never need to call them yourself — except
@@ -168,9 +169,7 @@ draft it with you. It asks questions and writes only what you confirm.
 **The outline.** While there is no set scheme to follow, write `3_Idea/Outline.md`: the
 intermediate goals, and the output you want from each, in any shape. Ask the agent in
 plain words to sharpen or evaluate it. A rough outline inside `High_level.md` works too, or
-none at all. It lives alongside `Experiments.md`: early proof experiments can be planned
-while the rest is still an outline, and may change the idea. The agent uses the outline to
-frame the briefing's **Next** and **Open**, most of all early on.
+none at all. Early on, the agent's briefing leans on it.
 
 ## 4. Literature
 
@@ -182,7 +181,7 @@ flowchart TD
   classDef you fill:#fef3c7,stroke:#a16207,color:#111
   classDef note fill:#f3f4f6,stroke:#9ca3af,color:#111
 
-  se["<b>1 · /lit-search #quot;bias#quot;</b><br/>~10 proposals"]:::claude
+  se["<b>1 · /lit-search #quot;bias#quot;</b><br/>a short list of proposals"]:::claude
   dec{"you mark<br/>Decision"}:::you
   link["you have a link"]:::you
   dl["<b>2 · /lit-download</b><br/>PDF · BibTeX · index row · markdown"]:::claude
@@ -213,7 +212,7 @@ their group.
 /lit-search "theory only, after 2020, no surveys"    steered by a bias
 ```
 
-The agent adds about ten proposals to `1_Literature/Proposed_literature.md`, each with its
+The agent adds a short list of proposals to `1_Literature/Proposed_literature.md`, each with its
 venue, why it fits, and its arXiv, code and site links. Every paper is one it found and
 opened online. The **bias** steers this one search; if it left out a foundational paper,
 the agent names it at the end. Your anchor papers not yet in the library are added too,
@@ -280,14 +279,14 @@ side by side with them.
 | where | what |
 | --- | --- |
 | `MYPROJ_Playground/` | the playground code: a uv project of its own, beside `MYPROJ/`. Run `uv add` / `uv run` inside it |
-| `2_Playground/Code_Design.md` | how that code is organised, and where cloned repos came from |
-| `2_Playground/Results.md` | what the playground taught: what helps define the idea, the method, the experiments |
+| `2_Playground/Experiments_pg.md` | the playground experiments: small tests, a repo explored as a starting point, a paper's results reproduced. No E-ids: those are for the real experiments |
+| `2_Playground/Code_Design_pg.md` | how that code is organised, and where cloned repos came from |
+| `2_Playground/Results_pg.md` | what the playground taught: what helps define the idea, the method, the experiments |
 
-Both files start with a title only: shape them as you go. With its own environment, the
+The files start with a title only: shape them as you go. With its own environment, the
 packages and repos you only explore never reach `MYPROJ/`, and the playground is never
-exported. A repo cloned into it loses its `.git`: the brain is the one repo. In
-`Results.md` too, every finding names its run or log, and a failed reproduction is a
-finding. Code worth keeping is rewritten in `MYPROJ/`, never imported from the playground.
+exported. A repo cloned into it loses its `.git`: the brain is the one repo. Code worth
+keeping is rewritten in `MYPROJ/`, never imported from the playground.
 
 ## 6. Formalise the method
 
@@ -454,4 +453,4 @@ omniframe update --no-pull   # inside a project: uses the clone's template as it
 ```
 
 Tokens replaced in file contents and path names: `__PROJECT_NAME__`, `__CODE_DIR__` (the
-plain name, `MYPROJ`), `__SLUG__`, `__PKG__`, `__AUTHOR__`, `__YEAR__`, `__DATE__`.
+plain name, `MYPROJ`), `__PLAY_DIR__` (`MYPROJ_Playground`), `__SLUG__`, `__PKG__`, `__AUTHOR__`, `__YEAR__`, `__DATE__`.

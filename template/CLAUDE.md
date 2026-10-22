@@ -56,14 +56,17 @@ still `—`, the paper is not converted yet: say so, and offer `/lit-download`.
 | `1_Literature/Papers/<citekey>/` | converted markdown + images. read-only |
 | `1_Literature/Cards/`, `1_Literature/Literature_Outputs/` | your cards and syntheses |
 | `1_Literature/Human_encoding/` | the researcher's handwritten notes on the reading |
-| `2_Playground/` | the stage before the idea is fixed: `Code_Design.md`; `Results.md`, what reproductions and small tests taught. Side by side with `3_Idea/` |
-| `3_Idea/` | the idea: `High_level.md`, `Outline.md`, `Setup_and_Method.md`, `Experiments.md`, and the researcher's handwritten notes in `Human_encoding/`. The outline, the experiments and the playground grow side by side: early results may change the idea |
+| `2_Playground/` | exploring and reproducing before the idea is fixed: `Experiments_pg.md`, `Code_Design_pg.md`, `Results_pg.md` |
+| `3_Idea/` | the idea: `High_level.md`, `Outline.md`, `Setup_and_Method.md`, `Experiments.md`, and the researcher's handwritten notes in `Human_encoding/` |
 | `4_Implementation/` | the concrete choices: `Specs.md`, `Figures.md`, `Code_Design.md` |
 | `__CODE_DIR__/` | the code, and nothing else: it will be published alone |
-| `__PLAY_DIR__/` | the playground code: its own uv project, never published. Nothing in `__CODE_DIR__/` points into it |
+| `__PLAY_DIR__/` | the playground code: its own uv project, never published |
 | `5_Results_and_Tracking/` | `Where_we_are.md` (briefing), `Journal.md`, `Results.md`, `Scenario_Tree.md` |
 | `6_Paper/` | the LaTeX paper, self-contained for Overleaf; `refs.bib` |
 | `.omniframe` | what the template installed, for `omniframe update`. never edit |
+
+The numbers give the usual order, not a sequence to enforce: the playground, the outline
+and the experiments grow side by side, and what comes back may change the idea.
 
 ## Conventions
 

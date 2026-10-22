@@ -13,7 +13,7 @@ work in Obsidian; the agent works next to you.
 block-beta
   columns 13
   block:ROW:13
-    I["<b>Idea</b>"] space L["<b>Literature</b>"] space G["<b>Playground</b>"] space M["<b>Method</b>"] space S["<b>Specs</b>"] space C["<b>Code Design</b>"] space R["<b>Results</b>"]
+    I["<b>Idea</b>"] space L["<b>Literature</b>"] space G["<b>Playground</b><br/>may reshape the idea"] space M["<b>Method</b>"] space S["<b>Specs</b>"] space C["<b>Code Design</b>"] space R["<b>Results</b>"]
   end
   space:13
   space:5 P["<b>Paper</b><br/>written and updated<br/>during the research process"]:3 space:5
@@ -47,7 +47,7 @@ block-beta
 | --- | --- |
 | **Literature** | `/lit-search` proposes papers for your idea, each one found and opened online. You pick, or give a link; `/lit-download` brings the PDF, the BibTeX and a markdown version the agent can read, converted locally and offline. |
 | **Cards** | One card per paper, shaped by the focus you give, and syntheses when you ask for them. |
-| **Playground** | Reproduce papers, run their code, try small proofs of concept in `MYPROJ_Playground/`, a uv project of its own. What it taught goes in `2_Playground/Results.md`. |
+| **Playground** | Reproduce papers, run their code, try small proofs of concept in `MYPROJ_Playground/`, a uv project of its own. What it taught goes in `2_Playground/Results_pg.md`. |
 | **Idea vs. implementation** | Your claims in `3_Idea/`, concrete choices in `4_Implementation/`. Files are free: a few headings, no forms. |
 | **Experiments** | Each has a stable id (`E01`…). A mermaid tree shows what depends on what. |
 | **Results** | Every result names the log or run it comes from. Nothing invented. |
@@ -86,8 +86,9 @@ MYPROJ_Brain/                one git repo, one Obsidian vault
 │   ├── PDFs/ Papers/ Cards/ Literature_Outputs/
 │   └── Human_encoding/      your handwritten notes. The agent reads one only when you ask
 ├── 2_Playground/
-│   ├── Code_Design.md       how the playground code is organised
-│   └── Results.md           what the playground taught
+│   ├── Experiments_pg.md    small tests, repos explored, results reproduced
+│   ├── Code_Design_pg.md    how the playground code is organised
+│   └── Results_pg.md        what the playground taught
 ├── 3_Idea/
 │   ├── High_level.md        the idea in plain words. What /lit-search reads
 │   ├── Outline.md           your plan: intermediate goals and the outputs you want
