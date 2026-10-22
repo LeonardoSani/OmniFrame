@@ -3,11 +3,11 @@ description: Close out a research session — rewrite the briefing, add a journa
 ---
 
 Close out this session. The rules for both files are in
-`4_Results_and_Tracking/CLAUDE.md`.
+`5_Results_and_Tracking/CLAUDE.md`.
 
 ## 1. Rewrite the briefing
 
-Rewrite `4_Results_and_Tracking/Where_we_are.md` so it describes the present:
+Rewrite `5_Results_and_Tracking/Where_we_are.md` so it describes the present:
 
 - **Now** — fold what changed this session into what was already true.
 - **Next** — drop what got done. Keep what is blocked, saying what blocks it.
@@ -16,7 +16,7 @@ Rewrite `4_Results_and_Tracking/Where_we_are.md` so it describes the present:
 ## 2. Add a journal entry
 
 Append a `## YYYY-MM-DD` entry (today) at the bottom of
-`4_Results_and_Tracking/Journal.md`: what was tried, decided or abandoned this session, and
+`5_Results_and_Tracking/Journal.md`: what was tried, decided or abandoned this session, and
 why. A few lines; the reasoning, not a list of edited files. Leave every earlier entry,
 including the researcher's own, as it is.
 
@@ -28,7 +28,7 @@ With grep, not by reading every file. **Report what is wrong, fix nothing:**
 
 - a `1_Literature/PDFs/<citekey>.pdf` with no row in `1_Literature/Paper_Index.md` — added
   by hand: suggest `/lit-download`
-- an E-id in `4_Results_and_Tracking/Scenario_Tree.md` missing from `2_Idea/Experiments.md`
+- an E-id in `5_Results_and_Tracking/Scenario_Tree.md` missing from `3_Idea/Experiments.md`
 
 ## 4. Tell me
 

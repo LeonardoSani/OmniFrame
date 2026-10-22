@@ -9,5 +9,5 @@ The concrete choices that make the idea runnable.
 
 ## Upstream and downstream
 
-- E-ids are defined in [Experiments](../2_Idea/Experiments.md) and reused here.
-- Figures the paper uses are copied from the code folder into `../5_Paper/figures/`.
+- E-ids are defined in [Experiments](../3_Idea/Experiments.md) and reused here.
+- Figures the paper uses are copied from the code folder into `../6_Paper/figures/`.

@@ -9,13 +9,14 @@ How to use OmniFrame as designed, from an empty folder to a paper. To install it
 4. [The session loop](#2-the-session-loop)
 5. [Write the idea](#3-write-the-idea)
 6. [Literature](#4-literature)
-7. [Formalise the method](#5-formalise-the-method)
-8. [Plan the experiments](#6-plan-the-experiments)
-9. [Track](#7-track)
-10. [Write the paper](#8-write-the-paper)
-11. [Publish the code](#9-publish-the-code)
-12. [Reference](#10-reference)
-13. [Update and edit OmniFrame](#11-update-and-edit-omniframe)
+7. [Play](#5-play)
+8. [Formalise the method](#6-formalise-the-method)
+9. [Plan the experiments](#7-plan-the-experiments)
+10. [Track](#8-track)
+11. [Write the paper](#9-write-the-paper)
+12. [Publish the code](#10-publish-the-code)
+13. [Reference](#11-reference)
+14. [Update and edit OmniFrame](#12-update-and-edit-omniframe)
 
 ---
 
@@ -29,21 +30,22 @@ flowchart TD
   classDef you fill:#fef3c7,stroke:#a16207,color:#111
 
   init["omniframe init MYPROJ"]:::shell
-  hl["2_Idea/High_level.md"]:::you
+  hl["3_Idea/High_level.md"]:::you
   se["/lit-search"]:::claude
   dec{"Decision"}:::you
   dl["/lit-download"]:::claude
   ca["/lit-cards-index"]:::claude
   ou["/lit-outputs"]:::claude
-  me["2_Idea/Setup_and_Method.md"]:::chat
-  ex["2_Idea/Experiments.md"]:::chat
-  spec["3_Implementation/Specs.md"]:::chat
+  pg["2_Playground/"]:::chat
+  me["3_Idea/Setup_and_Method.md"]:::chat
+  ex["3_Idea/Experiments.md"]:::chat
+  spec["4_Implementation/Specs.md"]:::chat
   tree["Scenario_Tree.md"]:::chat
   run["uv run in MYPROJ/"]:::shell
   res["Results.md"]:::chat
-  paper["5_Paper/"]:::chat
+  paper["6_Paper/"]:::chat
 
-  init --> hl --> se --> dec --> dl --> ca --> ou --> me --> ex
+  init --> hl --> se --> dec --> dl --> ca --> ou --> pg --> me --> ex
   ex --> spec
   ex --> tree
   spec --> tree
@@ -71,7 +73,7 @@ where the work happens.
 
 | Command | Does |
 | ------- | ---- |
-| `/lit-search ["bias"]` | proposes papers from `2_Idea/High_level.md` |
+| `/lit-search ["bias"]` | proposes papers from `3_Idea/High_level.md` |
 | `/lit-download [links]` | brings in the papers marked `OK`, the ones you link, and PDFs you saved by hand: PDF, BibTeX, index row, markdown |
 | `/lit-cards-index [citekeys] ["focus"]` | writes a card per paper, and does the final indexing: each paper in its group |
 | `/lit-outputs ["what to write"]` | writes a literature synthesis |
@@ -109,8 +111,9 @@ every project is created there, wherever you run the command.
 
 ```
 MYPROJ_Brain/          the brain: one git repo, your Obsidian vault
-├── 0-Master.md  CLAUDE.md  README.md  1_Literature/ … 5_Paper/
-└── MYPROJ/            the code only: the future public repo (uv project, MIT)
+├── 0-Master.md  CLAUDE.md  README.md  1_Literature/ … 6_Paper/
+├── MYPROJ/            the code only: the future public repo (uv project, MIT)
+└── MYPROJ_Playground/ playground code: its own uv project, never published
 ```
 
 | flag | |
@@ -123,7 +126,7 @@ MYPROJ_Brain/          the brain: one git repo, your Obsidian vault
 
 Open `MYPROJ_Brain/` in Obsidian and Claude Code. Start from `0-Master.md`.
 
-**The code folder** is exported alone later ([§9](#9-publish-the-code)), so it stands alone:
+**The code folder** is exported alone later ([§10](#10-publish-the-code)), so it stands alone:
 
 | | |
 | --- | --- |
@@ -138,7 +141,7 @@ your content.
 
 ## 2. The session loop
 
-1. **Start.** The agent reads `4_Results_and_Tracking/Where_we_are.md`, the **briefing**:
+1. **Start.** The agent reads `5_Results_and_Tracking/Where_we_are.md`, the **briefing**:
    **Now**, **Next**, **Open**, about twenty lines.
 2. **Work.**
 3. **End.** Run `/wrap`. It rewrites the briefing, adds a dated entry to `Journal.md` (what
@@ -150,7 +153,7 @@ notes in the journal whenever you like: the agent never edits them.
 
 ## 3. Write the idea
 
-`2_Idea/High_level.md` seeds everything after it. Write in plain words:
+`3_Idea/High_level.md` seeds everything after it. Write in plain words:
 
 | section | what goes in |
 | --- | --- |
@@ -162,7 +165,7 @@ notes in the journal whenever you like: the agent never edits them.
 A vague keyword list gives you a vague reading list. If the file is empty, ask the agent to
 draft it with you. It asks questions and writes only what you confirm.
 
-**The outline.** While there is no set scheme to follow, write `2_Idea/Outline.md`: the
+**The outline.** While there is no set scheme to follow, write `3_Idea/Outline.md`: the
 intermediate goals, and the output you want from each, in any shape. Ask the agent in
 plain words to sharpen or evaluate it. A rough outline inside `High_level.md` works too, or
 none at all. It lives alongside `Experiments.md`: early proof experiments can be planned
@@ -206,7 +209,7 @@ their group.
 ### Step 1 — propose
 
 ```
-/lit-search                                          from 2_Idea/
+/lit-search                                          from 3_Idea/
 /lit-search "theory only, after 2020, no surveys"    steered by a bias
 ```
 
@@ -232,7 +235,7 @@ already marked `OK`: they come in with the next download and are not searched ag
 ```
 
 For each paper: the open PDF goes to `1_Literature/PDFs/<citekey>.pdf` (never overwriting
-one), its BibTeX to `5_Paper/refs.bib`, its row under `## Unsorted`. Then the PDFs are
+one), its BibTeX to `6_Paper/refs.bib`, its row under `## Unsorted`. Then the PDFs are
 converted to markdown with a local model (slow: minutes) and linked in the index.
 
 | case | what to do |
@@ -265,31 +268,50 @@ argument, it asks what you need.
 **Handwritten notes.** Put scans in `1_Literature/Human_encoding/`. Organise them from
 `Human_encoding.md`, with one note per topic in `Notes/` that embeds the scans:
 `![](../scan_03.pdf)`. The agent reads a note only when you point it there, and can set
-one up if you ask. Notes on the idea itself go in `2_Idea/Human_encoding/` (section 5).
+one up if you ask. Notes on the idea itself go in `3_Idea/Human_encoding/` (section 6).
 
-## 5. Formalise the method
+## 5. Play
 
-`2_Idea/Setup_and_Method.md` makes the idea formal. Its headings — Notation, Problem,
-Method, Hypotheses — are a suggestion: rename, add or drop any. `5_Paper/preamble.tex`
+Before the idea and the method are fixed, there is usually a stage of playing: reproduce
+an anchor paper's results, run its code, try a small experiment that could prove the
+concept. What you learn shapes the idea, the outline and the real experiments; it runs
+side by side with them.
+
+| where | what |
+| --- | --- |
+| `MYPROJ_Playground/` | the playground code: a uv project of its own, beside `MYPROJ/`. Run `uv add` / `uv run` inside it |
+| `2_Playground/Code_Design.md` | how that code is organised, and where cloned repos came from |
+| `2_Playground/Results.md` | what the playground taught: what helps define the idea, the method, the experiments |
+
+Both files start with a title only: shape them as you go. With its own environment, the
+packages and repos you only explore never reach `MYPROJ/`, and the playground is never
+exported. A repo cloned into it loses its `.git`: the brain is the one repo. In
+`Results.md` too, every finding names its run or log, and a failed reproduction is a
+finding. Code worth keeping is rewritten in `MYPROJ/`, never imported from the playground.
+
+## 6. Formalise the method
+
+`3_Idea/Setup_and_Method.md` makes the idea formal. Its headings — Notation, Problem,
+Method, Hypotheses — are a suggestion: rename, add or drop any. `6_Paper/preamble.tex`
 mirrors the notation.
 
-`2_Idea/` holds your claims: the agent writes there only when you ask, and challenges them
+`3_Idea/` holds your claims: the agent writes there only when you ask, and challenges them
 in chat. A useful test for what belongs here: if it could be chosen differently without
-changing the idea, it is probably a spec, for `3_Implementation/`.
+changing the idea, it is probably a spec, for `4_Implementation/`.
 
-**Handwritten notes on the idea.** Put scans in `2_Idea/Human_encoding/`, organised like
+**Handwritten notes on the idea.** Put scans in `3_Idea/Human_encoding/`, organised like
 the literature notes. The agent reads a note when you point it there.
 
-## 6. Plan the experiments
+## 7. Plan the experiments
 
 | file | what goes in |
 | --- | --- |
-| `2_Idea/Experiments.md` | what each experiment is for, under a stable **E-id** (`E01`, `E02`…) |
-| `3_Implementation/Specs.md` | the concrete choices for each experiment: model, data, hyperparameters, seeds… |
-| `3_Implementation/Figures.md` | what each figure should show |
-| `3_Implementation/Code_Design.md` | how `MYPROJ/` is organised, including where data, logs and results go |
+| `3_Idea/Experiments.md` | what each experiment is for, under a stable **E-id** (`E01`, `E02`…) |
+| `4_Implementation/Specs.md` | the concrete choices for each experiment: model, data, hyperparameters, seeds… |
+| `4_Implementation/Figures.md` | what each figure should show |
+| `4_Implementation/Code_Design.md` | how `MYPROJ/` is organised, including where data, logs and results go |
 
-**`4_Results_and_Tracking/Scenario_Tree.md`** is a mermaid diagram of the experiments:
+**`5_Results_and_Tracking/Scenario_Tree.md`** is a mermaid diagram of the experiments:
 
 ```mermaid
 flowchart LR
@@ -303,7 +325,7 @@ flowchart LR
 A plain edge means "needs the other one done"; a labelled edge means "only on that
 outcome". Mark an experiment that became pointless as dropped instead of deleting it.
 
-## 7. Track
+## 8. Track
 
 | where | what |
 | --- | --- |
@@ -316,9 +338,9 @@ outcome". Mark an experiment that became pointless as dropped instead of deletin
 from. If there is none, the agent says the result doesn't exist. Proposals, estimates and
 thresholds are free, labelled as such.
 
-## 8. Write the paper
+## 9. Write the paper
 
-`5_Paper/` is self-contained LaTeX: `main.tex`, `preamble.tex`, `sections/*.tex`,
+`6_Paper/` is self-contained LaTeX: `main.tex`, `preamble.tex`, `sections/*.tex`,
 `refs.bib`, `figures/`. To compile, zip the folder's **contents**, so that `main.tex` sits
 at the root of the archive, and upload the zip to Overleaf.
 
@@ -328,10 +350,10 @@ at the root of the archive, and upload the zip to Overleaf.
   it in both.
 - **Figures.** Copy the ones the paper uses from the code folder into `figures/`. Name them descriptively, e.g. `encoder-overview.pdf` with
   `\label{fig:encoder-overview}`, not by their number in `Figures.md`.
-- **Claims.** The paper explains `2_Idea/` at more length. If writing it shows a claim
+- **Claims.** The paper explains `3_Idea/` at more length. If writing it shows a claim
   should change, the agent says so and you decide.
 
-## 9. Publish the code
+## 10. Publish the code
 
 The contents of `MYPROJ/` become a new repo with one commit. History stays in the brain.
 Only committed files are exported, so commit first. **In the terminal:**
@@ -356,7 +378,7 @@ git add . && git commit -m "Release v1.1" && git push
 
 ---
 
-## 10. Reference
+## 11. Reference
 
 ### The two keys
 
@@ -369,8 +391,9 @@ git add . && git commit -m "Release v1.1" && git push
 
 | path | written by |
 | --- | --- |
-| `2_Idea/` | you. The agent writes there only when asked |
+| `3_Idea/` | you. The agent writes there only when asked |
 | the Decision column, both `Human_encoding/` folders | you |
+| `2_Playground/`, `MYPROJ_Playground/` | both |
 | `Cards/`, `Literature_Outputs/` | the agent |
 | `PDFs/` | you and `omniframe download`. Never overwritten; renamed only with your permission |
 | `Papers/` | `omniframe convert` only |
@@ -397,7 +420,7 @@ nothing.
 
 ---
 
-## 11. Update and edit OmniFrame
+## 12. Update and edit OmniFrame
 
 | what | updated by |
 | --- | --- |

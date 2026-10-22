@@ -24,12 +24,14 @@ set_tokens() {
   T_AUTHOR="$4"
   T_DATE="$5"
   T_YEAR="${5%%-*}"
-  export T_PROJECT_NAME T_CODE_DIR T_SLUG T_PKG T_AUTHOR T_YEAR T_DATE
+  T_PLAY_DIR="${2}_Playground"
+  export T_PROJECT_NAME T_CODE_DIR T_SLUG T_PKG T_AUTHOR T_YEAR T_DATE T_PLAY_DIR
 }
 
 expand_path() {
   local p="$1"
   p="${p//__PROJECT_NAME__/$T_PROJECT_NAME}"
+  p="${p//__PLAY_DIR__/$T_PLAY_DIR}"
   p="${p//__CODE_DIR__/$T_CODE_DIR}"
   p="${p//__SLUG__/$T_SLUG}"
   p="${p//__PKG__/$T_PKG}"
@@ -47,6 +49,7 @@ is_text() {
 substitute() {
   perl -pe '
     s/__PROJECT_NAME__/$ENV{T_PROJECT_NAME}/g;
+    s/__PLAY_DIR__/$ENV{T_PLAY_DIR}/g;
     s/__CODE_DIR__/$ENV{T_CODE_DIR}/g;
     s/__SLUG__/$ENV{T_SLUG}/g;
     s/__PKG__/$ENV{T_PKG}/g;

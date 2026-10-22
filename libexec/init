@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 #
-# omniframe init -- create a research project: the brain, and its code folder.
+# omniframe init -- create a research project: the brain, its code and playground folders.
 #
 #     omniframe init MYPROJ
 #
 # makes MYPROJ_Brain/ in your projects folder (asked once, then remembered):
-# MYPROJ_Brain/ (the brain, a git repo) and MYPROJ_Brain/MYPROJ/ (the code,
-# a uv project that can later be exported alone into a public repo).
+# MYPROJ_Brain/ (the brain, a git repo), MYPROJ_Brain/MYPROJ/ (the code, a uv
+# project that can later be exported alone into a public repo) and
+# MYPROJ_Brain/MYPROJ_Playground/ (playground code, a uv project of its own, never
+# exported).
 #
 # The template content is cloned from the template repo on every run, so a
 # project always gets the current version. Files that already exist are left
@@ -25,7 +27,8 @@ usage: omniframe init [options] [NAME]
 
 Creates NAME_Brain/ from the research template, substituting the template
 tokens in file contents and in path names, then runs `git init` there and
-`uv init` in its code folder NAME_Brain/NAME/. A plain NAME goes in your
+`uv init` in its code folder NAME_Brain/NAME/ and in its playground
+NAME_Brain/NAME_Playground/. A plain NAME goes in your
 projects folder: the first run asks for it and remembers it. NAME may instead be
 a path (./X, ~/X, /X, a/X), used as written. A trailing _Brain is not doubled.
 Without NAME, the current folder is used, and its name must end in _Brain.
@@ -42,7 +45,7 @@ options:
   -h, --help          this text
 
 tokens, replaced in file contents and in file/directory names:
-  __PROJECT_NAME__  __CODE_DIR__  __SLUG__  __PKG__  __AUTHOR__  __YEAR__  __DATE__
+  __PROJECT_NAME__  __CODE_DIR__  __PLAY_DIR__  __SLUG__  __PKG__  __AUTHOR__  __YEAR__  __DATE__
 
 A template with no tokens in it is simply copied as-is.
 .gitkeep marks a directory to create; it and .DS_Store are never copied.
@@ -147,7 +150,7 @@ command -v uv >/dev/null 2>&1 || die "uv is required (https://docs.astral.sh/uv/
 code_dir="$(basename "$target")"
 code_dir="${code_dir%_Brain}"
 [[ -n "$code_dir" ]] || die "the folder name needs a NAME before _Brain"
-code="$target/$code_dir"
+play_dir="${code_dir}_Playground"
 
 if [[ -n "$opt_author" ]]; then
   author="$opt_author"
@@ -169,7 +172,7 @@ fetch_template
 
 info "template : $origin"
 info "target   : $target"
-info "name     : $T_PROJECT_NAME    code: $code_dir/    pkg: $pkg    author: $author"
+info "name     : $T_PROJECT_NAME    code: $code_dir/    playground: $play_dir/    pkg: $pkg    author: $author"
 [[ $dry_run -eq 1 ]] && info "(dry run -- nothing is written)"
 info ""
 
@@ -268,16 +271,23 @@ else
   [[ $dry_run -eq 0 ]] && git -C "$target" init --quiet
 fi
 
-if [[ -f "$code/pyproject.toml" ]]; then
-  info "  same  $code_dir/pyproject.toml (uv project already there)"
-else
-  info "  uv    uv init --vcs none in $code_dir/"
-  if [[ $dry_run -eq 0 ]]; then
-    mkdir -p "$code"
-    (cd "$code" && uv init --quiet --vcs none --name "$pkg") \
-      || die "uv init failed in $code"
+# uv_project DIR NAME PKG: a uv project in $target/DIR, unless one is there
+uv_project() {
+  if [[ -f "$target/$1/pyproject.toml" ]]; then
+    info "  same  $1/pyproject.toml (uv project already there)"
+  else
+    info "  uv    uv init --vcs none in $1/"
+    if [[ $dry_run -eq 0 ]]; then
+      mkdir -p "$target/$1"
+      (cd "$target/$1" && uv init --quiet --vcs none --name "$2") \
+        || die "uv init failed in $target/$1"
+    fi
   fi
-fi
+}
+
+# the code, exported alone one day; the playground, its own environment, never exported
+uv_project "$code_dir" "$pkg"
+uv_project "$play_dir" "${pkg}-playground"
 
 # the record is what `omniframe update` compares against; a project that has
 # one is updated with that command, not re-recorded here

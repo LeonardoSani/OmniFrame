@@ -20,6 +20,6 @@
 
 ## Upstream and downstream
 
-- The search starts from [High level](../2_Idea/High_level.md) — the idea in plain words.
-- The literature states the gap; [Setup & Method](../2_Idea/Setup_and_Method.md) is that
+- The search starts from [High level](../3_Idea/High_level.md) — the idea in plain words.
+- The literature states the gap; [Setup & Method](../3_Idea/Setup_and_Method.md) is that
   gap, formalised.

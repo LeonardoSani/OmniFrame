@@ -1,4 +1,4 @@
-# 4_Results_and_Tracking
+# 5_Results_and_Tracking
 
 What came back, what it means, and where the work stands.
 
@@ -9,9 +9,10 @@ what is running), **Next** (the one to three moves that would happen if work res
 now), **Open** (what is undecided, and what would decide it). Cite rather than restate.
 Rewrite it, never append: it describes only the present.
 
-The outline (`2_Idea/Outline.md`, or a rough one in `2_Idea/High_level.md`) helps frame
-**Next** and **Open** alongside `2_Idea/Experiments.md`: most of all early on, when few or
-no experiments are planned yet.
+The outline (`3_Idea/Outline.md`, or a rough one in `3_Idea/High_level.md`) helps frame
+**Next** and **Open** alongside `3_Idea/Experiments.md`: most of all early on, when few or
+no experiments are planned yet. Early on, **Now** also covers the playground: what
+`2_Playground/Results.md` has shown so far.
 
 ## `Journal.md` — the history
 
@@ -22,9 +23,10 @@ entry.
 
 ## `Results.md`
 
-The analysis: what the experiments showed, in whatever shape fits. Every result names its
-source (a log, an output, a tracker run). A refuted hypothesis is a finding: record it as
-one, and never bend a result toward the method.
+The analysis: what the experiments showed, in whatever shape fits; the playground's
+lessons are in `2_Playground/Results.md`. Every result names its source (a log, an
+output, a tracker run). A refuted hypothesis is a finding: record it as one, and never
+bend a result toward the method.
 
 ## `Scenario_Tree.md`
 

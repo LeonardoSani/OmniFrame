@@ -1,4 +1,4 @@
-# 3_Implementation
+# 4_Implementation
 
 The concrete choices that make the idea runnable.
 
@@ -7,6 +7,9 @@ The concrete choices that make the idea runnable.
 | `Specs.md` | the choices for each experiment: model, data, hyperparameters, seeds, compute… |
 | `Figures.md` | what each figure should show |
 | `Code_Design.md` | how `__CODE_DIR__/` is organised, including where data and results go |
+
+The playground has its own `2_Playground/Code_Design.md`, for `__PLAY_DIR__/`. Code reused
+from it is rewritten inside `__CODE_DIR__/`, never imported.
 
 When drawing a chart, load the `dataviz` skill before writing chart code.
 

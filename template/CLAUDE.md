@@ -1,10 +1,10 @@
 # __PROJECT_NAME__ — the research brain
 
-This repo holds one research project whole: the literature, the idea, the implementation
-decisions, the results, the paper, and the code in `__CODE_DIR__/`. You work next to the
-researcher: you fill, connect and check, and you push back. Flag a weak or unfalsifiable
-hypothesis, a missing baseline, a confound, a claim the evidence does not carry. The
-research and its claims stay theirs.
+This repo holds one research project whole: the literature, the playground, the idea, the
+implementation decisions, the results, the paper, the code in `__CODE_DIR__/` and the
+playground code in `__PLAY_DIR__/`. You work next to the researcher: you fill, connect
+and check, and you push back. Flag a weak or unfalsifiable hypothesis, a missing baseline,
+a confound, a claim the evidence does not carry. The research and its claims stay theirs.
 
 Before writing in an area, read that area's `CLAUDE.md`. Each is short.
 
@@ -21,9 +21,9 @@ researcher's request, not in them.
 
 ## Start and end of a session
 
-**Start: read `4_Results_and_Tracking/Where_we_are.md`**, the briefing: what stands now,
+**Start: read `5_Results_and_Tracking/Where_we_are.md`**, the briefing: what stands now,
 what is next, what is open. When you need the history behind it — why something was tried,
-dropped or decided — read `4_Results_and_Tracking/Journal.md`.
+dropped or decided — read `5_Results_and_Tracking/Journal.md`.
 
 **End: the researcher runs `/wrap`.** It rewrites the briefing and adds a journal entry. If
 they say they are finishing without it, do the same anyway.
@@ -32,7 +32,7 @@ they say they are finishing without it, do the same anyway.
 
 | Command | Does |
 | ------- | ---- |
-| `/lit-search ["bias"]` | proposes papers from `2_Idea/` into `1_Literature/Proposed_literature.md` |
+| `/lit-search ["bias"]` | proposes papers from `3_Idea/` into `1_Literature/Proposed_literature.md` |
 | `/lit-download [links]` | brings in the papers marked OK, linked, or saved by hand in `PDFs/`: PDF, BibTeX, index row, markdown |
 | `/lit-cards-index [citekeys] ["focus"]` | writes the missing cards, and does the final indexing: each paper filed in its group |
 | `/lit-outputs ["what to write"]` | writes a literature synthesis |
@@ -56,11 +56,13 @@ still `—`, the paper is not converted yet: say so, and offer `/lit-download`.
 | `1_Literature/Papers/<citekey>/` | converted markdown + images. read-only |
 | `1_Literature/Cards/`, `1_Literature/Literature_Outputs/` | your cards and syntheses |
 | `1_Literature/Human_encoding/` | the researcher's handwritten notes on the reading |
-| `2_Idea/` | the idea: `High_level.md`, `Outline.md`, `Setup_and_Method.md`, `Experiments.md`, and the researcher's handwritten notes in `Human_encoding/`. The outline and the experiments grow side by side: early experiments may change the idea |
-| `3_Implementation/` | the concrete choices: `Specs.md`, `Figures.md`, `Code_Design.md` |
+| `2_Playground/` | the stage before the idea is fixed: `Code_Design.md`; `Results.md`, what reproductions and small tests taught. Side by side with `3_Idea/` |
+| `3_Idea/` | the idea: `High_level.md`, `Outline.md`, `Setup_and_Method.md`, `Experiments.md`, and the researcher's handwritten notes in `Human_encoding/`. The outline, the experiments and the playground grow side by side: early results may change the idea |
+| `4_Implementation/` | the concrete choices: `Specs.md`, `Figures.md`, `Code_Design.md` |
 | `__CODE_DIR__/` | the code, and nothing else: it will be published alone |
-| `4_Results_and_Tracking/` | `Where_we_are.md` (briefing), `Journal.md`, `Results.md`, `Scenario_Tree.md` |
-| `5_Paper/` | the LaTeX paper, self-contained for Overleaf; `refs.bib` |
+| `__PLAY_DIR__/` | the playground code: its own uv project, never published. Nothing in `__CODE_DIR__/` points into it |
+| `5_Results_and_Tracking/` | `Where_we_are.md` (briefing), `Journal.md`, `Results.md`, `Scenario_Tree.md` |
+| `6_Paper/` | the LaTeX paper, self-contained for Overleaf; `refs.bib` |
 | `.omniframe` | what the template installed, for `omniframe update`. never edit |
 
 ## Conventions
@@ -74,8 +76,9 @@ still `—`, the paper is not converted yet: say so, and offer `/lit-download`.
   `[card](Cards/<citekey>.md)`, `![](../scan_03.pdf)`. Never wikilinks (`[[...]]`): outside
   Obsidian they are plain text. In `CLAUDE.md` files and commands, paths are written in
   backticks from the repo root. A `%20` in a link is a space.
-- **The two READMEs** — the root `README.md` is a short doorway to `0-Master.md`;
-  `__CODE_DIR__/README.md` is the public one (see `3_Implementation/CLAUDE.md`).
+- **The READMEs** — the root `README.md` is a short doorway to `0-Master.md`;
+  `__CODE_DIR__/README.md` is the public one (see `4_Implementation/CLAUDE.md`);
+  `__PLAY_DIR__/README.md` is private.
 
 ## Hard rules
 
@@ -87,7 +90,7 @@ still `—`, the paper is not converted yet: say so, and offer `/lit-download`.
 2. **The Decision column in `1_Literature/Proposed_literature.md` is the researcher's.**
 3. **Never delete or overwrite in `1_Literature/PDFs/`; never edit `1_Literature/Papers/`.**
    Renaming a PDF needs the researcher's permission. `Papers/` is converter output.
-4. **`2_Idea/` holds the researcher's claims.** Write there only when asked. Propose and
+4. **`3_Idea/` holds the researcher's claims.** Write there only when asked. Propose and
    challenge in chat as much as you like.
 5. When a rule and a request conflict, say which rule and ask.
 

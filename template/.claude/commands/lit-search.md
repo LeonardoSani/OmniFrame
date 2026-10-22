@@ -1,5 +1,5 @@
 ---
-description: Propose papers for the project from 2_Idea/High_level.md — search only, nothing downloaded
+description: Propose papers for the project from 3_Idea/High_level.md — search only, nothing downloaded
 argument-hint: [optional bias, e.g. "theory papers only, after 2020"]
 ---
 
@@ -11,13 +11,13 @@ Bias from the researcher, may be empty: $ARGUMENTS
 
 ## 1. Read the idea
 
-Read `2_Idea/High_level.md`. If it has no topic and no idea in it, **stop**: say so, and
+Read `3_Idea/High_level.md`. If it has no topic and no idea in it, **stop**: say so, and
 offer to draft it together — ask about the topic, the idea and its motivation, anchor
 papers, keywords, then show the draft and write it only once the researcher confirms.
 Never search from a guess.
 
-Later in a project, the rest of `2_Idea/` and the **Open** section of
-`4_Results_and_Tracking/Where_we_are.md` often say more precisely what the reading now
+Later in a project, the rest of `3_Idea/` and the **Open** section of
+`5_Results_and_Tracking/Where_we_are.md` often say more precisely what the reading now
 needs: use them to sharpen the queries.
 
 The bias steers this search only: kind of paper, period, venue, method family, what to
@@ -34,7 +34,7 @@ one method family), search as asked anyway, and name those papers at the end (st
 Collect every citekey and title already known, so nothing is proposed twice:
 
 - `1_Literature/Paper_Index.md` — the library
-- `5_Paper/refs.bib`
+- `6_Paper/refs.bib`
 - `1_Literature/Proposed_literature.md` — the open proposals, `## Later`, `## Declined`
 
 ## 3. Bring in the anchor papers

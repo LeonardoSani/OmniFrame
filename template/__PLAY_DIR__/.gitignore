@@ -1,0 +1,5 @@
+# the environment, rebuilt by `uv sync`
+.venv/
+__pycache__/
+*.pyc
+.DS_Store

@@ -7,6 +7,6 @@
 
 ## Upstream
 
-- E-ids come from [Experiments](../2_Idea/Experiments.md); their configuration is in
-  [Specs](../3_Implementation/Specs.md).
-- Hypotheses being tested are in [Setup & Method](../2_Idea/Setup_and_Method.md).
+- E-ids come from [Experiments](../3_Idea/Experiments.md); their configuration is in
+  [Specs](../4_Implementation/Specs.md).
+- Hypotheses being tested are in [Setup & Method](../3_Idea/Setup_and_Method.md).

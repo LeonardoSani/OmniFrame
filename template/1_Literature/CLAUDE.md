@@ -5,7 +5,7 @@ Papers come in, cards and syntheses go out.
 ## How papers arrive
 
 1. **`/lit-search`** proposes papers into `Proposed_literature.md`; the researcher marks
-   **Decision**. The anchor papers of `2_Idea/High_level.md` not yet in the library come
+   **Decision**. The anchor papers of `3_Idea/High_level.md` not yet in the library come
    in the same way, already marked `OK`.
 2. **`/lit-download`** runs `omniframe download` — each `OK` paper gets its PDF, its BibTeX,
    and a row under `## Unsorted` in `Paper_Index.md` — then `omniframe convert`, which turns

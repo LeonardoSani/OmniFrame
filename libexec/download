@@ -10,7 +10,7 @@
 # For every row marked OK, in the proposals table or in ## Later:
 #   - the open PDF, found from the arXiv cell (arXiv, OpenReview, or Semantic Scholar by
 #     DOI), goes to 1_Literature/PDFs/<citekey>.pdf   (an existing PDF is never overwritten)
-#   - its BibTeX, fetched from the DOI or arXiv, goes to 5_Paper/refs.bib under the citekey
+#   - its BibTeX, fetched from the DOI or arXiv, goes to 6_Paper/refs.bib under the citekey
 #   - the paper gets a row under ## Unsorted in 1_Literature/Paper_Index.md, with its
 #     arXiv, Code and Site links
 # Then the table is reset: done rows leave, NO rows go to ## Declined, unmarked rows in the
@@ -24,7 +24,7 @@ set -euo pipefail
 PROPOSED="1_Literature/Proposed_literature.md"
 INDEX="1_Literature/Paper_Index.md"
 PDF_DIR="1_Literature/PDFs"
-BIB="5_Paper/refs.bib"
+BIB="6_Paper/refs.bib"
 
 die() { printf 'omniframe download: %s\n' "$*" >&2; exit 1; }
 info() { printf '%s\n' "$*"; }
@@ -34,7 +34,7 @@ usage() {
 usage: omniframe download [options]
 
 Downloads the papers marked OK in 1_Literature/Proposed_literature.md, registers them in
-5_Paper/refs.bib and 1_Literature/Paper_Index.md, then resets the table.
+6_Paper/refs.bib and 1_Literature/Paper_Index.md, then resets the table.
 
 options:
       --dry-run   say what would happen, download and write nothing
@@ -249,7 +249,7 @@ while IFS=$'\x1f' read -r sec keep ck paper venue why arxiv code site; do
       info "  bib   $ck"
     else
       info "  flag  $ck -- no BibTeX from DOI or arXiv"
-      printf '%s\tflag\tno BibTeX found: add @%s to 5_Paper/refs.bib by hand\n' "$ck" "$ck" >> "$results"
+      printf '%s\tflag\tno BibTeX found: add @%s to 6_Paper/refs.bib by hand\n' "$ck" "$ck" >> "$results"
       n_flag=$((n_flag + 1)); continue
     fi
   fi
