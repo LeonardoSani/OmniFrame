@@ -65,8 +65,10 @@ still `—`, the paper is not converted yet: say so, and offer `/lit-download`.
 | `6_Paper/` | the LaTeX paper, self-contained for Overleaf; `refs.bib` |
 | `.omniframe` | what the template installed, for `omniframe update`. never edit |
 
-The numbers give the usual order, not a sequence to enforce: the playground, the outline
-and the experiments grow side by side, and what comes back may change the idea.
+The numbers give the usual order, not a sequence to enforce: the playground and the
+experiments grow side by side, and what comes back may change the idea. One step is fixed:
+the outline comes right after `High_level.md`, before the reading and the playground. Its
+steps, and the goal of each, say what everything after it is for (see `3_Idea/CLAUDE.md`).
 
 ## Conventions
 

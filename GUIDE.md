@@ -31,6 +31,7 @@ flowchart TD
 
   init["omniframe init MYPROJ"]:::shell
   hl["3_Idea/High_level.md"]:::you
+  ol["3_Idea/Outline.md"]:::you
   se["/lit-search"]:::claude
   dec{"Decision"}:::you
   dl["/lit-download"]:::claude
@@ -45,7 +46,7 @@ flowchart TD
   res["Results.md"]:::chat
   paper["6_Paper/"]:::chat
 
-  init --> hl --> se --> dec --> dl --> ca --> ou --> pg --> me --> ex
+  init --> hl --> ol --> se --> dec --> dl --> ca --> ou --> pg --> me --> ex
   ex --> spec
   pg -.->|"may change"| hl
   ex --> tree
@@ -74,7 +75,7 @@ where the work happens.
 
 | Command | Does |
 | ------- | ---- |
-| `/lit-search ["bias"]` | proposes papers from `3_Idea/High_level.md` |
+| `/lit-search ["bias"]` | proposes papers from `3_Idea/High_level.md` and `Outline.md` |
 | `/lit-download [links]` | brings in the papers marked `OK`, the ones you link, and PDFs you saved by hand: PDF, BibTeX, index row, markdown |
 | `/lit-cards-index [citekeys] ["focus"]` | writes a card per paper, and does the final indexing: each paper in its group |
 | `/lit-outputs ["what to write"]` | writes a literature synthesis |
@@ -166,10 +167,12 @@ notes in the journal whenever you like: the agent never edits them.
 A vague keyword list gives you a vague reading list. If the file is empty, ask the agent to
 draft it with you. It asks questions and writes only what you confirm.
 
-**The outline.** While there is no set scheme to follow, write `3_Idea/Outline.md`: the
-intermediate goals, and the output you want from each, in any shape. Ask the agent in
-plain words to sharpen or evaluate it. A rough outline inside `High_level.md` works too, or
-none at all. Early on, the agent's briefing leans on it.
+**The outline, right after.** Next, write `3_Idea/Outline.md`: the steps of the work, and
+the goal of each, meaning what the step should produce or settle. Not "read the literature"
+but "read the literature to learn how the effect is measured: which metrics, which
+baselines". If `High_level.md` already sketches the steps, the outline gives each a goal; if
+not, it defines them. Ask the agent in plain words to draft, sharpen or evaluate it.
+`/lit-search` searches for these goals, and the briefing follows the steps.
 
 ## 4. Literature
 

@@ -68,8 +68,8 @@ omniframe init MYPROJ                       # → MYPROJ_Brain/, code in MYPROJ/
 
 The first `init` asks where your projects go (default `~/Projects`) and remembers it.
 
-Open `MYPROJ_Brain/` in Obsidian and in Claude Code, and write `3_Idea/High_level.md`. On
-an NVIDIA GPU, use vLLM as the converter's backend instead.
+Open `MYPROJ_Brain/` in Obsidian and in Claude Code, and write `3_Idea/High_level.md`,
+then `3_Idea/Outline.md`. On an NVIDIA GPU, use vLLM as the converter's backend instead.
 
 **→ [The Guide](GUIDE.md)** has the full pipeline, command by command.
 
@@ -91,7 +91,7 @@ MYPROJ_Brain/                one git repo, one Obsidian vault
 │   └── Results_pg.md        what the playground taught
 ├── 3_Idea/
 │   ├── High_level.md        the idea in plain words. What /lit-search reads
-│   ├── Outline.md           your plan: intermediate goals and the outputs you want
+│   ├── Outline.md           right after: the steps of your plan, and the goal of each
 │   ├── Setup_and_Method.md  notation · problem · method · hypotheses
 │   ├── Experiments.md       what each experiment is for, by E-id
 │   └── Human_encoding/      your handwritten notes. The agent reads one only when you ask
