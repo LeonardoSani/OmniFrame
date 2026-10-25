@@ -1,0 +1,79 @@
+{
+  "collapse-filter": true,
+  "search": "",
+  "showTags": false,
+  "showAttachments": false,
+  "hideUnresolved": false,
+  "showOrphans": true,
+  "collapse-color-groups": false,
+  "colorGroups": [
+    {
+      "query": "path:\"0-Master.md\"",
+      "color": {
+        "a": 1,
+        "rgb": 13225169
+      }
+    },
+    {
+      "query": "path:\"1_Literature/\"",
+      "color": {
+        "a": 1,
+        "rgb": 14964526
+      }
+    },
+    {
+      "query": "path:\"2_Playground/\"",
+      "color": {
+        "a": 1,
+        "rgb": 15900932
+      }
+    },
+    {
+      "query": "path:\"3_Idea/\"",
+      "color": {
+        "a": 1,
+        "rgb": 2861130
+      }
+    },
+    {
+      "query": "path:\"4_Implementation/\"",
+      "color": {
+        "a": 1,
+        "rgb": 42662
+      }
+    },
+    {
+      "query": "path:\"5_Results_and_Tracking/\"",
+      "color": {
+        "a": 1,
+        "rgb": 4020990
+      }
+    },
+    {
+      "query": "path:\"6_Paper/\"",
+      "color": {
+        "a": 1,
+        "rgb": 10182117
+      }
+    },
+    {
+      "query": "path:\"__CODE_DIR__/\" OR path:\"__PLAY_DIR__/\"",
+      "color": {
+        "a": 1,
+        "rgb": 15817653
+      }
+    }
+  ],
+  "collapse-display": true,
+  "showArrow": false,
+  "textFadeMultiplier": 0,
+  "nodeSizeMultiplier": 1,
+  "lineSizeMultiplier": 1,
+  "collapse-forces": true,
+  "centerStrength": 0.28,
+  "repelStrength": 14,
+  "linkStrength": 1,
+  "linkDistance": 450,
+  "scale": 0.23284807254374432,
+  "close": true
+}
