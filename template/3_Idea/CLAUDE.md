@@ -33,11 +33,12 @@ and the briefing follows the phases.
 at different levels of detail; that is not a disagreement. If `High_level.md` holds a rough
 outline, its steps become the phases; if it holds none, `Outline.md` defines them. The two
 must agree on the phases: when they do not, say so, ask which holds, and align the other
-once the researcher answers. Asked to
-draft, refine or evaluate it, work in chat, in this shape, and write only what the
-researcher confirms: challenge a task with no goal; suggest a sharper goal where you see
-one, but do not push precision the researcher does not have yet. As tasks turn into
-experiments, they get E-ids in `Experiments.md`.
+once the researcher answers.
+
+Asked to draft, refine or evaluate the outline, work in chat, in this shape, and write only
+what the researcher confirms: challenge a task with no goal; suggest a sharper goal where
+you see one, but do not push precision the researcher does not have yet. As tasks turn
+into experiments, they get E-ids in `Experiments.md`.
 
 ## Handwritten notes
 
