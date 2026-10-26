@@ -8,7 +8,7 @@ Read first every session, so keep it short: about twenty lines. **Now** (what st
 what is running), **Next** (the one to three moves that would happen if work resumed
 now), **Open** (what is undecided, and what would decide it). Cite rather than restate.
 Rewrite it, never append: it describes only the present. It covers the whole project, and
-follows the steps of `3_Idea/Outline.md`: say which step the work is on. Until the outline
+follows the phases of `3_Idea/Outline.md`: say which phase and task the work is on. Until the outline
 exists, writing it is the first Next.
 
 ## `Journal.md` — the history

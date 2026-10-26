@@ -11,7 +11,7 @@ Rewrite `5_Results_and_Tracking/Where_we_are.md` so it describes the present:
 
 - **Now** — fold what changed this session into what was already true.
 - **Next** — drop what got done. Keep what is blocked, saying what blocks it. Name the
-  step of `3_Idea/Outline.md` the work is on; while the outline is empty, writing it is the
+  phase and task of `3_Idea/Outline.md` the work is on; while the outline is empty, writing it is the
   first move.
 - **Open** — add anything this session raised and could not settle.
 

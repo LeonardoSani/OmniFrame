@@ -91,7 +91,7 @@ MYPROJ_Brain/                one git repo, one Obsidian vault
 │   └── Results_pg.md        what the playground taught
 ├── 3_Idea/
 │   ├── High_level.md        the idea in plain words. What /lit-search reads
-│   ├── Outline.md           right after: the steps of your plan, and the goal of each
+│   ├── Outline.md           right after: phases, their tasks, the goal of each task
 │   ├── Setup_and_Method.md  notation · problem · method · hypotheses
 │   ├── Experiments.md       what each experiment is for, by E-id
 │   └── Human_encoding/      your handwritten notes. The agent reads one only when you ask

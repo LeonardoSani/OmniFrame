@@ -15,7 +15,7 @@ Read `3_Idea/High_level.md`. If it has no topic and no idea in it, **stop**: say
 offer to draft it together, writing it only once the researcher confirms. Never search
 from a guess.
 
-Then read `3_Idea/Outline.md`. The goals of its steps say what the reading is for: search
+Then read `3_Idea/Outline.md`. The goals of its tasks say what the reading is for: search
 for those. If it is empty, say so and offer to define it first. Search from `High_level.md`
 alone only if the researcher wants to go on without it. Later in a project, the rest of `3_Idea/`, `2_Playground/Results_pg.md` and
 the **Open** of the briefing often say more precisely what the reading needs.

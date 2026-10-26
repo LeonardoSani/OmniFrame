@@ -68,7 +68,8 @@ still `—`, the paper is not converted yet: say so, and offer `/lit-download`.
 The numbers give the usual order, not a sequence to enforce: the playground and the
 experiments grow side by side, and what comes back may change the idea. One step is fixed:
 the outline comes right after `High_level.md`, before the reading and the playground. Its
-steps, and the goal of each, say what everything after it is for (see `3_Idea/CLAUDE.md`).
+phases, their tasks and the goal of each task say what everything after it is for (see
+`3_Idea/CLAUDE.md`).
 
 ## Conventions
 

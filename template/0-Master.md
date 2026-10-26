@@ -20,7 +20,7 @@ stand, what is next, what is open. Read it before anything else; `/wrap` rewrite
 ## The idea
 
 - [High level](3_Idea/High_level.md) — the idea in plain words: topic, motivation, keywords. What the paper search reads
-- [Outline](3_Idea/Outline.md) — right after the high level: the steps of your plan, and the goal of each
+- [Outline](3_Idea/Outline.md) — right after the high level: the phases of your plan, their tasks, and the goal of each task
 - [Setup & Method](3_Idea/Setup_and_Method.md) — notation, problem, method, hypotheses
 - [Experiments](3_Idea/Experiments.md) — what each experiment establishes
 - [Human encoding](3_Idea/Human_encoding/Human_encoding.md) — your scanned notes on the idea, organised by you

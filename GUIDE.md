@@ -167,12 +167,14 @@ notes in the journal whenever you like: the agent never edits them.
 A vague keyword list gives you a vague reading list. If the file is empty, ask the agent to
 draft it with you. It asks questions and writes only what you confirm.
 
-**The outline, right after.** Next, write `3_Idea/Outline.md`: the steps of the work, and
-the goal of each, meaning what the step should produce or settle. Not "read the literature"
-but "read the literature to learn how the effect is measured: which metrics, which
-baselines". If `High_level.md` already sketches the steps, the outline gives each a goal; if
-not, it defines them. Ask the agent in plain words to draft, sharpen or evaluate it.
-`/lit-search` searches for these goals, and the briefing follows the steps.
+**The outline, right after.** Next, write `3_Idea/Outline.md`: the phases of the work, in
+order. Each phase has a short description, then its tasks; under each task, its goal,
+meaning what the task should produce or settle. Not "read the literature" but "read the
+literature to learn how the effect is measured: which metrics, which baselines". Make the
+near phases specific; the far ones can stay coarse until you get close. If `High_level.md`
+already sketches the steps, they become the phases; if not, the outline defines them. Ask
+the agent in plain words to draft, sharpen or evaluate it. `/lit-search` searches for these
+goals, and the briefing follows the phases.
 
 ## 4. Literature
 

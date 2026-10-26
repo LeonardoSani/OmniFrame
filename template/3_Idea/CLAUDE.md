@@ -7,7 +7,7 @@ into a hedge.
 | File | Holds |
 | ---- | ----- |
 | `High_level.md` | the idea in plain words: topic, motivation, anchor papers, keywords. `/lit-search` starts from it |
-| `Outline.md` | the researcher's plan, written right after `High_level.md`: the steps, and the goal of each. Any shape |
+| `Outline.md` | the researcher's plan, written right after `High_level.md`: phases, their tasks, and the goal of each task |
 | `Setup_and_Method.md` | the idea made formal: notation, problem, method, hypotheses. Headings are a suggestion |
 | `Experiments.md` | what each experiment is for, under its E-id |
 
@@ -18,18 +18,21 @@ idea, it is probably a spec and fits better in `4_Implementation/`.
 
 ## The outline
 
-`Outline.md` comes right after `High_level.md`, before the reading and the playground: the
-steps of the work, each with its goal, meaning what the step should produce or settle. "Read
-the literature" is not a goal; "read the literature to learn how the effect is measured:
-which metrics, which baselines" is. These goals say what the reading, the playground and
-the experiments are for: `/lit-search` searches for them, and the briefing follows the
-steps.
+`Outline.md` comes right after `High_level.md`, before the reading and the playground. It
+is the phases of the work, in order. Each phase has a short description, then its tasks,
+one or more; under each task, its goal, meaning what the task should produce or settle.
+"Read the literature" is not a goal; "read the literature to learn how the effect is
+measured: which metrics, which baselines" is. The near phases are specific; the far ones
+may stay coarse, a description and a task or two, and are sharpened as the work gets
+close. These goals say what the reading, the playground and the experiments are for:
+`/lit-search` searches for them, and the briefing follows the phases.
 
-If `High_level.md` holds a rough outline, `Outline.md` gives each of its steps a goal; if it
-holds none, `Outline.md` defines the steps. When the two disagree, say so and ask which
-holds. Asked to draft, refine or evaluate it, work in chat and write only what the
-researcher confirms: challenge a step with no goal, or a goal with no output that would
-show it is reached. As steps turn into experiments, they get E-ids in `Experiments.md`.
+If `High_level.md` holds a rough outline, its steps become the phases; if it holds none,
+`Outline.md` defines them. When the two disagree, say so and ask which holds. Asked to
+draft, refine or evaluate it, work in chat, in this shape, and write only what the
+researcher confirms: challenge a task with no goal, or a goal with no output that would
+show it is reached, but do not ask for detail in the far phases. As tasks turn into
+experiments, they get E-ids in `Experiments.md`.
 
 ## Handwritten notes
 
