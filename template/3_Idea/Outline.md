@@ -1,12 +1,10 @@
 # Outline
 
-<!-- Phases in order. Under each phase: a short description, then its tasks, and under
-each task its goal (what it should produce or settle). Far phases may stay coarse.
+<!-- Phases in order, each with its tasks. Each task: a short description and a goal
+(what it should produce or settle), precise or general as far as you can tell yet.
 
 ## Phase 1 — <name>
 
-<what the phase is about>
-
-- **<task>**
+- **<task>** — <short description>
   Goal: <what it should produce or settle>
 -->

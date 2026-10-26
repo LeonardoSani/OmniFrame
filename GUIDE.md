@@ -168,10 +168,10 @@ A vague keyword list gives you a vague reading list. If the file is empty, ask t
 draft it with you. It asks questions and writes only what you confirm.
 
 **The outline, right after.** Next, write `3_Idea/Outline.md`: the phases of the work, in
-order. Each phase has a short description, then its tasks; under each task, its goal,
-meaning what the task should produce or settle. Not "read the literature" but "read the
-literature to learn how the effect is measured: which metrics, which baselines". Make the
-near phases specific; the far ones can stay coarse until you get close. If `High_level.md`
+order, each with its tasks. Each task has a short description and a goal, meaning what
+the task should produce or settle. Not "read the literature" but "read the literature to
+learn how the effect is measured: which metrics, which baselines". A goal can be precise or
+general: write what you can be sure of now, and sharpen it as you get close. If `High_level.md`
 already sketches the steps, they become the phases; if not, the outline defines them. Ask
 the agent in plain words to draft, sharpen or evaluate it. `/lit-search` searches for these
 goals, and the briefing follows the phases.
