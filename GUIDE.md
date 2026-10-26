@@ -174,9 +174,8 @@ learn how the effect is measured: which metrics, which baselines". A goal can be
 general: write what you can be sure of now, and sharpen it as you get close. If `High_level.md`
 already sketches the steps, they become the phases, and both stay: the sketch is the
 general view, the outline the detailed plan; they must agree on the phases. If not, the
-outline defines them. Ask
-the agent in plain words to draft, sharpen or evaluate it. `/lit-search` searches for these
-goals, and the briefing follows the phases.
+outline defines them. Ask the agent in plain words to draft, sharpen or evaluate it.
+`/lit-search` searches for these goals, and the briefing follows the phases.
 
 ## 4. Literature
 
