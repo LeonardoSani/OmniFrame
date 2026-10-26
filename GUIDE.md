@@ -171,10 +171,10 @@ draft it with you. It asks questions and writes only what you confirm.
 order, each with its tasks. Each task has a short description and a goal, meaning what
 the task should produce or settle. Not "read the literature" but "read the literature to
 learn how the effect is measured: which metrics, which baselines". A goal can be precise or
-general: write what you can be sure of now, and sharpen it as you get close. If `High_level.md`
-already sketches the steps, they become the phases, and both stay: the sketch is the
-general view, the outline the detailed plan; they must agree on the phases. If not, the
-outline defines them. Ask the agent in plain words to draft, sharpen or evaluate it.
+general: write what you can be sure of now, and sharpen it as you get close. Specify the
+near phases; the far ones can stay a name for now. `High_level.md` may hold a more general
+outline, or none: if it does, its steps become the phases and both stay, the outline
+specifying them; they must agree on the phases. If not, the outline defines them. Ask the agent in plain words to draft, sharpen or evaluate it.
 `/lit-search` searches for these goals, and the briefing follows the phases.
 
 ## 4. Literature

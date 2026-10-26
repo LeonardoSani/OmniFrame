@@ -24,16 +24,17 @@ a short description and a goal, meaning what the task should produce or settle. 
 literature" is not a goal; "read the literature to learn how the effect is measured: which
 metrics, which baselines" is. How precise a goal is, is the researcher's call: precise when
 they know what the task must produce, general when they do not yet have the context to be
-sure. A general goal is fine; it gets sharper as the work gets close. These goals say what
-the reading, the playground and the experiments are for: `/lit-search` searches for them,
-and the briefing follows the phases.
+sure. The same holds for whole phases: the near ones are specified, task by task; the far
+ones may stay a name, and are filled in as the work gets close. These goals say what the
+reading, the playground and the experiments are for: `/lit-search` searches for them, and
+the briefing follows the phases.
 
-`High_level.md` may keep a rough outline: the general view, a line or two per step.
-`Outline.md` is the detailed plan: the same phases, with their tasks and goals. Both stay,
-at different levels of detail; that is not a disagreement. If `High_level.md` holds a rough
-outline, its steps become the phases; if it holds none, `Outline.md` defines them. The two
-must agree on the phases: when they do not, say so, ask which holds, and align the other
-once the researcher answers.
+`High_level.md` may hold a more general outline, or none. `Outline.md` is the proper
+outline: it specifies the plan, the nearer phases better. Both stay, at different levels of
+detail; that is not a disagreement. If `High_level.md` holds a general outline, its steps
+become the phases; if it holds none, `Outline.md` defines them. The two must agree on the
+phases: when they do not, say so, ask which holds, and align the other once the researcher
+answers.
 
 Asked to draft, refine or evaluate the outline, work in chat, in this shape, and write only
 what the researcher confirms: challenge a task with no goal; suggest a sharper goal where
