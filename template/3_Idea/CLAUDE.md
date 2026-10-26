@@ -28,8 +28,12 @@ sure. A general goal is fine; it gets sharper as the work gets close. These goal
 the reading, the playground and the experiments are for: `/lit-search` searches for them,
 and the briefing follows the phases.
 
-If `High_level.md` holds a rough outline, its steps become the phases; if it holds none,
-`Outline.md` defines them. When the two disagree, say so and ask which holds. Asked to
+`High_level.md` may keep a rough outline: the general view, a line or two per step.
+`Outline.md` is the detailed plan: the same phases, with their tasks and goals. Both stay,
+at different levels of detail; that is not a disagreement. If `High_level.md` holds a rough
+outline, its steps become the phases; if it holds none, `Outline.md` defines them. The two
+must agree on the phases: when they do not, say so, ask which holds, and align the other
+once the researcher answers. Asked to
 draft, refine or evaluate it, work in chat, in this shape, and write only what the
 researcher confirms: challenge a task with no goal; suggest a sharper goal where you see
 one, but do not push precision the researcher does not have yet. As tasks turn into
