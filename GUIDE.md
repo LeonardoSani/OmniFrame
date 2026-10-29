@@ -30,16 +30,16 @@ flowchart TD
   classDef you fill:#fef3c7,stroke:#a16207,color:#111
 
   init["omniframe init MYPROJ"]:::shell
-  hl["3_Idea/High_level.md"]:::you
-  ol["3_Idea/Outline.md"]:::you
+  hl["0_Project/High_level.md"]:::you
+  ol["0_Project/Outline.md"]:::you
   se["/lit-search"]:::claude
   dec{"Decision"}:::you
   dl["/lit-download"]:::claude
   ca["/lit-cards-index"]:::claude
   ou["/lit-outputs"]:::claude
   pg["2_Playground/"]:::chat
-  me["3_Idea/Setup_and_Method.md"]:::chat
-  ex["3_Idea/Experiments.md"]:::chat
+  me["3_Method/Setup_and_Method.md"]:::chat
+  ex["3_Method/Experiments.md"]:::chat
   spec["4_Implementation/Specs.md"]:::chat
   tree["Scenario_Tree.md"]:::chat
   run["uv run in MYPROJ/"]:::shell
@@ -64,7 +64,7 @@ The order is a guide, not a gate: go back to any step whenever the research asks
 | blue | Claude Code, asked in plain words |
 | yellow | you: an edit or a decision |
 
-At the end of every session, whatever you did: `/wrap`. Your own notes go in `Journal.md` any time.
+At the end of every session, whatever you did: `/wrap`. Your own notes go in `0_Project/Journal.md` any time.
 
 ## Commands at a glance
 
@@ -75,7 +75,7 @@ where the work happens.
 
 | Command | Does |
 | ------- | ---- |
-| `/lit-search ["bias"]` | proposes papers from `3_Idea/High_level.md` and `Outline.md` |
+| `/lit-search ["bias"]` | proposes papers from `0_Project/High_level.md` and `Outline.md` |
 | `/lit-download [links]` | brings in the papers marked `OK`, the ones you link, and PDFs you saved by hand: PDF, BibTeX, index row, markdown |
 | `/lit-cards-index [citekeys] ["focus"]` | writes a card per paper, and does the final indexing: each paper in its group |
 | `/lit-outputs ["what to write"]` | writes a literature synthesis |
@@ -143,10 +143,10 @@ your content.
 
 ## 2. The session loop
 
-1. **Start.** The agent reads `5_Results_and_Tracking/Where_we_are.md`, the **briefing**:
+1. **Start.** The agent reads `0_Project/Where_we_are.md`, the **briefing**:
    **Now**, **Next**, **Open**, about twenty lines.
 2. **Work.**
-3. **End.** Run `/wrap`. It rewrites the briefing, adds a dated entry to `Journal.md` (what
+3. **End.** Run `/wrap`. It rewrites the briefing, adds a dated entry to `0_Project/Journal.md` (what
    was tried, decided, abandoned, and why) and runs a few quick checks. It reports problems
    and fixes nothing.
 
@@ -155,7 +155,7 @@ notes in the journal whenever you like: the agent never edits them.
 
 ## 3. Write the idea
 
-`3_Idea/High_level.md` seeds everything after it. Write in plain words:
+`0_Project/High_level.md` seeds everything after it. Write in plain words:
 
 | section | what goes in |
 | --- | --- |
@@ -167,7 +167,7 @@ notes in the journal whenever you like: the agent never edits them.
 A vague keyword list gives you a vague reading list. If the file is empty, ask the agent to
 draft it with you. It asks questions and writes only what you confirm.
 
-**The outline, right after.** Next, write `3_Idea/Outline.md`: the phases of the work, in
+**The outline, right after.** Next, write `0_Project/Outline.md`: the phases of the work, in
 order, each with its tasks. Each task has a short description and a goal, meaning what
 the task should produce or settle. Not "read the literature" but "read the literature to
 learn how the effect is measured: which metrics, which baselines". A goal can be precise or
@@ -214,7 +214,7 @@ their group.
 ### Step 1 — propose
 
 ```
-/lit-search                                          from 3_Idea/
+/lit-search                                          from 0_Project/
 /lit-search "theory only, after 2020, no surveys"    steered by a bias
 ```
 
@@ -273,7 +273,7 @@ argument, it asks what you need.
 **Handwritten notes.** Put scans in `1_Literature/Human_encoding/`. Organise them from
 `Human_encoding.md`, with one note per topic in `Notes/` that embeds the scans:
 `![](../scan_03.pdf)`. The agent reads a note only when you point it there, and can set
-one up if you ask. Notes on the idea itself go in `3_Idea/Human_encoding/` (section 6).
+one up if you ask. Notes on the idea itself go in `3_Method/Human_encoding/` (section 6).
 
 ## 5. Play
 
@@ -296,27 +296,27 @@ keeping is rewritten in `MYPROJ/`, never imported from the playground.
 
 ## 6. Formalise the method
 
-`3_Idea/Setup_and_Method.md` makes the idea formal. Its headings — Notation, Problem,
+`3_Method/Setup_and_Method.md` makes the idea formal. Its headings — Notation, Problem,
 Method, Hypotheses — are a suggestion: rename, add or drop any. `6_Paper/preamble.tex`
 mirrors the notation.
 
-`3_Idea/` holds your claims: the agent writes there only when you ask, and challenges them
+`3_Method/` holds your claims: the agent writes there only when you ask, and challenges them
 in chat. A useful test for what belongs here: if it could be chosen differently without
 changing the idea, it is probably a spec, for `4_Implementation/`.
 
-**Handwritten notes on the idea.** Put scans in `3_Idea/Human_encoding/`, organised like
+**Handwritten notes on the idea.** Put scans in `3_Method/Human_encoding/`, organised like
 the literature notes. The agent reads a note when you point it there.
 
 ## 7. Plan the experiments
 
 | file | what goes in |
 | --- | --- |
-| `3_Idea/Experiments.md` | what each experiment is for, under a stable **E-id** (`E01`, `E02`…) |
+| `3_Method/Experiments.md` | what each experiment is for, under a stable **E-id** (`E01`, `E02`…) |
 | `4_Implementation/Specs.md` | the concrete choices for each experiment: model, data, hyperparameters, seeds… |
 | `4_Implementation/Figures.md` | what each figure should show |
 | `4_Implementation/Code_Design.md` | how `MYPROJ/` is organised, including where data, logs and results go |
 
-**`5_Results_and_Tracking/Scenario_Tree.md`** is a mermaid diagram of the experiments:
+**`5_Results/Scenario_Tree.md`** is a mermaid diagram of the experiments:
 
 ```mermaid
 flowchart LR
@@ -355,7 +355,7 @@ at the root of the archive, and upload the zip to Overleaf.
   it in both.
 - **Figures.** Copy the ones the paper uses from the code folder into `figures/`. Name them descriptively, e.g. `encoder-overview.pdf` with
   `\label{fig:encoder-overview}`, not by their number in `Figures.md`.
-- **Claims.** The paper explains `3_Idea/` at more length. If writing it shows a claim
+- **Claims.** The paper explains `3_Method/` at more length. If writing it shows a claim
   should change, the agent says so and you decide.
 
 ## 10. Publish the code
@@ -396,7 +396,7 @@ git add . && git commit -m "Release v1.1" && git push
 
 | path | written by |
 | --- | --- |
-| `3_Idea/` | you. The agent writes there only when asked |
+| `3_Method/`, `0_Project/High_level.md`, `0_Project/Outline.md` | you. The agent writes there only when asked |
 | the Decision column, both `Human_encoding/` folders | you |
 | `2_Playground/`, `MYPROJ_Playground/` | both |
 | `Cards/`, `Literature_Outputs/` | the agent |

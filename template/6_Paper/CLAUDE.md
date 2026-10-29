@@ -14,9 +14,9 @@ them in document order; nothing in `4_Implementation/Figures.md` imposes a numbe
 
 ## Underscores
 
-Brain paths contain underscores (`3_Idea/Setup_and_Method.md`) and LaTeX treats `_` as a
+Brain paths contain underscores (`3_Method/Setup_and_Method.md`) and LaTeX treats `_` as a
 subscript marker: unescaped in text mode it fails with *Missing $ inserted*. Write
-`\texttt{3\_Idea/Setup\_and\_Method.md}` when you name a path in prose. Comments after `%`
+`\texttt{3\_Method/Setup\_and\_Method.md}` when you name a path in prose. Comments after `%`
 and maths mode are exempt. The same applies to `\title{}` if the project name has an
 underscore.
 
@@ -28,7 +28,7 @@ page you have not found.
 
 ## Notation and claims
 
-`preamble.tex` holds macros for the notation in `3_Idea/Setup_and_Method.md`; keep the two
+`preamble.tex` holds macros for the notation in `3_Method/Setup_and_Method.md`; keep the two
 in step. The paper explains the idea at more length for a reader who has not seen the
 brain. If writing it shows a claim should change, say so: the researcher decides whether
-`3_Idea/` follows.
+`3_Method/` follows.

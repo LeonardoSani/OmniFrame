@@ -11,6 +11,6 @@ the experiments.
 ## Upstream and downstream
 
 - Fed by the [literature](../1_Literature/1-Literature.md): papers to reproduce, code to run.
-- Feeds the [Outline](../3_Idea/Outline.md), the idea and the design of the
-  [Experiments](../3_Idea/Experiments.md). Code worth keeping is rewritten in
+- Feeds the [Outline](../0_Project/Outline.md), the idea and the design of the
+  [Experiments](../3_Method/Experiments.md). Code worth keeping is rewritten in
   [the code folder](../__CODE_DIR__/README.md).

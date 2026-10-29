@@ -9,7 +9,7 @@ small proof-of-concept tests. What it teaches may change the idea. Free form.
 | `Code_Design_pg.md` | how `__PLAY_DIR__/` is organised |
 | `Results_pg.md` | what the playground taught, for the idea, the method, the experiments |
 
-Playground experiments get no E-ids: those belong to `3_Idea/Experiments.md`. One that
+Playground experiments get no E-ids: those belong to `3_Method/Experiments.md`. One that
 grows into a real experiment gets its E-id there.
 
 ## The playground code

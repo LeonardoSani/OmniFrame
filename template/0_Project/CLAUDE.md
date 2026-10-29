@@ -1,20 +1,16 @@
-# 3_Idea
+# 0_Project
 
-The idea, from plain words to formal. **These are the researcher's claims: write here
-only when asked.** When you do, keep their structure and voice, and do not soften a claim
-into a hedge.
+The project itself: what it is about, the plan, where it stands, and how it got there.
 
 | File | Holds |
 | ---- | ----- |
 | `High_level.md` | the idea in plain words: topic, motivation, anchor papers, keywords. `/lit-search` starts from it |
 | `Outline.md` | the researcher's plan, written right after `High_level.md`: phases, their tasks, and the goal of each task |
-| `Setup_and_Method.md` | the idea made formal: notation, problem, method, hypotheses. Headings are a suggestion |
-| `Experiments.md` | what each experiment is for, under its E-id |
+| `Where_we_are.md` | the briefing: read first every session, rewritten by `/wrap` |
+| `Journal.md` | the history: what was tried, decided, abandoned, and why |
 
-A useful test, not a rule: if something could be chosen differently without changing the
-idea, it is probably a spec and fits better in `4_Implementation/`.
-
-`6_Paper/preamble.tex` mirrors the notation here; when a symbol changes, say so.
+**`High_level.md` and `Outline.md` are the researcher's: write there only when asked.**
+When you do, keep their structure and voice, and do not soften a claim into a hedge.
 
 ## The outline
 
@@ -39,11 +35,20 @@ answers.
 Asked to draft, refine or evaluate the outline, work in chat, in this shape, and write only
 what the researcher confirms: challenge a task with no goal; suggest a sharper goal where
 you see one, but do not push precision the researcher does not have yet. As tasks turn
-into experiments, they get E-ids in `Experiments.md`.
+into experiments, they get E-ids in `3_Method/Experiments.md`.
 
-## Handwritten notes
+## `Where_we_are.md` — the briefing
 
-`Human_encoding/` holds the researcher's scanned notes on the idea, organised from
-`Human_encoding/Human_encoding.md`, with notes in `Human_encoding/Notes/` that embed the
-scans. Read a note when the researcher points you to it. Asked, you may create a note or
-add embeds for scans they name.
+Read first every session, so keep it short: about twenty lines. **Now** (what stands,
+what is running), **Next** (the one to three moves that would happen if work resumed
+now), **Open** (what is undecided, and what would decide it). Cite rather than restate.
+Rewrite it, never append: it describes only the present. It covers the whole project, and
+follows the phases of `Outline.md`: say which phase and task the work is on. Until the
+outline exists, writing it is the first Next.
+
+## `Journal.md` — the history
+
+Dated entries, `## YYYY-MM-DD`, added at the bottom. What was tried, decided, abandoned,
+and why — the reasoning the briefing drops. `/wrap` adds one per session; the researcher
+also writes entries and notes of their own, in any form. Never edit or remove an existing
+entry.

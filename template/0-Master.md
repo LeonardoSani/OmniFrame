@@ -2,8 +2,14 @@
 
 __AUTHOR__ · started __DATE__
 
-**→ [Where we are](5_Results_and_Tracking/Where_we_are.md)** — the briefing: where things
+**→ [Where we are](0_Project/Where_we_are.md)** — the briefing: where things
 stand, what is next, what is open. Read it before anything else; `/wrap` rewrites it.
+
+## Project
+
+- [High level](0_Project/High_level.md) — the idea in plain words: topic, motivation, keywords. What the paper search reads
+- [Outline](0_Project/Outline.md) — right after the high level: the phases of your plan, their tasks, and the goal of each task
+- [Journal](0_Project/Journal.md) — what was tried, decided and abandoned, and why
 
 ## Literature
 
@@ -17,13 +23,11 @@ stand, what is next, what is open. Read it before anything else; `/wrap` rewrite
 - [Playground experiments](2_Playground/Experiments_pg.md) — small tests, repos explored, results reproduced
 - [What it taught](2_Playground/Results_pg.md) — the lessons that shape the idea and the experiments
 
-## The idea
+## Method
 
-- [High level](3_Idea/High_level.md) — the idea in plain words: topic, motivation, keywords. What the paper search reads
-- [Outline](3_Idea/Outline.md) — right after the high level: the phases of your plan, their tasks, and the goal of each task
-- [Setup & Method](3_Idea/Setup_and_Method.md) — notation, problem, method, hypotheses
-- [Experiments](3_Idea/Experiments.md) — what each experiment establishes
-- [Human encoding](3_Idea/Human_encoding/Human_encoding.md) — your scanned notes on the idea, organised by you
+- [Setup & Method](3_Method/Setup_and_Method.md) — notation, problem, method, hypotheses
+- [Experiments](3_Method/Experiments.md) — what each experiment establishes
+- [Human encoding](3_Method/Human_encoding/Human_encoding.md) — your scanned notes on the idea, organised by you
 
 ## Implementation
 
@@ -31,10 +35,9 @@ stand, what is next, what is open. Read it before anything else; `/wrap` rewrite
 
 ## Results
 
-- [Results area](5_Results_and_Tracking/5-Results_and_Tracking.md) — briefing, journal, analysis, experiment tree
-- [Journal](5_Results_and_Tracking/Journal.md) — what was tried, decided and abandoned, and why
-- [Scenario tree](5_Results_and_Tracking/Scenario_Tree.md) — experiment dependencies, and what is runnable now
-- [The analysis](5_Results_and_Tracking/Results.md) — what the experiments showed
+- [Results area](5_Results/5-Results.md) — analysis and experiment tree
+- [Scenario tree](5_Results/Scenario_Tree.md) — experiment dependencies, and what is runnable now
+- [The analysis](5_Results/Results.md) — what the experiments showed
 
 ## Paper
 
