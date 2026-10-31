@@ -286,7 +286,7 @@ side by side with them.
 | --- | --- |
 | `MYPROJ_Playground/` | the playground code: a uv project of its own, beside `MYPROJ/`. Run `uv add` / `uv run` inside it |
 | `2_Playground/Method_pg.md` | what the playground computes: notation, problem, measures, methods. The scope of `3_Method/`, as a working version |
-| `2_Playground/Implementation_pg.md` | the concrete choices behind the playground experiments. The scope of `4_Implementation/`, as a working version |
+| `2_Playground/Specs_and_Figures_pg.md` | the concrete choices behind the playground experiments, and what each plot shows, named by its experiment. The scope of `4_Implementation/Specs.md` and `Figures.md`, as a working version |
 | `2_Playground/Experiments_pg.md` | the playground experiments: small tests, a repo explored as a starting point, a paper's results reproduced. No E-ids: those are for the real experiments |
 | `2_Playground/Code_Design_pg.md` | how that code is organised, and where cloned repos came from |
 | `2_Playground/Results_pg.md` | what the playground taught: what helps define the idea, the method, the experiments |
@@ -296,7 +296,7 @@ packages and repos you only explore never reach `MYPROJ/`, and the playground is
 exported. A repo cloned into it loses its `.git`: the brain is the one repo. Code worth
 keeping is rewritten in `MYPROJ/`, never imported from the playground. In the same way,
 `3_Method/` and `4_Implementation/` wait for the real project: what holds up in
-`Method_pg.md` and `Implementation_pg.md` is rewritten there once the idea is clear.
+`Method_pg.md` and `Specs_and_Figures_pg.md` is rewritten there once the idea is clear.
 
 ## 6. Formalise the method
 
