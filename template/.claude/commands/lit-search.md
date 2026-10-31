@@ -17,9 +17,16 @@ from a guess.
 
 Then read `0_Project/Outline.md`. The goals of its tasks say what the reading is for:
 search for those. If it is empty, say so and offer to define it first. Search from
-`High_level.md` alone only if the researcher wants to go on without it. Later in a project,
-`3_Method/`, `2_Playground/Results_pg.md` and the **Open** of the briefing often say more
-precisely what the reading needs.
+`High_level.md` alone only if the researcher wants to go on without it.
+
+Then tell the stage from the briefing, `0_Project/Where_we_are.md`, and read only the
+files of that stage: they often say more precisely what the reading needs.
+
+- **Playground stage** — the idea is still moving, `3_Method/` is not written yet: read
+  `2_Playground/` (`Method_pg.md`, `Experiments_pg.md`, `Results_pg.md`).
+- **Project stage** — the idea is fixed: read `3_Method/`.
+
+If the stage is unclear, ask. In both, the **Open** of the briefing says what is missing.
 
 The bias tilts or narrows this search; it does not replace the idea. If it contradicts
 `High_level.md`, say so and ask which wins. A paper counts as known only if it is in the
