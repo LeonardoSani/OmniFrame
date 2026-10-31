@@ -3,6 +3,8 @@
 Before the idea is fixed: understand, reproduce, try. What it taught shapes the idea and
 the experiments.
 
+- [Method](Method_pg.md) — what is computed: measures, methods, tasks, defined once
+- [Implementation](Implementation_pg.md) — the concrete choices: models, data, parameters
 - [Experiments](Experiments_pg.md) — small tests, repos explored, results reproduced
 - [Code Design](Code_Design_pg.md) — how the playground code is organised
 - [Results](Results_pg.md) — what the playground taught

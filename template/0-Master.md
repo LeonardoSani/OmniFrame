@@ -20,6 +20,8 @@ stand, what is next, what is open. Read it before anything else; `/wrap` rewrite
 ## Playground
 
 - [Playground area](2_Playground/2-Playground.md) — before the idea is fixed: reproductions, paper code, small tests
+- [Playground method](2_Playground/Method_pg.md) — what the playground computes, before `3_Method/` is written
+- [Playground implementation](2_Playground/Implementation_pg.md) — its concrete choices, before `4_Implementation/`
 - [Playground experiments](2_Playground/Experiments_pg.md) — small tests, repos explored, results reproduced
 - [What it taught](2_Playground/Results_pg.md) — the lessons that shape the idea and the experiments
 

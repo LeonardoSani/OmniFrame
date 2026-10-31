@@ -11,6 +11,8 @@ not soften a claim into a hedge.
 
 The idea in plain words and the plan are in `0_Project/High_level.md` and
 `0_Project/Outline.md`; the method formalises the first and serves the second.
+While the idea is still moving, the working method lives in `2_Playground/Method_pg.md`;
+this folder is for the real project, once it is clear.
 
 A useful test, not a rule: if something could be chosen differently without changing the
 idea, it is probably a spec and fits better in `4_Implementation/`.

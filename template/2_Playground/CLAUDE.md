@@ -5,9 +5,16 @@ small proof-of-concept tests. What it teaches may change the idea. Free form.
 
 | File | Holds |
 | ---- | ----- |
+| `Method_pg.md` | what the playground computes: notation, problem, measures, methods, defined once |
+| `Implementation_pg.md` | the concrete choices behind the playground experiments: models, data, parameters, seeds |
 | `Experiments_pg.md` | the playground experiments and what each is for |
 | `Code_Design_pg.md` | how `__PLAY_DIR__/` is organised |
 | `Results_pg.md` | what the playground taught, for the idea, the method, the experiments |
+
+`Method_pg.md` and `Implementation_pg.md` have the scope of `3_Method/` and
+`4_Implementation/`, for the playground: a working version while the idea is still
+moving. `3_Method/` and `4_Implementation/` are left for the real project, once it is
+clear; what holds up here is rewritten there, not linked.
 
 Playground experiments get no E-ids: those belong to `3_Method/Experiments.md`. One that
 grows into a real experiment gets its E-id there.

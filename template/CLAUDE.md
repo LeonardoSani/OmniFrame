@@ -57,7 +57,7 @@ still `—`, the paper is not converted yet: say so, and offer `/lit-download`.
 | `1_Literature/Papers/<citekey>/` | converted markdown + images. read-only |
 | `1_Literature/Cards/`, `1_Literature/Literature_Outputs/` | your cards and syntheses |
 | `1_Literature/Human_encoding/` | the researcher's handwritten notes on the reading |
-| `2_Playground/` | exploring and reproducing before the idea is fixed: `Experiments_pg.md`, `Code_Design_pg.md`, `Results_pg.md` |
+| `2_Playground/` | exploring and reproducing before the idea is fixed: `Method_pg.md`, `Implementation_pg.md`, `Experiments_pg.md`, `Code_Design_pg.md`, `Results_pg.md` |
 | `3_Method/` | the idea made formal: `Setup_and_Method.md`, `Experiments.md`, and the researcher's handwritten notes in `Human_encoding/` |
 | `4_Implementation/` | the concrete choices: `Specs.md`, `Figures.md`, `Code_Design.md` |
 | `__CODE_DIR__/` | the code, and nothing else: it will be published alone |

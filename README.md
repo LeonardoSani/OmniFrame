@@ -91,6 +91,8 @@ MYPROJ_Brain/                one git repo, one Obsidian vault
 │   ├── PDFs/ Papers/ Cards/ Literature_Outputs/
 │   └── Human_encoding/      your handwritten notes. The agent reads one only when you ask
 ├── 2_Playground/
+│   ├── Method_pg.md         what the playground computes, before 3_Method/
+│   ├── Implementation_pg.md its concrete choices, before 4_Implementation/
 │   ├── Experiments_pg.md    small tests, repos explored, results reproduced
 │   ├── Code_Design_pg.md    how the playground code is organised
 │   └── Results_pg.md        what the playground taught

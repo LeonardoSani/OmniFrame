@@ -1,6 +1,7 @@
 # 4_Implementation
 
-The concrete choices that make the idea runnable.
+The concrete choices that make the idea runnable. The playground's own choices are in
+`2_Playground/Implementation_pg.md`; this folder is for the real project.
 
 | File | Holds |
 | ---- | ----- |
