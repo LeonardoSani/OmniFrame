@@ -1,7 +1,7 @@
 ![OmniFrame](logo.png)
 
-**A template for AI research projects. One command creates the project folder; Claude Code
-works in it with you, following rules written in the folder.**
+**A template for AI research projects, designed to be used in Obsidian. One command creates
+the project folder; Claude Code works in it with you, following rules written in the folder.**
 
 Reading, playground, idea, specs, experiments, results and the LaTeX paper each get their
 own folder, and each folder has a `CLAUDE.md` saying what the agent may write there. You
