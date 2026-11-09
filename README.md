@@ -122,3 +122,11 @@ omniframe update                            # inside a project
 
 Brings in new commands and rules. Your content is never touched; files you edited are shown
 as a diff first.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
+
+The template bundles two Obsidian plugins under their own licenses:
+[Style Settings](https://github.com/mgmeyers/obsidian-style-settings) (GPL-3.0) and
+[Custom Node Size](https://github.com/jackvonhouse/custom-node-size) (MIT).
